@@ -29,3 +29,6 @@
   height: calc(20%);
   margin: 30px;
 }
+.buttonText {
+  font-size: 30px;
+}

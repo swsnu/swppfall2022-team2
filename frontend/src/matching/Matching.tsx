@@ -2,6 +2,7 @@ import React from "react";
 import MatchingCondition from "./MatchingCondition";
 import MatchingStatus from "./MatchingStatus";
 import "./Matching.css";
+import { Button } from "react-bootstrap";
 const startMatching = (): void => {
   //tell to server
 };
@@ -14,7 +15,9 @@ const Matching = () => {
       <div className="condition">
         <MatchingCondition />
       </div>
-      <button className="button">Start Matching</button>
+      <Button variant="secondary" className="button">
+        <span className="buttonText">Start Matching</span>
+      </Button>
     </div>
   );
 };

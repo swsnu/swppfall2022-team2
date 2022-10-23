@@ -38,9 +38,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'corsheaders',
 ]
-
+    
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
+    
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -50,6 +53,15 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+#for test in browser when frontend and backend both run in same machine
+#pip install django-cors-headers  is need
+#this below is also for cors problem
+#https://developer0809.tistory.com/21
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ORIGIN_WHITELIST = [
+       'http://127.0.0.1:8000',
+       'http://127.0.0.1:3000',
+]
 ROOT_URLCONF = 'babchingu.urls'
 
 TEMPLATES = [

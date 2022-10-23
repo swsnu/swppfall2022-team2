@@ -1,6 +1,44 @@
 import { Button, Form } from "react-bootstrap";
 import "./MatchingCondition.css";
-const MatchingCondition = () => {
+import { conditionType } from "./Matching";
+type propsType = {
+  matchingCondition: conditionType;
+  handleMatchingCondition: (a: conditionType) => void;
+};
+const MatchingCondition = (props: propsType) => {
+  const { matchingCondition, handleMatchingCondition } = props;
+  const handleTime = () => {
+    //TODO
+  };
+  const handleSpace = () => {
+    //TODO
+  };
+  const handleMBTI = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    handleMatchingCondition({ ...matchingCondition, mbti: e.target.value });
+    console.log(matchingCondition);
+  };
+  const handleGender = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    handleMatchingCondition({ ...matchingCondition, gender: e.target.value });
+    console.log(matchingCondition);
+  };
+  const handleAgeFrom = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    handleMatchingCondition({
+      ...matchingCondition,
+      age: {
+        from: e.target.value,
+        to: matchingCondition.age ? matchingCondition.age.to : null,
+      },
+    });
+  };
+  const handleAgeTo = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    handleMatchingCondition({
+      ...matchingCondition,
+      age: {
+        from: matchingCondition.age ? matchingCondition.age.from : null,
+        to: e.target.value,
+      },
+    });
+  };
   return (
     <div>
       <p>matchingcondition</p>
@@ -16,39 +54,39 @@ const MatchingCondition = () => {
       </div>
       <div className="conditions">
         <p>선호하는 MBTI-여러개선택가능하게 바꿔야함</p>
-        <Form.Select className="select">
-          <option value="no">상관없음</option>
+        <Form.Select className="select" onChange={(e) => handleMBTI(e)}>
+          <option value="">상관없음</option>
           <option value="ISTJ">ISTJ</option>
           <option value="ISTP">ISTP</option>
         </Form.Select>
       </div>
       <div className="conditions">
         <p>선호하는 성별</p>
-        <Form.Select className="select">
-          <option>상관없음</option>
-          <option>남자</option>
-          <option>여자</option>
+        <Form.Select className="select" onChange={(e) => handleGender(e)}>
+          <option value="">상관없음</option>
+          <option value="M">남자</option>
+          <option value="F">여자</option>
         </Form.Select>
       </div>
       <div className="conditions">
         <p>선호하는 연령대</p>
         <label className="selectLabel">
-          <Form.Select className="select">
-            <option>상관없음</option>
-            <option>20</option>
-            <option>21</option>
-            <option>22</option>
-            <option>23</option>
+          <Form.Select className="select" onChange={(e) => handleAgeFrom(e)}>
+            <option value="">상관없음</option>
+            <option value="20">20</option>
+            <option value="21">21</option>
+            <option value="22">22</option>
+            <option value="23">23</option>
           </Form.Select>
         </label>
         ~
         <label className="selectLabel">
-          <Form.Select className="select">
-            <option>상관없음</option>
-            <option>20</option>
-            <option>21</option>
-            <option>22</option>
-            <option>23</option>
+          <Form.Select className="select" onChange={(e) => handleAgeTo(e)}>
+            <option value="">상관없음</option>
+            <option value="20">20</option>
+            <option value="21">21</option>
+            <option value="22">22</option>
+            <option value="23">23</option>
           </Form.Select>
         </label>
       </div>

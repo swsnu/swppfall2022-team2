@@ -1,3 +1,5 @@
 from django.contrib import admin
+from .models import MatchingEntity, MatchingQueue
 
-# Register your models here.
+admin.site.register(MatchingQueue)
+admin.site.register(MatchingEntity)

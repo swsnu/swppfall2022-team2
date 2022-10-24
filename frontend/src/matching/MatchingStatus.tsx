@@ -1,8 +1,11 @@
 import { useState } from "react";
-
-const MatchingStatus = () => {
-  const [matched, handleMatched] = useState(false);
-  //for check whether matching is done, maybe should be changed to use Redux
+import { Button } from "react-bootstrap";
+type propsType = {
+  checkMatching: () => void;
+};
+const MatchingStatus = (props: propsType) => {
+  const { checkMatching } = props;
+  const [matched, handleMatched] = useState(false); //for check whether matching is done, maybe should be changed to use Redux
   return matched ? (
     <div>
       <p>Matching Status</p>
@@ -17,6 +20,9 @@ const MatchingStatus = () => {
       <p>Matching Status</p>
       <div>not matched yet</div>
       <div>Num of people matching now</div>
+      <Button variant="secondary" onClick={checkMatching}>
+        <span className="buttonText">Check Matching</span>
+      </Button>
     </div>
   );
 };

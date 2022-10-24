@@ -34,10 +34,21 @@ const Matching = () => {
         console.log(err);
       });
   };
+  const checkMatching = (): void => {
+    //check whether matching is completed or not
+    axios
+      .get(`http://localhost:8000/matching/check/`)
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   return (
     <div>
       <div className="status">
-        <MatchingStatus />
+        <MatchingStatus checkMatching={checkMatching} />
       </div>
       <div className="condition">
         <MatchingCondition

@@ -1,0 +1,34 @@
+.status {
+  position: fixed;
+  top: 10px;
+  left: 20px;
+  width: calc(42%);
+  height: calc(60%);
+  border: 1px solid;
+  text-align: center;
+  margin: 30px;
+}
+
+.condition {
+  position: fixed;
+  top: 10px;
+  left: calc(52%);
+  width: calc(42%);
+  height: calc(86%);
+  border: 1px solid;
+  text-align: center;
+  margin: 30px;
+}
+
+.button {
+  position: fixed;
+  left: 20px;
+  top: calc(67%);
+  border: 1px solid;
+  width: calc(42%);
+  height: calc(20%);
+  margin: 30px;
+}
+.buttonText {
+  font-size: 30px;
+}

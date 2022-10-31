@@ -1,11 +1,12 @@
-import { useState } from "react";
-import { Button } from "react-bootstrap";
-type propsType = {
+import React, { useState } from 'react';
+import { Button } from 'react-bootstrap';
+interface propsType {
   checkMatching: () => void;
-};
-const MatchingStatus = (props: propsType) => {
+}
+const MatchingStatus: React.FC<propsType> = (props) => {
   const { checkMatching } = props;
-  const [matched, handleMatched] = useState(false); //for check whether matching is done, maybe should be changed to use Redux
+  // eslint-disable-next-line
+  const [matched, handleMatched] = useState(false); // for check whether matching is done, maybe should be changed to use Redux
   return matched ? (
     <div>
       <p>Matching Status</p>
@@ -20,8 +21,8 @@ const MatchingStatus = (props: propsType) => {
       <p>Matching Status</p>
       <div>not matched yet</div>
       <div>Num of people matching now</div>
-      <Button variant="secondary" onClick={checkMatching}>
-        <span className="buttonText">Check Matching</span>
+      <Button variant='secondary' onClick={checkMatching}>
+        <span className='buttonText'>Check Matching</span>
       </Button>
     </div>
   );

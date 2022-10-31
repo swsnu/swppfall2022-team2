@@ -5,5 +5,5 @@ from . import views
 urlpatterns=[
     path('',views.index),
     path('start/',views.start),
-    path('check/',views.check_matched),
+    path('check/<int:id>/',views.check_matched),
 ]

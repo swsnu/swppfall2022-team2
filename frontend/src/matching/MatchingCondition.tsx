@@ -16,11 +16,9 @@ const MatchingCondition: React.FC<propsType> = (props: propsType) => {
   // };
   const handleMBTI: (e: React.ChangeEvent<HTMLSelectElement>) => void = (e) => {
     handleMatchingCondition({ ...matchingCondition, mbti: e.target.value });
-    console.log(matchingCondition);
   };
   const handleGender: (e: React.ChangeEvent<HTMLSelectElement>) => void = (e) => {
     handleMatchingCondition({ ...matchingCondition, gender: e.target.value });
-    console.log(matchingCondition);
   };
   const handleAgeFrom: (e: React.ChangeEvent<HTMLSelectElement>) => void = (e) => {
     handleMatchingCondition({

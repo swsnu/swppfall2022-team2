@@ -46,22 +46,23 @@ def start(request):# matching/start/
             age_wanted_from=age_from, age_wanted_to=age_to, queue=queue)
         entity.save()
         queue.match()
-        return HttpResponse(status=201)
-        #return JsonResponse(json.dumps({"num":num}), safe=False)
-        # return JsonResponse(condition)
+        response_dict={'id':entity.id}
+        return JsonResponse(response_dict, status=201)
     else:
         return HttpResponseNotAllowed(['POST'])
 
 @csrf_exempt
-def check_matched(request):
+def check_matched(request, id):
     if request.method=='GET':
-        #currently, we don't know who the user is.
-        #so make this show the matched entity regardless of who have requested
         if not MatchingQueue.objects.all().exists():
-            return HttpResponse(status=204)#no matching requested yet
+            return HttpResponse(status=404)# no matching requested yet
         queue=MatchingQueue.objects.all()[0]
-        lst=[]
-        for entity in queue.entities.all():
-            if entity.matched_opponent is not None:
-                lst.append(entity.id)
-        return JsonResponse(lst, safe=False)#currently return the id of entity
+        try:            
+            entity=MatchingEntity.objects.get(id=id)
+        except MatchingEntity.DoesNotExist:
+            return HttpResponse(status=404) # if such entity not exist
+        if entity.matched_opponent is None:
+            return HttpResponse(status=204)
+        opponent=entity.matched_opponent
+        response_dic={'mbti':opponent.user_mbti, 'gender':opponent.user_gender, 'age':opponent.user_age}
+        return JsonResponse(response_dic)

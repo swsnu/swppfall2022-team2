@@ -1,20 +1,29 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Button } from 'react-bootstrap';
+interface matchedOpponentType {
+  mbti: string;
+  gender: string;
+  age: string;
+}
 interface propsType {
   checkMatching: () => void;
+  matched: boolean;
+  matchedOpponent: matchedOpponentType | null;
 }
 const MatchingStatus: React.FC<propsType> = (props) => {
-  const { checkMatching } = props;
-  // eslint-disable-next-line
-  const [matched, handleMatched] = useState(false); // for check whether matching is done, maybe should be changed to use Redux
+  const { checkMatching, matched, matchedOpponent } = props;
+
   return matched ? (
     <div>
       <p>Matching Status</p>
       <div>
-        information about the succeed matching
-        <div>ex:profile image, gender, age</div>
+        <div>information about the matched Opponent</div>
+        <div>Currently It always show the same because we do not make the user interface yet</div>
+        <div>profile image</div>
+        <div>MBTI: {matchedOpponent?.mbti}</div>
+        <div>Gender: {matchedOpponent?.gender}</div>
+        <div>Age: {matchedOpponent?.age}</div>
       </div>
-      <div>Num of people matching now</div>
     </div>
   ) : (
     <div>

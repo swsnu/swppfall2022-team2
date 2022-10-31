@@ -8,10 +8,12 @@ class MatchingQueue(models.Model):
         entities=self.entities.all()
         no_matched_entities=entities.filter(matched_opponent=None)
         if no_matched_entities.count()>=2 :
-            no_matched_entities[0].matched_opponent=no_matched_entities[1]
-            no_matched_entities[1].matched_opponent=no_matched_entities[0]
-            no_matched_entities[0].save()
-            no_matched_entities[1].save()
+            entity1=no_matched_entities[0]
+            entity2=no_matched_entities[1]
+            entity1.matched_opponent=entity2
+            entity2.matched_opponent=entity1
+            entity1.save()
+            entity2.save()
 
 class MatchingEntity(models.Model):
     time_matching=models.TimeField(auto_now_add=True)#How long this matching is not success

@@ -46,9 +46,10 @@ export const setSignUp = createAsyncThunk(
 export const setSignIn = createAsyncThunk(
     'user/setSignIn', async(loginForm: LoginFormType, {dispatch}) =>{
         const loginResponse = await axios.post('/chat/user/signin/', loginForm)
-        if(loginResponse.status ===204){
-            console.log(loginResponse.data)
-            //dispatch() //set login 
+        if(loginResponse.status ===200){
+            console.log(loginResponse)
+            const userlistResponse = await axios.get('/chat/user/')
+            console.log(userlistResponse)
         }else{
             console.log("login failed")
             return null;

@@ -35,7 +35,7 @@ def signin(request):
         if user is not None:
             #change the login status
             login(request, user)
-            return JsonResponse({"id":request.user.id,"username":request.user.username},status=204)
+            return JsonResponse({"id":request.user.id,"username":request.user.username})
         else: # wrong username, password
             return HttpResponse(status=401)
     else:

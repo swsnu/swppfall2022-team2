@@ -1,7 +1,15 @@
 import React from 'react';
+import ChatList from './chatting/ChatList';
 
 const Main: React.FunctionComponent = () => {
-  return <div>Main page</div>;
+
+return(
+  <div>
+      <p>This is Main Page!</p>
+      <ChatList/>
+  </div>
+)
+
 };
 
 export default Main;

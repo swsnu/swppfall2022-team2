@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice} from "@reduxjs/toolkit";
+import { PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "..";
 import axios from "axios";
 
@@ -12,16 +13,16 @@ export interface UserType {
     username:string;
 }
 
-export interface LoggedInUserType {
-    id: number;
-    name: string;
-    chatrooms : ChatRoomType[];
-}
-
 export interface ChatRoomType {
     id: number;
     opponentid: number;
 }
+
+export interface LoggedInUserType {
+    user : UserType;
+    chatrooms : ChatRoomType[];
+}
+
 
 export interface UserInfoType {
     loggedinuser: LoggedInUserType|null;
@@ -47,12 +48,17 @@ export const setSignIn = createAsyncThunk(
     'user/setSignIn', async(loginForm: LoginFormType, {dispatch}) =>{
         const loginResponse = await axios.post('/chat/user/signin/', loginForm)
         if(loginResponse.status ===200){
-            console.log(loginResponse)
             const userlistResponse = await axios.get('/chat/user/')
-            console.log(userlistResponse)
+            const userid = loginResponse.data.id;
+            const chatroomlistResponse = await axios.get('/chat/user/'+userid+'/')
+            const serverdata : LoggedInUserType = {user:loginResponse.data, chatrooms:chatroomlistResponse.data}
+            console.log(serverdata)
+            dispatch(userActions.updateLoggedInUser(serverdata))
+            dispatch(userActions.updateUserList(userlistResponse.data))
+            
         }else{
-            console.log("login failed")
-            return null;
+            //this is not working...
+            window.alert("wrong username or password")
         }
     }
 );
@@ -61,7 +67,6 @@ export const setSignIn = createAsyncThunk(
 export const setSignOut = createAsyncThunk(
     'user/setSignOut', async() =>{
         const response = await axios.get('/chat/user/signout/')
-        return response.data;
     }
 );
 
@@ -76,8 +81,16 @@ export const userSlice = createSlice({
     name:"user",
     initialState,
     reducers: {
-        //here we create action: action handler pair
-        //here we can write mutable code when we change the state.
+        updateLoggedInUser: (state, action: PayloadAction<LoggedInUserType>)=>{
+            state.loggedinuser = action.payload;
+        },
+
+        updateUserList: (state, action: PayloadAction<UserType[]>)=>{
+            state.userlist = action.payload;
+        },
+        seleteChatRoom: (state, action:PayloadAction<ChatRoomType>)=>{
+            state.chosenchatroom = action.payload;
+        }
         
     },
     extraReducers: (builder) => {

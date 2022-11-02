@@ -14,6 +14,10 @@ class MatchingQueue(models.Model):
             entity2.matched_opponent=entity1
             entity1.save()
             entity2.save()
+    def save(self, *args, **kwargs):
+        if MatchingQueue.objects.exists(): #singleton
+            raise AttributeError("Singleton")
+        return super(MatchingQueue, self).save(*args, **kwargs)
 
 class MatchingEntity(models.Model):
     time_matching=models.TimeField(auto_now_add=True)#How long this matching is not success

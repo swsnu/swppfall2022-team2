@@ -36,11 +36,10 @@ const Matching: React.FunctionComponent = () => {
       return;
     }
     axios
-      .get(`http://localhost:8000/matching/check/${matchingId}/`)
+      .get(`matching/check/${matchingId}/`)
       .then((response) => {
         if (response.status === 200) {
           // when matching succeed
-          console.log(response.data);
           handleMatched(true);
           handleMatchedOpponent({
             mbti: response.data.mbti,
@@ -56,7 +55,7 @@ const Matching: React.FunctionComponent = () => {
   const startMatching = (): void => {
     handleMatched(false);
     axios // include the information of user is needed???
-      .post(`http://localhost:8000/matching/start/`, {
+      .post(`matching/start/`, {
         condition: matchingCondition,
       })
       .then((response) => {

@@ -15,7 +15,7 @@ export interface UserType {
 
 export interface ChatRoomType {
     id: number;
-    opponentid: number;
+    opponent_id: number;
 }
 
 export interface LoggedInUserType {
@@ -40,7 +40,6 @@ const initialState: UserInfoType = {
 export const setSignUp = createAsyncThunk(
     'user/setSignUp', async(loginForm: LoginFormType, {dispatch}) =>{
         const response = await axios.post('/chat/user/signup/', loginForm);
-        return response.status;
     }
 );
 
@@ -52,7 +51,6 @@ export const setSignIn = createAsyncThunk(
             const userid = loginResponse.data.id;
             const chatroomlistResponse = await axios.get('/chat/user/'+userid+'/')
             const serverdata : LoggedInUserType = {user:loginResponse.data, chatrooms:chatroomlistResponse.data}
-            console.log(serverdata)
             dispatch(userActions.updateLoggedInUser(serverdata))
             dispatch(userActions.updateUserList(userlistResponse.data))
             
@@ -65,14 +63,19 @@ export const setSignIn = createAsyncThunk(
 
 
 export const setSignOut = createAsyncThunk(
-    'user/setSignOut', async() =>{
+    'user/setSignOut', async(userForm: UserType, {dispatch}) =>{
         const response = await axios.get('/chat/user/signout/')
+        dispatch(userActions.updateLoggedInUser(null))
+        dispatch(userActions.updateUserList([]))
     }
 );
 
 export const createChatRoom = createAsyncThunk(
-    'user/createChatRoom', async() =>{
-
+    'user/createChatRoom', async(chatOpponent: number, {dispatch}) =>{
+        const chatpost = {'opponent':chatOpponent}
+        const response = await axios.post('chat/chatroom/', chatpost)
+        dispatch(userActions.selectChatRoom(response.data))
+        dispatch(userActions.addChatRoom(response.data))
     }
 );
 
@@ -81,17 +84,19 @@ export const userSlice = createSlice({
     name:"user",
     initialState,
     reducers: {
-        updateLoggedInUser: (state, action: PayloadAction<LoggedInUserType>)=>{
+        updateLoggedInUser: (state, action: PayloadAction<LoggedInUserType|null>)=>{
             state.loggedinuser = action.payload;
         },
 
         updateUserList: (state, action: PayloadAction<UserType[]>)=>{
             state.userlist = action.payload;
         },
-        seleteChatRoom: (state, action:PayloadAction<ChatRoomType>)=>{
+        selectChatRoom: (state, action:PayloadAction<ChatRoomType>)=>{
             state.chosenchatroom = action.payload;
+        },
+        addChatRoom: (state, action:PayloadAction<ChatRoomType>)=>{
+            state.loggedinuser?.chatrooms.push(action.payload);
         }
-        
     },
     extraReducers: (builder) => {
 

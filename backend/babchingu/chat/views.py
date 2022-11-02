@@ -119,14 +119,14 @@ def post_chatroom(request):
             try:
                 #get the two user ids and put it in new chatroom object
                 body = request.body.decode()
-                twousers = json.loads(body)['users'] # this should be list
+                opponent = json.loads(body)['opponent'] # this should be list
             except (KeyError, JSONDecodeError) as e:
                 return HttpResponseBadRequest()
 
             # call the user by the ids in the list 
             try:
-                user1 = User.objects.get(id=twousers[0])
-                user2 = User.objects.get(id=twousers[1])
+                user1 = request.user
+                user2 = User.objects.get(id=opponent)
             except (KeyError, JSONDecodeError) as e:
                 return HttpResponseBadRequest()
 
@@ -134,7 +134,8 @@ def post_chatroom(request):
             new_chatroom.save()
             new_chatroom.chatusers.add(user1, user2)
             new_chatroom.save()
-            return HttpResponse(status=200)
+            #return the created chatroom details
+            return JsonResponse({"id": new_chatroom.id, "opponent_id": user2.id})
 
         else: # not signed in
             return HttpResponse(status=401)
@@ -155,7 +156,7 @@ def chatroom_info(request, chatroom_id):
                 return HttpResponseNotFound()
             chatQuery = chatroom.message_in_this_chat_room.values()
             chatlist =  [{"id": chat_entry["id"], "order": chat_entry["order"], "author": chat_entry["author"], "content": chat_entry["content"], "date": chat_entry["date"] } for chat_entry in chatQuery]
-            return JsonResponse(chatlist, status=200, safe=False)
+            return JsonResponse(chatlist, safe=False)
         else: # not signed in
             return HttpResponse(status=401)
 

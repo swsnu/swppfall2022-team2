@@ -6,11 +6,13 @@ import Matching from './matching/Matching';
 import Login from './login/Login'
 import ChatList from './chatting/ChatList'
 import ChatRoom from './chatting/ChatRoom'
+import SignUp from './login/SignUp'
 
 function App(): any {
   return (
     <BrowserRouter>
       <Routes>
+        <Route path='/signup' element={<SignUp/>} />
         <Route path='/login' element={<Login/>} />
         <Route path="/chatroom/:id" element={<ChatRoom/>}/>
         <Route path='/main' element={<Main />} />

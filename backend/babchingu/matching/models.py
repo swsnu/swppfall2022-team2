@@ -14,6 +14,25 @@ class MatchingQueue(models.Model):
             entity2.matched_opponent=entity1
             entity1.save()
             entity2.save()
+
+    def match_exactly_same(self): # currently mbti is not considered
+        entities=self.entities.all()
+        no_matched_entities=entities.filter(matched_opponent=None)
+        for entity1 in no_matched_entities:
+            if entity1.matched_opponent is not None:# when already matched by other entity
+                continue
+            candidates=no_matched_entities.filter(
+                user_age__range=(entity1.age_wanted_from, entity1.age_wanted_to+1))
+            candidates=candidates.filter(user_gender=entity1.gender_wanted)
+            candidates=candidates.filter(matched_opponent=None)
+            if candidates.count()>0:
+                entity2=candidates[0]
+                entity1.matched_opponent=entity2
+                entity2.matched_opponent=entity1
+                entity1.save()
+                entity2.save()
+
+
     def save(self, *args, **kwargs):
         if MatchingQueue.objects.exists(): #singleton
             raise AttributeError("Singleton")

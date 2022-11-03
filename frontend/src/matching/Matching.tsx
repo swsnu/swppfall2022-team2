@@ -7,11 +7,11 @@ import axios from 'axios';
 
 export interface conditionType {
   // this is temporary because another type for time and space is needed
-  time: null | number;
+  time: null | string;
   space: null | string;
-  mbti: null | string;
-  gender: null | string;
-  age: null | { from: string | null; to: string | null };
+  mbti: string[];
+  gender: string;
+  age: { from: string; to: string };
 }
 interface matchedOpponentType {
   mbti: string;
@@ -22,11 +22,10 @@ const Matching: React.FunctionComponent = () => {
   const [matchingCondition, handleMatchingCondition] = useState<conditionType>({
     time: null,
     space: null,
-    mbti: null,
-    gender: null,
-    age: null,
+    mbti: [],
+    gender: '',
+    age: { from: '0', to: '100' },
   });
-  // eslint-disable-next-line
   const [matched, handleMatched] = useState(false); // for check whether matching is done, maybe should be changed to use Redux
   const [matchingId, handleMatchingId] = useState<number>(0);
   const [matchedOpponent, handleMatchedOpponent] = useState<matchedOpponentType | null>(null);

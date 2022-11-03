@@ -15,22 +15,45 @@ class MatchingQueue(models.Model):
             entity1.save()
             entity2.save()
 
-    def match_exactly_same(self): # currently mbti is not considered
+
+    def check_condition_match_exactly_same(self, entity1, entity2):
+        if entity1.matched_opponent is not None or entity2.matched_opponent is not None:
+            return False
+        if entity1.time !=entity2.time:
+            return False
+        if entity1.space !=entity2.space:
+            return False
+        if not(entity2.user_age>=entity1.age_wanted_from and entity2.user_age<=entity1.age_wanted_to):
+            return False
+        if not(entity1.user_age>=entity2.age_wanted_from and entity1.user_age<=entity2.age_wanted_to):
+            return False
+        if not(entity1.gender_wanted=="" or entity2.user_gender==entity1.gender_wanted):
+            return False
+        if not(entity2.gender_wanted=="" or entity1.user_gender==entity2.gender_wanted):
+            return False
+        if not(entity1.mbti_wanted=={}):
+            mbti_list=entity1.mbti_wanted
+            if not entity2.user_mbti in mbti_list:
+                return False # NOTE: the user MUST have valid mbti
+        if not(entity2.mbti_wanted=={}):
+            mbti_list=entity2.mbti_wanted
+            if not entity1.user_mbti in mbti_list:
+                return False
+        return True
+
+    def match_exactly_same(self):
         entities=self.entities.all()
         no_matched_entities=entities.filter(matched_opponent=None)
         for entity1 in no_matched_entities:
-            if entity1.matched_opponent is not None:# when already matched by other entity
+            if entity1.matched_opponent is not None:# already matched by other entity
                 continue
-            candidates=no_matched_entities.filter(
-                user_age__range=(entity1.age_wanted_from, entity1.age_wanted_to+1))
-            candidates=candidates.filter(user_gender=entity1.gender_wanted)
-            candidates=candidates.filter(matched_opponent=None)
-            if candidates.count()>0:
-                entity2=candidates[0]
-                entity1.matched_opponent=entity2
-                entity2.matched_opponent=entity1
-                entity1.save()
-                entity2.save()
+            for entity2 in no_matched_entities:
+                if entity1!=entity2 and entity2.matched_opponent is None:
+                    if self.check_condition_match_exactly_same(entity1, entity2):
+                        entity1.matched_opponent=entity2
+                        entity2.matched_opponent=entity1
+                        entity1.save()
+                        entity2.save()
 
 
     def save(self, *args, **kwargs):
@@ -54,7 +77,7 @@ class MatchingEntity(models.Model):
     ''' matching conditions '''
     time=models.IntegerField()#this field type should be changed
     space=models.TextField()
-    mbti_wanted=models.JSONField()
+    mbti_wanted=models.JSONField() # I don't know why but it is okay to store list in jsonfield
     gender_wanted=models.CharField(max_length=1)
     age_wanted_from=models.IntegerField(default=0)
     age_wanted_to=models.IntegerField(default=100)

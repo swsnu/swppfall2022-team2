@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import MatchingCondition from './MatchingCondition';
 import MatchingStatus from './MatchingStatus';
 import './Matching.css';
@@ -7,8 +7,8 @@ import axios from 'axios';
 
 export interface conditionType {
   // this is temporary because another type for time and space is needed
-  time: null | string;
-  space: null | string;
+  time: string;
+  space: string;
   mbti: string[];
   gender: string;
   age: { from: string; to: string };
@@ -20,8 +20,8 @@ interface matchedOpponentType {
 }
 const Matching: React.FunctionComponent = () => {
   const [matchingCondition, handleMatchingCondition] = useState<conditionType>({
-    time: null,
-    space: null,
+    time: '0',
+    space: '',
     mbti: [],
     gender: '',
     age: { from: '0', to: '100' },
@@ -59,12 +59,18 @@ const Matching: React.FunctionComponent = () => {
       })
       .then((response) => {
         handleMatchingId(response.data.id);
-        checkMatching();
       })
       .catch((err) => {
         console.log(err);
       });
+    console.log('matchingcondition:', matchingCondition);
   };
+  useEffect(() => {
+    // after start matching, automatically called
+    if (matchingId !== 0) {
+      checkMatching();
+    }
+  }, [matchingId]);
   return (
     <div>
       <div className='status'>

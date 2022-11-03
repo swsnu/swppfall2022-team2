@@ -83,13 +83,13 @@ const MatchingCondition: React.FC<propsType> = (props: propsType) => {
         <p>시간</p>
         <label className='selectLabel'>
           <Form.Select className='select' onChange={(e) => handleTime(e)}>
-            <option value=''>직접선택</option>
-            <option value='12'>12:00</option>
-            <option value='12.5'>12:30</option>
-            <option value='13'>13:00</option>
-            <option value='18'>18:00</option>
-            <option value='18.5'>18:30</option>
-            <option value='19'>19:00</option>
+            <option value='0'>직접선택</option>
+            <option value='1200'>12:00</option>
+            <option value='1230'>12:30</option>
+            <option value='1300'>13:00</option>
+            <option value='1800'>18:00</option>
+            <option value='1830'>18:30</option>
+            <option value='1900'>19:00</option>
           </Form.Select>
         </label>
         <Button variant='outline-secondary'>시간표에서 선택하기</Button>

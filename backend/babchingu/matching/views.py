@@ -9,8 +9,6 @@ def index(request):
 
 @csrf_exempt
 def start(request):# matching/start/
-    #TODO: matching entity to matching queue?
-    #and how to response when matching is done?
     if(request.method=='POST'):
         if not MatchingQueue.objects.all().exists():#check queue is initialized
             queue=MatchingQueue(num_matching=0)
@@ -23,29 +21,17 @@ def start(request):# matching/start/
         mbti=condition['mbti']
         gender=condition['gender']
         age=condition['age']
-        if time is None:
-            time=0
-        if space is None:
-            space=""
-        if mbti is None:
-            mbti=json.dumps({})
-        if gender is None:
-            gender=""
-        if age is None:
-            age_from=0
-            age_to=100
-        else:
-            age_from=age['from']
-            age_to=age['to']
+        age_from=age['from']
+        age_to=age['to']
         if not User.objects.all().exists():
             user=User.objects.create_user(username="test")#this should be changed to request.user
         else: 
             user=User.objects.all()[0]#this should be changed to request.user
-        entity=MatchingEntity(user=user, user_mbti="",user_gender="M",user_age=20,
+        entity=MatchingEntity(user=user, user_mbti="INFP",user_gender="M",user_age=22,
             time=time, space=space, mbti_wanted=mbti, gender_wanted=gender, 
             age_wanted_from=age_from, age_wanted_to=age_to, queue=queue)
         entity.save()
-        queue.match()
+        queue.match_exactly_same()
         response_dict={'id':entity.id}
         return JsonResponse(response_dict, status=201)
     else:

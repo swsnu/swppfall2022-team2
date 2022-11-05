@@ -71,7 +71,7 @@ def user_list(request):
 @csrf_exempt
 def user_info(request, user_id):
     if request.method == 'GET':
-        #return the user's chatrooms id
+        #return the user's chatrooms id & opponent & last chat in that chatroom
         if request.user.is_authenticated:
             try:
                 user = User.objects.get(id=user_id)
@@ -84,10 +84,16 @@ def user_info(request, user_id):
                 chatroom=Chatroom.objects.get(id=chatroom_entry["id"])
                 user1 = chatroom.chatuser1
                 user2 = chatroom.chatuser2
-                if(user.id==user1):
-                    chatroom_list.append({"id": chatroom.id, "opponent_id": user2})
+                messages = chatroom.message_in_this_chat_room.values()
+                print(messages)
+                if len(messages) ==0:
+                    last_message = {}
                 else:
-                    chatroom_list.append({"id": chatroom.id, "opponent_id": user1})
+                    last_message = messages.latest('order')
+                if(user.id==user1):
+                    chatroom_list.append({"id": chatroom.id, "opponent_id": user2, "last_chat": last_message})
+                else:
+                    chatroom_list.append({"id": chatroom.id, "opponent_id": user1, "lst_chat": last_message})
             return JsonResponse(chatroom_list, safe=False)
         else: # not signed in
             return HttpResponse(status=401)
@@ -174,13 +180,11 @@ def chatroom_info(request, chatroom_id):
             # { content, author_id }
             try:
                 body = request.body.decode()
-                author_id = json.loads(body)['author_id']
+                author_id = request.user.id
                 content = json.loads(body)['content']
             except (KeyError, JSONDecodeError) as e:
                 return HttpResponseBadRequest()
 
-            if author_id != request.user.id:
-                return HttpResponseForbidden()
             message_author = User.objects.get(id=author_id)
             
             new_message = Message(order=chatroom.chatnumbers, content=content, author=author_id)

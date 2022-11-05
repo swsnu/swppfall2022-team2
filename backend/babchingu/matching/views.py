@@ -23,16 +23,14 @@ def start(request):# matching/start/
         age=condition['age']
         age_from=age['from']
         age_to=age['to']
-        if not User.objects.all().exists():
-            user=User.objects.create_user(username="test")#this should be changed to request.user
-        else: 
-            user=User.objects.all()[0]#this should be changed to request.user
-        entity=MatchingEntity(user=user, user_mbti="INFP",user_gender="M",user_age=22,
+        entity=MatchingEntity(user=request.user, user_mbti="INFP",user_gender="M",user_age=22,
             time=time, space=space, mbti_wanted=mbti, gender_wanted=gender, 
             age_wanted_from=age_from, age_wanted_to=age_to, queue=queue)
+            # currently the user's mbti, gender, age is fixed.
+            # after implementing other features, this should be changed
         entity.save()
         queue.match_exactly_same()
-        response_dict={'id':entity.id}
+        response_dict={'id':entity.id, 'num_matching':queue.num_matching()}
         return JsonResponse(response_dict, status=201)
     else:
         return HttpResponseNotAllowed(['POST'])

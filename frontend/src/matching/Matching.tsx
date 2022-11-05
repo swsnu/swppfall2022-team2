@@ -29,6 +29,7 @@ const Matching: React.FunctionComponent = () => {
   const [matched, handleMatched] = useState(false); // for check whether matching is done, maybe should be changed to use Redux
   const [matchingId, handleMatchingId] = useState<number>(0);
   const [matchedOpponent, handleMatchedOpponent] = useState<matchedOpponentType | null>(null);
+  const [numMatching, handlenumMatching] = useState<number | null>(null);
   const checkMatching = (): void => {
     // check whether matching is completed or not
     if (matchingId === 0) {
@@ -59,6 +60,7 @@ const Matching: React.FunctionComponent = () => {
       })
       .then((response) => {
         handleMatchingId(response.data.id);
+        handlenumMatching(Number(response.data.num_matching));
       })
       .catch((err) => {
         console.log(err);
@@ -78,6 +80,7 @@ const Matching: React.FunctionComponent = () => {
           checkMatching={checkMatching}
           matched={matched}
           matchedOpponent={matchedOpponent}
+          numMatching={numMatching}
         />
       </div>
       <div className='condition'>
@@ -86,8 +89,12 @@ const Matching: React.FunctionComponent = () => {
           handleMatchingCondition={handleMatchingCondition}
         />
       </div>
-      <Button variant='secondary' className='button' onClick={startMatching}>
+
+      <Button variant='secondary' className='button' onClick={startMatching} disabled={matched}>
         <span className='buttonText'>Start Matching</span>
+        {/* we should also disable this button when first clicked this button
+        currently did not implemented for testing purpose
+        */}
       </Button>
     </div>
   );

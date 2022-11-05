@@ -9,27 +9,36 @@ interface propsType {
   checkMatching: () => void;
   matched: boolean;
   matchedOpponent: matchedOpponentType | null;
+  numMatching: number | null;
 }
 const MatchingStatus: React.FC<propsType> = (props) => {
-  const { checkMatching, matched, matchedOpponent } = props;
+  const { checkMatching, matched, matchedOpponent, numMatching } = props;
 
   return matched ? (
     <div>
-      <p>Matching Status</p>
+      <h1>Matching Status</h1>
       <div>
-        <div>information about the matched Opponent</div>
-        <div>Currently It always show the same because we do not make the user interface yet</div>
-        <div>profile image</div>
-        <div>MBTI: {matchedOpponent?.mbti}</div>
-        <div>Gender: {matchedOpponent?.gender}</div>
-        <div>Age: {matchedOpponent?.age}</div>
+        <h2>Information about Your matched Opponent</h2>
+        <div>(Currently It always show the same because we do not make the user interface yet)</div>
+        <h3>(name would be here)</h3>
+        <h3>Age: {matchedOpponent?.age}</h3>
+        <h3>Gender: {matchedOpponent?.gender}</h3>
+        <h3>MBTI: {matchedOpponent?.mbti}</h3>
+        <h3>(button to start chatting with him/her should be here)</h3>
       </div>
     </div>
   ) : (
     <div>
-      <p>Matching Status</p>
-      <div>not matched yet</div>
-      <div>Num of people matching now</div>
+      <h1>Matching Status</h1>
+      {numMatching !== null ? (
+        <div>
+          <h3>You are not matched yet</h3>
+          <h3>{numMatching} people is matching now!</h3>
+        </div>
+      ) : (
+        <h3>Start the matching to see how many peoples are matching now!</h3>
+      )}
+
       <Button variant='secondary' onClick={checkMatching}>
         <span className='buttonText'>Check Matching</span>
       </Button>

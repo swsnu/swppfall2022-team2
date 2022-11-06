@@ -4,6 +4,7 @@ import MatchingStatus from './MatchingStatus';
 import './Matching.css';
 import { Button } from 'react-bootstrap';
 import axios from 'axios';
+import { useNavigate } from 'react-router';
 
 export interface conditionType {
   // this is temporary because another type for time and space is needed
@@ -33,6 +34,7 @@ const Matching: React.FunctionComponent = () => {
   const [matchingId, handleMatchingId] = useState<number>(0);
   const [matchedOpponent, handleMatchedOpponent] = useState<matchedOpponentType | null>(null);
   const [numMatching, handlenumMatching] = useState<number | null>(null);
+  const navigate = useNavigate();
   const checkMatching = (): void => {
     // check whether matching is completed or not
     if (matchingId === 0) {
@@ -73,6 +75,9 @@ const Matching: React.FunctionComponent = () => {
       });
     console.log('matchingcondition:', matchingCondition);
   };
+  const toMain = (): void => {
+    navigate('/main');
+  };
   useEffect(() => {
     // after start matching, automatically called
     if (matchingId !== 0) {
@@ -81,6 +86,9 @@ const Matching: React.FunctionComponent = () => {
   }, [matchingId]);
   return (
     <div>
+      <Button variant='primary' onClick={toMain}>
+        Main
+      </Button>
       <div className='status'>
         <MatchingStatus
           checkMatching={checkMatching}

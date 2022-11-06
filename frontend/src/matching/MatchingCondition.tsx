@@ -132,7 +132,8 @@ const MatchingCondition: React.FC<propsType> = (props: propsType) => {
           displayValue='name'
         />
       </div>
-      <p>주의사항같은것 ex:매칭 상황에따라 선택한 조건에 맞지 않는 사람과 매칭될수있다 등등</p>
+      <p>*조건을 선택하지 않으면 해당 조건은 고려하지 않습니다</p>
+      <p>*매칭이 잡히지 않으면 조건에 맞지 않는 상대와 매칭될 수 있습니다</p>
     </div>
   );
 };

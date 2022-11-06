@@ -40,7 +40,6 @@ const MatchingStatus: React.FC<propsType> = (props) => {
     </div>
   ) : (
     <div>
-      <h1>Matching Status</h1>
       {numMatching !== null ? (
         <div>
           <h3>You are not matched yet</h3>

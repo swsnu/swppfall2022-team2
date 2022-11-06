@@ -13,9 +13,19 @@ export interface UserType {
     username:string;
 }
 
+export interface ChatType {
+    id: number;
+    order: number;
+    chatroom_id:number;
+    author:number;
+    content:string;
+    date:string;
+}
+
 export interface ChatRoomType {
     id: number;
     opponent_id: number;
+    last_chat: ChatType;
 }
 
 export interface LoggedInUserType {

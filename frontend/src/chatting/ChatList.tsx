@@ -29,6 +29,7 @@ const ChatList: React.FunctionComponent = () => {
                             <ChatListTitle 
                                 key={chatroom.id} 
                                 opponent={(userState.userlist.find(element => element.id===chatroom.opponent_id))?.username!}
+                                lastChat={chatroom.last_chat}
                                 onClick={()=>clickChatListTitleHandler(chatroom)}
                             />
                         </div>

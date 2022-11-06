@@ -14,6 +14,9 @@ export interface conditionType {
   age: { from: string; to: string };
 }
 interface matchedOpponentType {
+  time: string;
+  spaceUser: string; // wanted space of this user
+  spaceOpponent: string; // wanted space of matched opponent
   mbti: string;
   gender: string;
   age: string;
@@ -42,6 +45,9 @@ const Matching: React.FunctionComponent = () => {
           // when matching succeed
           handleMatched(true);
           handleMatchedOpponent({
+            time: String(response.data.time),
+            spaceUser: response.data.space_user,
+            spaceOpponent: response.data.space_opponent,
             mbti: response.data.mbti,
             gender: response.data.gender,
             age: response.data.age,

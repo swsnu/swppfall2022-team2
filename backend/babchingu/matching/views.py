@@ -4,6 +4,7 @@ from django.http import HttpResponse, HttpResponseNotAllowed, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from .models import MatchingEntity, MatchingQueue
 from django.contrib.auth.models import User
+from datetime import datetime
 def index(request):
     return HttpResponse("hello")
 
@@ -25,11 +26,11 @@ def start(request):# matching/start/
         age_to=age['to']
         entity=MatchingEntity(user=request.user, user_mbti="INFP",user_gender="M",user_age=22,
             time=time, space=space, mbti_wanted=mbti, gender_wanted=gender, 
-            age_wanted_from=age_from, age_wanted_to=age_to, queue=queue)
+            age_wanted_from=age_from, age_wanted_to=age_to, queue=queue, time_matching=datetime.now())
             # currently the user's mbti, gender, age is fixed.
             # after implementing other features, this should be changed
         entity.save()
-        queue.match_exactly_same()
+        queue.match_adapt()
         response_dict={'id':entity.id, 'num_matching':queue.num_matching()}
         return JsonResponse(response_dict, status=201)
     else:
@@ -41,6 +42,7 @@ def check_matched(request, id):
         if not MatchingQueue.objects.all().exists():
             return HttpResponse(status=404)# no matching requested yet
         queue=MatchingQueue.objects.all()[0]
+        queue.match_adapt() # remove this if not needed, but I think this is needed
         try:            
             entity=MatchingEntity.objects.get(id=id)
         except MatchingEntity.DoesNotExist:
@@ -48,5 +50,6 @@ def check_matched(request, id):
         if entity.matched_opponent is None:
             return HttpResponse(status=204)
         opponent=entity.matched_opponent
-        response_dic={'mbti':opponent.user_mbti, 'gender':opponent.user_gender, 'age':opponent.user_age}
+        response_dic={'time':opponent.time,'space_user':entity.space,'space_opponent':opponent.space,
+         'mbti':opponent.user_mbti, 'gender':opponent.user_gender, 'age':opponent.user_age}
         return JsonResponse(response_dic)

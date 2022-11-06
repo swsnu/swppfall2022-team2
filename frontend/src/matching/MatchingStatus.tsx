@@ -1,6 +1,9 @@
 import React from 'react';
 import { Button } from 'react-bootstrap';
 interface matchedOpponentType {
+  time: string;
+  spaceUser: string; // wanted space of this user
+  spaceOpponent: string; // wanted space of matched opponent
   mbti: string;
   gender: string;
   age: string;
@@ -21,8 +24,16 @@ const MatchingStatus: React.FC<propsType> = (props) => {
         <h2>Information about Your matched Opponent</h2>
         <div>(Currently It always show the same because we do not make the user interface yet)</div>
         <h3>(name would be here)</h3>
-        <h3>Age: {matchedOpponent?.age}</h3>
-        <h3>Gender: {matchedOpponent?.gender}</h3>
+        <h3>시간:{matchedOpponent?.time === '0' ? '미정' : matchedOpponent?.time}</h3>
+        <h3>
+          내가 원하는 장소:{matchedOpponent?.spaceUser === '' ? '미정' : matchedOpponent?.spaceUser}
+        </h3>
+        <h3>
+          상대가 원하는 장소:
+          {matchedOpponent?.spaceOpponent === '' ? '미정' : matchedOpponent?.spaceOpponent}
+        </h3>
+        <h3>나이: {matchedOpponent?.age}</h3>
+        <h3>성별: {matchedOpponent?.gender}</h3>
         <h3>MBTI: {matchedOpponent?.mbti}</h3>
         <h3>(button to start chatting with him/her should be here)</h3>
       </div>

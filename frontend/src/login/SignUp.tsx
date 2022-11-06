@@ -17,7 +17,7 @@ export default function SignUp(){
     //has to dispatch action to get user info and set login
     //also has to dispatch action to load in the articles and comments
 
-    const handleLogin = () => {
+    const handleSignUp = () => {
         dispatch(setSignUp({username: username, password: password}))
         navigate('/login')
     }
@@ -30,10 +30,10 @@ export default function SignUp(){
     }
 
     return(
-        <div className="Login">
+        <div className="SignUp">
             <input id="username-input" onChange={event => setUsername(event.target.value)}/>
             <input id="pw-input" onChange={event => setPassword(event.target.value)}/>
-            <button id="login-button" onClick={handleLogin}>Sign Up!</button>
+            <button id="signup-button" onClick={handleSignUp}>Sign Up!</button>
         </div>
     )
 }

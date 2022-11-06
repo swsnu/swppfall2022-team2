@@ -93,7 +93,7 @@ def user_info(request, user_id):
                 if(user.id==user1):
                     chatroom_list.append({"id": chatroom.id, "opponent_id": user2, "last_chat": last_message})
                 else:
-                    chatroom_list.append({"id": chatroom.id, "opponent_id": user1, "lst_chat": last_message})
+                    chatroom_list.append({"id": chatroom.id, "opponent_id": user1, "last_chat": last_message})
             return JsonResponse(chatroom_list, safe=False)
         else: # not signed in
             return HttpResponse(status=401)

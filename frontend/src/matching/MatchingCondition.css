@@ -1,8 +1,24 @@
 .conditions {
   position: relative;
   margin-top: 10px;
-  left: calc(10%);
-  width: calc(80%);
+  left: calc(5%);
+  width: calc(90%);
   height: 100px;
+  border: 1px solid;
+}
+.conditionsMBTI {
+  position: relative;
+  margin-top: 10px;
+  left: calc(5%);
+  width: calc(90%);
+  height: 180px;
+  border: 1px solid;
+}
+.conditionsAge {
+  position: relative;
+  margin-top: 10px;
+  left: calc(5%);
+  width: calc(90%);
+  height: 140px;
   border: 1px solid;
 }

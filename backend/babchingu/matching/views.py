@@ -4,13 +4,12 @@ from django.http import HttpResponse, HttpResponseNotAllowed, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from .models import MatchingEntity, MatchingQueue
 from django.contrib.auth.models import User
+from datetime import datetime
 def index(request):
     return HttpResponse("hello")
 
 @csrf_exempt
 def start(request):# matching/start/
-    #TODO: matching entity to matching queue?
-    #and how to response when matching is done?
     if(request.method=='POST'):
         if not MatchingQueue.objects.all().exists():#check queue is initialized
             queue=MatchingQueue(num_matching=0)
@@ -23,30 +22,16 @@ def start(request):# matching/start/
         mbti=condition['mbti']
         gender=condition['gender']
         age=condition['age']
-        if time is None:
-            time=0
-        if space is None:
-            space=""
-        if mbti is None:
-            mbti=json.dumps({})
-        if gender is None:
-            gender=""
-        if age is None:
-            age_from=0
-            age_to=100
-        else:
-            age_from=age['from']
-            age_to=age['to']
-        if not User.objects.all().exists():
-            user=User.objects.create_user(username="test")#this should be changed to request.user
-        else: 
-            user=User.objects.all()[0]#this should be changed to request.user
-        entity=MatchingEntity(user=user, user_mbti="",user_gender="M",user_age=20,
+        age_from=age['from']
+        age_to=age['to']
+        entity=MatchingEntity(user=request.user, user_mbti="INFP",user_gender="M",user_age=22,
             time=time, space=space, mbti_wanted=mbti, gender_wanted=gender, 
-            age_wanted_from=age_from, age_wanted_to=age_to, queue=queue)
+            age_wanted_from=age_from, age_wanted_to=age_to, queue=queue, time_matching=datetime.now())
+            # currently the user's mbti, gender, age is fixed.
+            # after implementing other features, this should be changed
         entity.save()
-        queue.match()
-        response_dict={'id':entity.id}
+        queue.match_adapt()
+        response_dict={'id':entity.id, 'num_matching':queue.num_matching()}
         return JsonResponse(response_dict, status=201)
     else:
         return HttpResponseNotAllowed(['POST'])
@@ -57,6 +42,7 @@ def check_matched(request, id):
         if not MatchingQueue.objects.all().exists():
             return HttpResponse(status=404)# no matching requested yet
         queue=MatchingQueue.objects.all()[0]
+        queue.match_adapt() # remove this if not needed, but I think this is needed
         try:            
             entity=MatchingEntity.objects.get(id=id)
         except MatchingEntity.DoesNotExist:
@@ -64,5 +50,6 @@ def check_matched(request, id):
         if entity.matched_opponent is None:
             return HttpResponse(status=204)
         opponent=entity.matched_opponent
-        response_dic={'mbti':opponent.user_mbti, 'gender':opponent.user_gender, 'age':opponent.user_age}
+        response_dic={'time':opponent.time,'space_user':entity.space,'space_opponent':opponent.space,
+         'mbti':opponent.user_mbti, 'gender':opponent.user_gender, 'age':opponent.user_age}
         return JsonResponse(response_dic)

@@ -1,6 +1,7 @@
 from email.policy import default
 from django.db import models
-from django.contrib.auth.models import User
+#from django.contrib.auth.models import User
+from mypage.models import User
 from datetime import datetime, date
 class MatchingQueue(models.Model):
     # for improve perpormance, I think storing information of last matching would be good

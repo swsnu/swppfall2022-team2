@@ -17,13 +17,13 @@ const MyMBTI: React.FC = () => {
                 <option value = {7}>ESTP</option>
                 <option value = {8}>ESFP</option>
                 <option value = {9}>INTJ</option>
-                <option value = {9}>INTP</option>
-                <option value = {9}>INFJ</option>
-                <option value = {9}>INFP</option>
-                <option value = {9}>ISTJ</option>
-                <option value = {9}>ISFJ</option>
-                <option value = {9}>ISTP</option>
-                <option value = {9}>ISFP</option>
+                <option value ={10}>INTP</option>
+                <option value ={11}>INFJ</option>
+                <option value ={12}>INFP</option>
+                <option value ={13}>ISTJ</option>
+                <option value ={14}>ISFJ</option>
+                <option value ={15}>ISTP</option>
+                <option value ={16}>ISFP</option>
             </Form.Select>
 
         </div>

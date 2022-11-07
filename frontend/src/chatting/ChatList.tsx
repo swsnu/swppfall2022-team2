@@ -4,7 +4,8 @@ import { useDispatch, useSelector } from "react-redux";
 import ChatListTitle from './ChatListTitle'
 import { AppDispatch } from '../store';
 import { useNavigate } from "react-router-dom";
-
+import { Card } from 'react-bootstrap';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const ChatList: React.FunctionComponent = () => {
     const userState = useSelector(selectUser);
@@ -22,6 +23,7 @@ const ChatList: React.FunctionComponent = () => {
 
     return(
         <div className="ChatList">
+            <Card>
             <p>This is List of Chats</p>
             {userState.loggedinuser?.chatrooms.map((chatroom)=>{
                 return (
@@ -48,6 +50,7 @@ const ChatList: React.FunctionComponent = () => {
                 )
             }
             )}
+            </Card>
         </div>
     )
 }

@@ -84,7 +84,7 @@ const Matching: React.FunctionComponent = () => {
       checkMatching();
     }
   }, [matchingId]);
-  return (
+  return ( 
     <div>
       <Button variant='primary' onClick={toMain}>
         Main

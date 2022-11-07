@@ -80,7 +80,7 @@ const MatchingCondition: React.FC<propsType> = (props: propsType) => {
   return (
     <div>
       <div className='conditions'>
-        <p>시간</p>
+        <p className='conditionP'>시간</p>
         <label className='selectLabel'>
           <Form.Select className='select' onChange={(e) => handleTime(e)}>
             <option value='0'>직접선택</option>
@@ -95,7 +95,7 @@ const MatchingCondition: React.FC<propsType> = (props: propsType) => {
         <Button variant='outline-secondary'>시간표에서 선택하기</Button>
       </div>
       <div className='conditions'>
-        <p>장소</p>
+        <p className='conditionP'>장소</p>
         <label className='selectLabel'>
           <Form.Select className='select' onChange={(e) => handleSpace(e)}>
             <option value=''>직접선택</option>
@@ -107,7 +107,7 @@ const MatchingCondition: React.FC<propsType> = (props: propsType) => {
         <Button variant='outline-secondary'>시간표에서 선택하기</Button>
       </div>
       <div className='conditionsMBTI'>
-        <p>선호하는 MBTI</p>
+        <p className='conditionP'>선호하는 MBTI</p>
         <Multiselect
           options={mbti}
           onSelect={(e) => handleMBTI(e)}
@@ -116,7 +116,7 @@ const MatchingCondition: React.FC<propsType> = (props: propsType) => {
         />
       </div>
       <div className='conditions'>
-        <p>선호하는 성별</p>
+        <p className='conditionP'>선호하는 성별</p>
         <Form.Select className='select' onChange={(e) => handleGender(e)}>
           <option value=''>상관없음</option>
           <option value='M'>남자</option>
@@ -124,7 +124,7 @@ const MatchingCondition: React.FC<propsType> = (props: propsType) => {
         </Form.Select>
       </div>
       <div className='conditionsAge'>
-        <p>선호하는 연령대</p>
+        <p className='conditionP'>선호하는 연령대</p>
         <Multiselect
           options={age}
           onSelect={(e) => handleAge(e)}
@@ -132,8 +132,8 @@ const MatchingCondition: React.FC<propsType> = (props: propsType) => {
           displayValue='name'
         />
       </div>
-      <p>*조건을 선택하지 않으면 해당 조건은 고려하지 않습니다</p>
-      <p>*매칭이 잡히지 않으면 조건에 맞지 않는 상대와 매칭될 수 있습니다</p>
+      <p className='conditionP'>*조건을 선택하지 않으면 해당 조건은 고려하지 않습니다</p>
+      <p className='conditionP'>*매칭이 잡히지 않으면 조건에 맞지 않는 상대와 매칭될 수 있습니다</p>
     </div>
   );
 };

@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import MatchingCondition from './MatchingCondition';
 import MatchingStatus from './MatchingStatus';
 import './Matching.css';
 import { Button } from 'react-bootstrap';
 import axios from 'axios';
 import { useNavigate } from 'react-router';
-
+import homeImg from '../img/home.png';
 export interface conditionType {
   // this is temporary because another type for time and space is needed
   time: string;
@@ -21,6 +21,27 @@ interface matchedOpponentType {
   mbti: string;
   gender: string;
   age: string;
+  id: number;
+}
+function useInterval(callback: () => void, delay: number): void {
+  // https://overreacted.io/making-setinterval-declarative-with-react-hooks/
+  const savedCallback = useRef<typeof callback | null>(null);
+
+  // Remember the latest callback.
+  useEffect(() => {
+    savedCallback.current = callback;
+  });
+
+  // Set up the interval.
+  useEffect(() => {
+    function tick(): void {
+      if (savedCallback.current !== null) {
+        savedCallback.current();
+      }
+    }
+    const id = setInterval(tick, delay);
+    return () => clearInterval(id);
+  }, [delay]);
 }
 const Matching: React.FunctionComponent = () => {
   const [matchingCondition, handleMatchingCondition] = useState<conditionType>({
@@ -40,6 +61,9 @@ const Matching: React.FunctionComponent = () => {
     if (matchingId === 0) {
       return;
     }
+    if (matched) {
+      return;
+    }
     axios
       .get(`matching/check/${matchingId}/`)
       .then((response) => {
@@ -53,6 +77,7 @@ const Matching: React.FunctionComponent = () => {
             mbti: response.data.mbti,
             gender: response.data.gender,
             age: response.data.age,
+            id: response.data.id,
           });
         }
       })
@@ -79,19 +104,41 @@ const Matching: React.FunctionComponent = () => {
     navigate('/main');
   };
   useEffect(() => {
+    // for re-logined
+    // get previous matching info
+    axios
+      .get(`matching/get`)
+      .then((response) => {
+        handleMatched(true);
+        handleMatchedOpponent({
+          time: String(response.data.time),
+          spaceUser: response.data.space_user,
+          spaceOpponent: response.data.space_opponent,
+          mbti: response.data.mbti,
+          gender: response.data.gender,
+          age: response.data.age,
+          id: response.data.id,
+        });
+      })
+      .catch(() => {});
+  }, []); // only executed when rendered
+  useEffect(() => {
     // after start matching, automatically called
     if (matchingId !== 0) {
       checkMatching();
     }
   }, [matchingId]);
-  return ( 
+  useInterval(() => {
+    // every 5 second, check whether matched
+    checkMatching();
+  }, 5000);
+  return (
     <div>
-      <Button variant='primary' onClick={toMain}>
-        Main
-      </Button>
+      <button onClick={toMain}>
+        <img src={homeImg} width='35' />
+      </button>
       <div className='status'>
         <MatchingStatus
-          checkMatching={checkMatching}
           matched={matched}
           matchedOpponent={matchedOpponent}
           numMatching={numMatching}
@@ -104,12 +151,15 @@ const Matching: React.FunctionComponent = () => {
         />
       </div>
 
-      <Button variant='secondary' className='button' onClick={startMatching} disabled={matched}>
-        <span className='buttonText'>Start Matching</span>
-        {/* we should also disable this button when first clicked this button
-        currently did not implemented for testing purpose
-        */}
-      </Button>
+      {numMatching !== null ? (
+        <Button variant='secondary' className='button' onClick={checkMatching}>
+          <span className='buttonText'>Check Matching</span>
+        </Button>
+      ) : (
+        <Button variant='secondary' className='button' onClick={startMatching} disabled={matched}>
+          <span className='buttonText'>Start Matching</span>
+        </Button>
+      )}
     </div>
   );
 };

@@ -41,11 +41,11 @@ class MatchingQueue(models.Model):
             no_match_condition+=1
         if not(entity2.gender_wanted=="" or entity1.user_gender==entity2.gender_wanted):
             no_match_condition+=1
-        if not(entity1.mbti_wanted=={}):
+        if not(entity1.mbti_wanted==[]):
             mbti_list=entity1.mbti_wanted
             if not entity2.user_mbti in mbti_list:
                 no_match_condition+=1 # NOTE: the user MUST have valid mbti
-        if not(entity2.mbti_wanted=={}):
+        if not(entity2.mbti_wanted==[]):
             mbti_list=entity2.mbti_wanted
             if not entity1.user_mbti in mbti_list:
                 no_match_condition+=1
@@ -69,7 +69,7 @@ class MatchingQueue(models.Model):
             no_match_condition+=1
         if not(entity_this.gender_wanted=="" or entity_target.user_gender==entity_this.gender_wanted):
             no_match_condition+=1
-        if not(entity_this.mbti_wanted=={}):
+        if not(entity_this.mbti_wanted==[]):
             mbti_list=entity_this.mbti_wanted
             if not entity_target.user_mbti in mbti_list:
                 no_match_condition+=1 # NOTE: the user MUST have valid mbti

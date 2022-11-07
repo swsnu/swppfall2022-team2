@@ -14,3 +14,12 @@
     margin: 30px;
     padding: 10px;
 }
+
+.tempbar{
+    transform: rotate(270deg);
+    margin-top: calc(50%);
+}
+
+.barcontainer{
+    height: 400px;
+}

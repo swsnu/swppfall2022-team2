@@ -79,7 +79,7 @@ const Matching: React.FunctionComponent = () => {
       checkMatching();
     }
   }, [matchingId]);
-  return (
+  return ( 
     <div>
       <div className='status'>
         <MatchingStatus

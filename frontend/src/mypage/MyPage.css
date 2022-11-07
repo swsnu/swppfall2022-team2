@@ -1,0 +1,16 @@
+.manner{
+    float:left;
+    height:calc(100%);
+    background-color:antiquewhite;
+    margin: 30px;
+    padding: 10px;
+}
+
+.others{
+    float:right;
+    height:calc(100%);
+    width: calc(65%);
+    background-color:#f0f8ff;
+    margin: 30px;
+    padding: 10px;
+}

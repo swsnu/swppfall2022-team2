@@ -1,0 +1,11 @@
+.sign-in {
+    position: absolute;
+    background-color: rgba(0,0,0,0.2);
+    height:100%;
+    width:100%;
+    mix-blend-mode: normal;
+}
+
+form {
+    background-color: white;
+}

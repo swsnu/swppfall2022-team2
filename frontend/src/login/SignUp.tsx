@@ -4,6 +4,9 @@ import { NavLink, useNavigate, Navigate } from "react-router-dom";
 import { useState } from "react";
 import { AppDispatch } from '../store';
 import { setSignUp } from '../store/slices/user';
+import { Button, Form } from 'react-bootstrap';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import './SignUp.css';
 
 export default function SignUp(){
     //need to use the input email and password
@@ -22,6 +25,11 @@ export default function SignUp(){
         navigate('/login')
     }
 
+    const handleRedirect = () => {
+        navigate('/login')
+    }
+
+
 
     if(userState.loggedinuser!==null){
         return(
@@ -30,10 +38,23 @@ export default function SignUp(){
     }
 
     return(
-        <div className="SignUp">
-            <input id="username-input" onChange={event => setUsername(event.target.value)}/>
-            <input id="pw-input" onChange={event => setPassword(event.target.value)}/>
-            <button id="signup-button" onClick={handleSignUp}>Sign Up!</button>
+        <div className="sign-up d-flex justify-content-center align-items-center">
+            <Form className="rounded p-4 p-sm-3">
+                <Form.Group className="mb-3">
+                    <Form.Label>New Username</Form.Label>
+                    <Form.Control type="username" placeholder="new username" onChange={event => setUsername(event.target.value)}/>
+                </Form.Group>
+                <Form.Group className="mb-3">
+                    <Form.Label>New Password</Form.Label>
+                    <Form.Control type="password" placeholder="new password" onChange={event => setPassword(event.target.value)}/>
+                </Form.Group>
+                <Button className="mb-3" variant='primary' onClick={handleSignUp}>
+                    Sign Up!
+                </Button>
+                <Form.Group className="mb-3">
+                    <a onClick={handleRedirect} className="link-primary">Already have an account?</a>
+                </Form.Group>
+            </Form>
         </div>
     )
 }

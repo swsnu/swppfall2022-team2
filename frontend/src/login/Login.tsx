@@ -6,6 +6,8 @@ import { AppDispatch } from '../store';
 import { setSignIn } from '../store/slices/user';
 import React from 'react';
 import './Login.css';
+import { Button, Form } from 'react-bootstrap';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 export default function Login(){
     //need to use the input email and password
@@ -35,11 +37,24 @@ export default function Login(){
     }
 
     return(
-          <div className="SignUp">
-            <input id="username-input" onChange={event => setUsername(event.target.value)}/>
-            <input id="pw-input" onChange={event => setPassword(event.target.value)}/>
-            <button id="login-button" onClick={handleLogin}>Login!</button>
-            <a onClick={handleRedirect} style={{cursor: 'pointer'}}>Want to Sign up?</a>
-          </div>
+          <div className="sign-in d-flex justify-content-center align-items-center">
+            <Form className="rounded p-4 p-sm-3">
+                <Form.Group className="mb-3">
+                    <Form.Label>Enter Username</Form.Label>
+                    <Form.Control type="username" placeholder="username" onChange={event => setUsername(event.target.value)}/>
+                </Form.Group>
+                <Form.Group className="mb-3">
+                    <Form.Label>Enter Password</Form.Label>
+                    <Form.Control type="password" placeholder="password" onChange={event => setPassword(event.target.value)}/>
+                </Form.Group>
+                <Button className="mb-3" variant='primary' onClick={handleLogin}>
+                    Login!
+                </Button>
+                <Form.Group className="mb-3">
+                    <a onClick={handleRedirect} className="link-primary">Want to create an account?</a>
+                </Form.Group>
+            </Form>
+         </div>
     )
 }
+

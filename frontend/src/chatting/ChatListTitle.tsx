@@ -14,7 +14,7 @@ export default function ChatListTitle(props: IProps){
     return(
         <div className="ChatListTitle">
             <Button className="mb-3" variant='primary' onClick={props.onClick}>
-                Opponent: {props.opponent}  {props.lastChat.content}     {props.lastChat.date}
+                Opponent: {props.opponent}  {props.lastChat?.content}     {props.lastChat?.date}
             </Button>
         </div>
     )

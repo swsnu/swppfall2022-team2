@@ -25,8 +25,7 @@ const ChatList: React.FunctionComponent = () => {
         <div className="ChatList">
             <Card>
             <p>This is List of Chats</p>
-            {userState.loggedinuser?.chatrooms.map((chatroom)=>{
-                return (
+            {userState.loggedinuser?.chatrooms.map((chatroom)=> (
                         <div className="chatroom-titles">
                             <ChatListTitle 
                                 key={chatroom.id} 
@@ -35,11 +34,10 @@ const ChatList: React.FunctionComponent = () => {
                                 onClick={()=>clickChatListTitleHandler(chatroom)}
                             />
                         </div>
-                        );
-            })}
-            {userState.userlist.map((user)=>{
-
-                return (userState.loggedinuser?.user.id!=user.id)?(
+                        )
+            )}
+            {userState.userlist.map((user)=>
+             (userState.loggedinuser?.user.id!=user.id)?(
                     <div className = "userlist">
                         <button onClick={()=>clickUserHandler(user)}>{user.id}</button>
                     </div>
@@ -48,7 +46,6 @@ const ChatList: React.FunctionComponent = () => {
                         <p>{user.id}</p>
                     </div>
                 )
-            }
             )}
             </Card>
         </div>

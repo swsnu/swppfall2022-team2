@@ -21,6 +21,7 @@ interface matchedOpponentType {
   mbti: string;
   gender: string;
   age: string;
+  id: number;
 }
 function useInterval(callback: () => void, delay: number): void {
   // https://overreacted.io/making-setinterval-declarative-with-react-hooks/
@@ -76,6 +77,7 @@ const Matching: React.FunctionComponent = () => {
             mbti: response.data.mbti,
             gender: response.data.gender,
             age: response.data.age,
+            id: response.data.id,
           });
         }
       })
@@ -101,6 +103,25 @@ const Matching: React.FunctionComponent = () => {
   const toMain = (): void => {
     navigate('/main');
   };
+  useEffect(() => {
+    // for re-logined
+    // get previous matching info
+    axios
+      .get(`matching/get`)
+      .then((response) => {
+        handleMatched(true);
+        handleMatchedOpponent({
+          time: String(response.data.time),
+          spaceUser: response.data.space_user,
+          spaceOpponent: response.data.space_opponent,
+          mbti: response.data.mbti,
+          gender: response.data.gender,
+          age: response.data.age,
+          id: response.data.id,
+        });
+      })
+      .catch(() => {});
+  }, []); // only executed when rendered
   useEffect(() => {
     // after start matching, automatically called
     if (matchingId !== 0) {

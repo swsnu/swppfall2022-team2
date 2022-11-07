@@ -51,5 +51,20 @@ def check_matched(request, id):
             return HttpResponse(status=204)
         opponent=entity.matched_opponent
         response_dic={'time':opponent.time,'space_user':entity.space,'space_opponent':opponent.space,
-         'mbti':opponent.user_mbti, 'gender':opponent.user_gender, 'age':opponent.user_age}
+         'mbti':opponent.user_mbti, 'gender':opponent.user_gender, 'age':opponent.user_age, 'id':opponent.user.id}
+        return JsonResponse(response_dic)
+
+@csrf_exempt
+def get_matching(request):#when re-logined get previous info
+    if request.method=='GET':
+        if not MatchingQueue.objects.all().exists():
+            return HttpResponse(status=404)# no matching requested yet
+        queue=MatchingQueue.objects.all()[0]
+        try:
+            entity=MatchingEntity.objects.get(user=request.user)
+        except User.DoesNotExist:
+            return HttpResponse(status=404) # if such entity not exist
+        opponent=entity.matched_opponent
+        response_dic={'time':opponent.time,'space_user':entity.space,'space_opponent':opponent.space,
+         'mbti':opponent.user_mbti, 'gender':opponent.user_gender, 'age':opponent.user_age, 'id':opponent.user.id}
         return JsonResponse(response_dic)

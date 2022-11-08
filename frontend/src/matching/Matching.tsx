@@ -6,6 +6,7 @@ import { Button } from 'react-bootstrap';
 import axios from 'axios';
 import { useNavigate } from 'react-router';
 import homeImg from '../img/home.png';
+import NavBar from '../NavBar';
 export interface conditionType {
   // this is temporary because another type for time and space is needed
   time: string;
@@ -144,9 +145,10 @@ const Matching: React.FunctionComponent = () => {
   }, 5000);
   return (
     <div>
-      <button onClick={toMain}>
+      <NavBar />
+      {/* <button onClick={toMain}>
         <img src={homeImg} width='35' />
-      </button>
+      </button> */}
       <div className='status'>
         <MatchingStatus
           matched={matched}

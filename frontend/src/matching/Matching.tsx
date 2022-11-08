@@ -22,6 +22,7 @@ interface matchedOpponentType {
   gender: string;
   age: string;
   id: number;
+  name: string;
 }
 function useInterval(callback: () => void, delay: number): void {
   // https://overreacted.io/making-setinterval-declarative-with-react-hooks/
@@ -78,6 +79,7 @@ const Matching: React.FunctionComponent = () => {
             gender: response.data.gender,
             age: response.data.age,
             id: response.data.id,
+            name: response.data.last_name + response.data.first_name,
           });
         }
       })
@@ -110,6 +112,7 @@ const Matching: React.FunctionComponent = () => {
       .get(`matching/get`)
       .then((response) => {
         if (response.status === 200) {
+          console.log(response.data);
           handleMatched(true);
           handleMatchedOpponent({
             time: String(response.data.time),
@@ -119,6 +122,7 @@ const Matching: React.FunctionComponent = () => {
             gender: response.data.gender,
             age: response.data.age,
             id: response.data.id,
+            name: response.data.last_name + response.data.first_name,
           });
         } else if (response.status === 201) {
           console.log(response);
@@ -159,11 +163,11 @@ const Matching: React.FunctionComponent = () => {
 
       {numMatching !== null ? (
         <Button variant='secondary' className='button' onClick={checkMatching} disabled={matched}>
-          <span className='buttonText'>Check Matching</span>
+          <span className='buttonTextM'>Check Matching</span>
         </Button>
       ) : (
         <Button variant='secondary' className='button' onClick={startMatching} disabled={matched}>
-          <span className='buttonText'>Start Matching</span>
+          <span className='buttonTextM'>Start Matching</span>
         </Button>
       )}
     </div>

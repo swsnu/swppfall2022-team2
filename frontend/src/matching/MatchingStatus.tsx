@@ -15,6 +15,7 @@ interface matchedOpponentType {
   gender: string;
   age: string;
   id: number;
+  name: string;
 }
 interface propsType {
   matched: boolean;
@@ -62,7 +63,7 @@ const MatchingStatus: React.FC<propsType> = (props) => {
         <p></p>
         <h3>매칭이 완료되었습니다</h3>
         <img src={profileImg} width='80' />
-        <h3>이름</h3>
+        <h3>{matchedOpponent?.name}</h3>
         <h3>시간:{matchedOpponent?.time === '0' ? '미정' : matchedOpponent?.time}</h3>
         <h3>
           내가 원하는 장소:{matchedOpponent?.spaceUser === '' ? '미정' : matchedOpponent?.spaceUser}

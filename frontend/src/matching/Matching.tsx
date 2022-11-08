@@ -158,7 +158,7 @@ const Matching: React.FunctionComponent = () => {
       </div>
 
       {numMatching !== null ? (
-        <Button variant='secondary' className='button' onClick={checkMatching}>
+        <Button variant='secondary' className='button' onClick={checkMatching} disabled={matched}>
           <span className='buttonText'>Check Matching</span>
         </Button>
       ) : (

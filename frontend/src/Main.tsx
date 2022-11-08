@@ -20,9 +20,15 @@ const Main: React.FunctionComponent = () => {
     navigate('/matching')
   }
 
+  const redirectToMypage = () => {
+    navigate('/mypage')
+  }
+  
   return(
     <div>
       <Button className="mb-3" variant='primary' onClick={handleRedirect}>Go To Matching</Button>
+      <br/>
+      <Button className="mb-3" variant='primary' onClick={redirectToMypage}>Go To Mypage</Button>
       <p>This is Main Page!</p>
       <ChatList/>
     </div>

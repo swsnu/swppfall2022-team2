@@ -1,6 +1,6 @@
 .manner{
     float:left;
-    height:calc(100%);
+    height:calc(90%);
     background-color:antiquewhite;
     margin: 30px;
     padding: 10px;
@@ -12,7 +12,19 @@
     width: calc(65%);
     background-color:#f0f8ff;
     margin: 30px;
-    padding: 10px;
+    padding: 20px;
+}
+
+.homeButton{
+    float:left;
+}
+
+.submitbutton {
+    margin-top: 10px;
+}
+
+.buttonText {
+    font-size: 15px;
 }
 
 .tempbar{

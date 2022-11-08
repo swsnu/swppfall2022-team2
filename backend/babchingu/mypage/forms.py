@@ -4,4 +4,4 @@ from django.contrib.auth import get_user_model
 class UserStatusChange(UserChangeForm):
     class Meta:
         model = get_user_model()
-        fields = ['username', 'password', 'first_name', 'last_name', 'temperature', 'mbti', 'gender', 'intro', 'age']
+        fields = ['first_name', 'last_name',  'mbti', 'gender', 'intro', 'age']

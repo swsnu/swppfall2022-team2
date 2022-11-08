@@ -16,8 +16,8 @@ def index(request):
 def mypage_submit(request):# mypage/submit/
     if(request.method=='POST'):
         statusChange = UserStatusChange(data = request.POST,instance = request.user)
-        #if statusChange.is_valid():
-        statusChange.save()
+        if statusChange.is_valid():
+            statusChange.save()
         return HttpResponse(status=201)
 
     else:

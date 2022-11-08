@@ -3,11 +3,10 @@ import './MyPage.css';
 import MyManner from './MyManner';
 import MyStatus from './MyStatus';
 import MyTimeTable from './MyTimeTable';
-import { useNavigate } from 'react-router';
-import homeImg from '../img/home.png';
 import { Button, Navbar } from 'react-bootstrap';
 import axios from 'axios';
 import NavBar from '../NavBar';
+
 
 export interface timeTableDataType {
   mon: boolean[];
@@ -42,10 +41,6 @@ const MyPage: React.FunctionComponent = () => {
     age: '',
     gender: '',
   });
-  const navigate = useNavigate();
-  const toMain = (): void => {
-    navigate('/main');
-  };
   const statusSubmit = (): void => {
     axios
       .post(`mypage/submit/`, {
@@ -67,15 +62,20 @@ const MyPage: React.FunctionComponent = () => {
       <div className='manner'>
         <MyManner />
       </div>
-      <div className='others'>
-        <div>
-          <MyTimeTable timeTable={timeTable} handleTimeTable={handleTimeTable} />
+      <div className='others card overflow-auto'>
+        <div className="card-header">
+            <h5 className="card-title">프로필 설정</h5>
         </div>
-        <div>
-          <MyStatus status={status} handleStatus={handleStatus} />
-          <Button variant='secondary' className='submitbutton' onClick={statusSubmit}>
-            <span className='buttonText'>Submit changes</span>
-          </Button>
+        <div className='pad'>
+            <div>
+                <MyTimeTable timeTable={timeTable} handleTimeTable={handleTimeTable} />
+            </div>
+            <div>
+                <MyStatus status={status} handleStatus={handleStatus} />
+                <Button variant='secondary' className='submitbutton' onClick={statusSubmit}>
+                    <span className='buttonText'>변경사항 저장하기</span>
+                </Button>
+            </div>
         </div>
       </div>
     </div>

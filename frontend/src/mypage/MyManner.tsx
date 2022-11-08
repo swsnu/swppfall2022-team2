@@ -5,7 +5,7 @@ import './MyPage.css';
 const MyManner: React.FC = () => {
     function TempBar(){
         const now = 36.5
-        return <ProgressBar now = {now}  className='tempbar'/>;
+        return <ProgressBar variant='danger' animated now = {now}  className='tempbar'/>;
     }
     return (
         <div>

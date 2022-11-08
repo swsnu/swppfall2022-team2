@@ -1,26 +1,24 @@
 .manner{
     float:left;
-    height:calc(90%);
-    background-color:antiquewhite;
+    width: 250px;
+    background-color:#F8F8F8;
     margin: 30px;
     padding: 10px;
+    border: 1px solid;
+    border-radius: 10px;
 }
 
 .others{
     float:right;
     height:calc(100%);
-    width: calc(65%);
-    background-color:#f0f8ff;
+    width: calc(50%);
     margin: 30px;
-    padding: 20px;
-}
-
-.homeButton{
-    float:left;
+    border: 1px solid;
 }
 
 .submitbutton {
-    margin-top: 10px;
+    float:right;
+    margin-top: 20px;
 }
 
 .buttonText {
@@ -28,10 +26,15 @@
 }
 
 .tempbar{
-    transform: rotate(270deg);
+    transform: rotate(270deg) scaleY(1.5);
     margin-top: calc(50%);
+    border: 1px solid;
 }
 
 .barcontainer{
-    height: 400px;
+    height: 250px;
+}
+
+.pad{
+    padding: 15px;
 }

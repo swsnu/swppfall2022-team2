@@ -17,7 +17,11 @@ const MyTimeTable: React.FC<propsType> = (props:propsType) => {
         );
     }
     
-
+    return(
+        <div>
+            
+        </div>
+    );
     return (
         <div>
             <table align={"center"} width={"100%"} className="table table-bordered">

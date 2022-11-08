@@ -1,0 +1,22 @@
+
+
+.chat-list{
+  position: fixed;
+  top: 20%;
+  left: 5%;
+  width: calc(40%);
+  height: calc(60%);
+  border: 1px solid;
+  text-align: center;
+}
+
+.menu-list{
+    position: fixed;
+    top: 20%;
+    left: 55%;
+    width: calc(40%);
+    height: calc(60%);
+    border: 1px solid;
+    text-align: center;
+}
+

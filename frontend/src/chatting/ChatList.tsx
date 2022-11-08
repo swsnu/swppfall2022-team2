@@ -1,53 +1,36 @@
 import React from 'react';
-import { selectUser, ChatRoomType, userActions, UserType, createChatRoom } from '../store/slices/user';
+import { selectUser, ChatRoomType, userActions } from '../store/slices/user';
 import { useDispatch, useSelector } from "react-redux";
-import ChatListTitle from './ChatListTitle'
 import { AppDispatch } from '../store';
 import { useNavigate } from "react-router-dom";
-import { Card } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { Button } from 'react-bootstrap';
 
 const ChatList: React.FunctionComponent = () => {
     const userState = useSelector(selectUser);
     const navigate = useNavigate();
     const dispatch = useDispatch<AppDispatch>();
 
-    const clickChatListTitleHandler = (chatroom: ChatRoomType)=>{
+    const clickChatListTitleHandler= (chatroom: ChatRoomType)=>{
         dispatch(userActions.selectChatRoom(chatroom))
-        navigate("/chatroom/"+chatroom.id);   
-    }
-
-    const clickUserHandler = (user: UserType)=>{
-        dispatch(createChatRoom(user.id))   
+        navigate(`/chatroom/${chatroom.id}`);   
     }
 
     return(
-        <div className="ChatList">
-            <Card>
-            <p>This is List of Chats</p>
-            {userState.loggedinuser?.chatrooms.map((chatroom)=> (
-                        <div className="chatroom-titles">
-                            <ChatListTitle 
-                                key={chatroom.id} 
-                                opponent={(userState.userlist.find(element => element.id===chatroom.opponent_id))?.username!}
-                                lastChat={chatroom.last_chat}
-                                onClick={()=>clickChatListTitleHandler(chatroom)}
-                            />
-                        </div>
-                        )
-            )}
-            {userState.userlist.map((user)=>
-             (userState.loggedinuser?.user.id!=user.id)?(
-                    <div className = "userlist">
-                        <button onClick={()=>clickUserHandler(user)}>{user.id}</button>
-                    </div>
-                ) : (
-                    <div className = "userlist">
-                        <p>{user.id}</p>
-                    </div>
-                )
-            )}
-            </Card>
+        <div className="card chat-list overflow-auto">
+          <h5 className="card-title">Chating Rooms</h5>
+            <div className="list-group">
+              {userState.loggedinuser?.chatrooms.map((chatroom)=>(
+                <a className="list-group-item list-group-item-action" key={chatroom.id} onClick={()=>clickChatListTitleHandler(chatroom)}>
+                  <div className="d-flex w-100 justify-content-between">
+                    <h5 className="mb-1">{(userState.userlist.find(element => element.id===chatroom.opponent_id))?.username ?? ''}</h5>
+                    <small>{chatroom.last_chat?.date}</small>
+                  </div>
+                  <p className="mb-1">{chatroom.last_chat?.content}</p>
+                  <Button className="btn-primary">매너온도 주기</Button>
+                </a>
+              ))}
+            </div>
         </div>
     )
 }
@@ -55,3 +38,4 @@ const ChatList: React.FunctionComponent = () => {
 
 
 export default ChatList;
+

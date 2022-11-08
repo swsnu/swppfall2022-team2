@@ -1,5 +1,5 @@
 from django.db import models
-from datetime import datetime
+from django.utils.timezone import now
 from django.contrib.auth.models import User
 
 
@@ -26,4 +26,4 @@ class Message(models.Model):
     author = models.IntegerField()
 
     content = models.TextField()
-    date = models.DateTimeField(default=datetime.now, blank=True)
+    date = models.DateTimeField(default=now, editable=False)

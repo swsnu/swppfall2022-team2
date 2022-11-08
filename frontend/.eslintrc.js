@@ -13,5 +13,6 @@ module.exports = {
     project: ['./tsconfig.json'], // This is for Typescript
   },
   plugins: ['react'],
-  rules: { 'react/prop-types': 'off' },
+  rules: { 'react/prop-types': 'off',
+            '@typescript-eslint/explicit-function-return-type': 'off' },
 };

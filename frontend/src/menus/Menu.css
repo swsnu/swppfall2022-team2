@@ -1,0 +1,8 @@
+.row {
+  position: relative;
+}
+.col {
+  position: relative;
+  width: calc(50%);
+  margin-bottom: 10px;
+}

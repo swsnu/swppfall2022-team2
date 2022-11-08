@@ -3,10 +3,8 @@ import ChatList from './chatting/ChatList';
 import Menu from './menus/Menu';
 import { useSelector, useDispatch } from 'react-redux';
 import { Navigate, useNavigate } from 'react-router-dom';
-import { selectUser } from './store/slices/user';
+import { selectUser , setSignOut} from './store/slices/user';
 import { AppDispatch } from './store';
-import { setSignOut } from './store/slices/user';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import './Main.css';
 
 const Main: React.FunctionComponent = () => {

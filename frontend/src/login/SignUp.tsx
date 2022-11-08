@@ -1,9 +1,8 @@
-import { selectUser } from '../store/slices/user';
+import { selectUser,setSignUp  } from '../store/slices/user';
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink, useNavigate, Navigate } from "react-router-dom";
-import { useState } from "react";
+import React, { useState } from "react";
 import { AppDispatch } from '../store';
-import { setSignUp } from '../store/slices/user';
 import { Button, Form } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './SignUp.css';

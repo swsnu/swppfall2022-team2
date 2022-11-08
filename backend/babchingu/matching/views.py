@@ -12,7 +12,7 @@ def index(request):
 def start(request):# matching/start/
     if(request.method=='POST'):
         if not MatchingQueue.objects.all().exists():#check queue is initialized
-            queue=MatchingQueue(num_matching=0)
+            queue=MatchingQueue()
             queue.save()
         queue=MatchingQueue.objects.all()[0]
         data=json.loads(request.body.decode())

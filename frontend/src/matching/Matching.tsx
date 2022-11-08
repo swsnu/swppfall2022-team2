@@ -109,16 +109,22 @@ const Matching: React.FunctionComponent = () => {
     axios
       .get(`matching/get`)
       .then((response) => {
-        handleMatched(true);
-        handleMatchedOpponent({
-          time: String(response.data.time),
-          spaceUser: response.data.space_user,
-          spaceOpponent: response.data.space_opponent,
-          mbti: response.data.mbti,
-          gender: response.data.gender,
-          age: response.data.age,
-          id: response.data.id,
-        });
+        if (response.status === 200) {
+          handleMatched(true);
+          handleMatchedOpponent({
+            time: String(response.data.time),
+            spaceUser: response.data.space_user,
+            spaceOpponent: response.data.space_opponent,
+            mbti: response.data.mbti,
+            gender: response.data.gender,
+            age: response.data.age,
+            id: response.data.id,
+          });
+        } else if (response.status === 201) {
+          console.log(response);
+          handleMatchingId(response.data.id);
+          handlenumMatching(response.data.num_matching);
+        }
       })
       .catch(() => {});
   }, []); // only executed when rendered

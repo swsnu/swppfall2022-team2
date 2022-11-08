@@ -3,8 +3,7 @@ import json
 from django.http import HttpResponse, HttpResponseNotAllowed, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from .models import MatchingEntity, MatchingQueue
-#from django.contrib.auth.models import User
-from mypage.models import User
+from django.contrib.auth.models import User
 from datetime import datetime
 def index(request):
     return HttpResponse("hello")
@@ -25,8 +24,9 @@ def start(request):# matching/start/
         age=condition['age']
         age_from=age['from']
         age_to=age['to']
-        entity=MatchingEntity(user=request.user, user_mbti="INFP",user_gender="M",user_age=22,
-            time=time, space=space, mbti_wanted=mbti, gender_wanted=gender, 
+        user_info=request.user.userinfo
+        entity=MatchingEntity(user=request.user, user_mbti=user_info.mbti,user_gender=user_info.gender,
+            user_age=user_info.age,time=time, space=space, mbti_wanted=mbti, gender_wanted=gender, 
             age_wanted_from=age_from, age_wanted_to=age_to, queue=queue, time_matching=datetime.now())
             # currently the user's mbti, gender, age is fixed.
             # after implementing other features, this should be changed

@@ -1,8 +1,8 @@
 from django.http import HttpResponse, HttpResponseNotAllowed, HttpResponseBadRequest, JsonResponse, HttpResponseForbidden, HttpResponseNotFound
-#from django.contrib.auth.models import User
-from mypage.models import User
+from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from chat.models import Chatroom, Message
+from mypage.models import UserInfo
 from django.views.decorators.csrf import ensure_csrf_cookie, csrf_exempt
 import json
 from json.decoder import JSONDecodeError
@@ -20,7 +20,9 @@ def signup(request):
         req_data = json.loads(request.body.decode())
         username = req_data['username']
         password = req_data['password']
-        User.objects.create_user(username=username, password=password)
+        user=User.objects.create_user(username=username, password=password)
+        userinfo=UserInfo(user=user)
+        userinfo.save()
         return HttpResponse(status=201)
     else:
         return HttpResponseNotAllowed(['POST'])

@@ -1,12 +1,8 @@
-from django.shortcuts import render
 import json
-from django.http import HttpResponse, HttpResponseNotAllowed, JsonResponse
+from django.http import HttpResponse, HttpResponseNotAllowed
 from django.views.decorators.csrf import csrf_exempt
-from mypage.models import User
-from mypage.forms import UserStatusChange
-from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.decorators import login_required
-
+from mypage.models import UserInfo
 
 def index(request):
     return HttpResponse('Default Page')
@@ -15,10 +11,17 @@ def index(request):
 @csrf_exempt
 def mypage_submit(request):# mypage/submit/
     if(request.method=='POST'):
-        statusChange = UserStatusChange(data = request.POST,instance = request.user)
-        if statusChange.is_valid():
-            statusChange.save()
-        return HttpResponse(status=201)
+        data=json.loads(request.body.decode())
+        user=request.user
+        user_info=user.userinfo
+        user_info.mbti=data['mbti']
+        user_info.gender=data['gender']
+        user_info.first_name=data['first_name']
+        user_info.last_name=data['last_name']
+        user_info.intro=data['intro']
+        user_info.age=data['age']
+        user_info.save()
+        return HttpResponse(status=200)
 
     else:
         return HttpResponseNotAllowed(['POST'])

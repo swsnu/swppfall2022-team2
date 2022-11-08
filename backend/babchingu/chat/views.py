@@ -1,5 +1,6 @@
 from django.http import HttpResponse, HttpResponseNotAllowed, HttpResponseBadRequest, JsonResponse, HttpResponseForbidden, HttpResponseNotFound
-from django.contrib.auth.models import User
+#from django.contrib.auth.models import User
+from mypage.models import User
 from django.contrib.auth import authenticate, login, logout
 from chat.models import Chatroom, Message
 from django.views.decorators.csrf import ensure_csrf_cookie, csrf_exempt

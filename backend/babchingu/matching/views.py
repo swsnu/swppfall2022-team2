@@ -12,7 +12,7 @@ def index(request):
 def start(request):# matching/start/
     if(request.method=='POST'):
         if not MatchingQueue.objects.all().exists():#check queue is initialized
-            queue=MatchingQueue(num_matching=0)
+            queue=MatchingQueue()
             queue.save()
         queue=MatchingQueue.objects.all()[0]
         data=json.loads(request.body.decode())
@@ -62,9 +62,12 @@ def get_matching(request):#when re-logined get previous info
         queue=MatchingQueue.objects.all()[0]
         try:
             entity=MatchingEntity.objects.get(user=request.user)
-        except User.DoesNotExist:
+        except MatchingEntity.DoesNotExist:
             return HttpResponse(status=404) # if such entity not exist
         opponent=entity.matched_opponent
+        if opponent is None:
+            response_dic={'id':entity.id, 'num_matching':queue.num_matching()}
+            return JsonResponse(response_dic, status=201)
         response_dic={'time':opponent.time,'space_user':entity.space,'space_opponent':opponent.space,
          'mbti':opponent.user_mbti, 'gender':opponent.user_gender, 'age':opponent.user_age, 'id':opponent.user.id}
         return JsonResponse(response_dic)

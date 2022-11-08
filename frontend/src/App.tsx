@@ -4,7 +4,6 @@ import './App.css';
 import Main from './Main';
 import Matching from './matching/Matching';
 import Login from './login/Login'
-import ChatList from './chatting/ChatList'
 import ChatRoom from './chatting/ChatRoom'
 import SignUp from './login/SignUp'
 import MyPage from './mypage/MyPage'

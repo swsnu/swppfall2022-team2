@@ -3,7 +3,8 @@ import json
 from django.http import HttpResponse, HttpResponseNotAllowed, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from .models import MatchingEntity, MatchingQueue
-from django.contrib.auth.models import User
+#from django.contrib.auth.models import User
+from mypage.models import User
 from datetime import datetime
 def index(request):
     return HttpResponse("hello")

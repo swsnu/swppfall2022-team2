@@ -4,5 +4,5 @@ from . import views
 
 urlpatterns=[
     path('',views.index),
-    path('<int:id>/',views.mypage_main),
+    path('submit/',views.mypage_submit),
 ]

@@ -39,8 +39,8 @@ const MatchingStatus: React.FC<propsType> = (props) => {
                 chatrooms: response.data,
               }),
             );
-            const chatRoomId = userState.loggedinuser?.chatrooms.find(
-              (chatroom) =>
+            const chatRoomId = response.data.find(
+              (chatroom: any) =>
                 chatroom.opponent_id === matchedOpponent.id ||
                 chatroom.opponent_id === userState.loggedinuser?.user.id,
             )?.id;

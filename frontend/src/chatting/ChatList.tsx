@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from '../store';
 import { useNavigate } from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import moment from 'moment';
 import { Button } from 'react-bootstrap';
 
 const ChatList: React.FunctionComponent = () => {
@@ -24,10 +25,10 @@ const ChatList: React.FunctionComponent = () => {
                 <a className="list-group-item list-group-item-action" key={chatroom.id} onClick={()=>clickChatListTitleHandler(chatroom)}>
                   <div className="d-flex w-100 justify-content-between">
                     <h5 className="mb-1">{(userState.userlist.find(element => element.id===chatroom.opponent_id))?.username ?? ''}</h5>
-                    <small>{chatroom.last_chat?.date}</small>
+                    <small>{moment(chatroom.last_chat?.date).fromNow()}</small>
                   </div>
                   <p className="mb-1">{chatroom.last_chat?.content}</p>
-                  <Button className="btn-primary">매너온도 주기</Button>
+                  <Button className="btn-primary">36.5 도</Button>
                 </a>
               ))}
             </div>

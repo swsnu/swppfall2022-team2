@@ -1,24 +1,19 @@
 import { selectUser,setSignUp  } from '../store/slices/user';
 import { useDispatch, useSelector } from "react-redux";
-import { NavLink, useNavigate, Navigate } from "react-router-dom";
+import { useNavigate, Navigate } from "react-router-dom";
 import React, { useState } from "react";
 import { AppDispatch } from '../store';
-import { Button, Form } from 'react-bootstrap';
+import { Button, Form, Card, Image } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './SignUp.css';
 import logoImg from '../images/logo.jpg';
 
 export default function SignUp(){
-    //need to use the input email and password
     const userState = useSelector(selectUser);
     const dispatch = useDispatch<AppDispatch>();
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
-
-    //handles the login event by checking the email and password
-    //has to dispatch action to get user info and set login
-    //also has to dispatch action to load in the articles and comments
 
     const handleSignUp = () => {
         dispatch(setSignUp({username: username, password: password}))
@@ -42,7 +37,8 @@ export default function SignUp(){
             <Card>
                 <Card.Header>
                 <h3>
-                    <img
+                    <Image
+                        className="me-2"
                         src={logoImg}
                         alt=''
                         width='60'

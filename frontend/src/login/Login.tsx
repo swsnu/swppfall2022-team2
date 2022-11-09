@@ -4,7 +4,7 @@ import { useNavigate, Navigate } from "react-router-dom";
 import React, { useState } from "react";
 import { AppDispatch } from '../store';
 import './Login.css';
-import { Button, Form, Card } from 'react-bootstrap';
+import { Button, Form, Card, Image } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import logoImg from '../images/logo.jpg';
 
@@ -38,7 +38,8 @@ export default function Login(){
             <Card>
                 <Card.Header>
                 <h3>
-                    <img
+                    <Image
+                        className="me-2"
                         src={logoImg}
                         alt=''
                         width='60'

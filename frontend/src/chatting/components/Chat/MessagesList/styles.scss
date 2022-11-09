@@ -1,0 +1,93 @@
+.messagesList {
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+  margin: 20px 0;
+  padding: 20px 40px;
+  height: 40vh;
+  min-height: 370px;
+  overflow-y: scroll;
+  background: rgba(235, 245, 252, 1);
+  background: -moz-radial-gradient(
+    center,
+    ellipse cover,
+    rgba(235, 245, 252, 1) 0%,
+    #ffcdb0 100%
+  );
+  background: -webkit-gradient(
+    radial,
+    center center,
+    0px,
+    center center,
+    100%,
+    color-stop(0%, rgba(235, 245, 252, 1)),
+    color-stop(100%, #ffcdb0)
+  );
+  background: -webkit-radial-gradient(
+    center,
+    ellipse cover,
+    rgba(235, 245, 252, 1) 0%,
+    #ffcdb0 100%
+  );
+  background: -o-radial-gradient(
+    center,
+    ellipse cover,
+    rgba(235, 245, 252, 1) 0%,
+    #ffcdb0 100%
+  );
+  background: -ms-radial-gradient(
+    center,
+    ellipse cover,
+    rgba(235, 245, 252, 1) 0%,
+    #ffcdb0 100%
+  );
+  background: radial-gradient(
+    ellipse at center,
+    rgba(235, 245, 252, 1) 0%,
+    rgb(230, 230, 230) 100%
+  );
+  border-radius: 5px;
+
+  li {
+    padding: 5px 10px;
+    width: fit-content;
+    border-radius: 5px;
+    margin: 5px 0;
+    word-break: break-all;
+    font-family: sans-serif;
+
+    &.adminMessages {
+      color: black;
+      background: rgba(211, 211, 211, 0.863);
+      align-self: center;
+    }
+
+    &.myMessages {
+      background: hsl(198, 46%, 45%);
+      color: whitesmoke;
+      margin-left: auto;
+    }
+
+    &.othersMessages {
+      background: hsl(198, 56%, 57%);
+      color: whitesmoke;
+      margin-right: auto;
+    }
+
+    p {
+      margin: 0;
+      letter-spacing: 0.5px;
+
+      &.userMessage {
+        font-weight: bold;
+        span {
+          font-weight: 500;
+        }
+      }
+      &.messageText {
+        margin-top: 5px;
+        font-size: 14px;
+      }
+    }
+  }
+}

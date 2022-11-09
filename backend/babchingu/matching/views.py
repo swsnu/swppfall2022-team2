@@ -52,7 +52,8 @@ def check_matched(request, id):
             return HttpResponse(status=204)
         opponent=entity.matched_opponent
         response_dic={'time':opponent.time,'space_user':entity.space,'space_opponent':opponent.space,
-         'mbti':opponent.user_mbti, 'gender':opponent.user_gender, 'age':opponent.user_age, 'id':opponent.user.id}
+         'mbti':opponent.user_mbti, 'gender':opponent.user_gender, 'age':opponent.user_age,
+          'id':opponent.user.id,'first_name':opponent.user.userinfo.first_name, 'last_name':opponent.user.userinfo.last_name}
         return JsonResponse(response_dic)
 
 @csrf_exempt

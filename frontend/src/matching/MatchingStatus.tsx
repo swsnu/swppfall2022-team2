@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './MatchingStatus.css';
 import { Button } from 'react-bootstrap';
 import profileImg from '../img/profile.png';
@@ -17,6 +17,11 @@ interface matchedOpponentType {
   id: number;
   name: string;
 }
+interface shownType {
+  time: string;
+  spaceUser: string;
+  spaceOpponent: string;
+}
 interface propsType {
   matched: boolean;
   matchedOpponent: matchedOpponentType | null;
@@ -27,6 +32,67 @@ const MatchingStatus: React.FC<propsType> = (props) => {
   const dispatch = useDispatch<AppDispatch>();
   const userState = useSelector(selectUser);
   const navigate = useNavigate();
+  const [shownStatus, handleShownStatus] = useState<shownType | null>(null);
+  useEffect(() => {
+    if (matched && matchedOpponent !== null) {
+      const ti = matchedOpponent.time;
+      const su = matchedOpponent.spaceUser;
+      const so = matchedOpponent.spaceOpponent;
+      let time, spaceUser, spaceOpponent;
+      switch (ti) {
+        case '1200':
+          time = '12:00';
+          break;
+        case '1230':
+          time = '12:30';
+          break;
+        case '1300':
+          time = '13:00';
+          break;
+        case '1800':
+          time = '18:00';
+          break;
+        case '1830':
+          time = '18:30';
+          break;
+        case '1900':
+          time = '19:00';
+          break;
+        default:
+          time = '미정';
+          break;
+      }
+      switch (su) {
+        case 'dormitory':
+          spaceUser = '기숙사';
+          break;
+        case 'student':
+          spaceUser = '학생회관';
+          break;
+        case '301':
+          spaceUser = '301동';
+          break;
+        default:
+          spaceUser = '미정';
+          break;
+      }
+      switch (so) {
+        case 'dormitory':
+          spaceOpponent = '기숙사';
+          break;
+        case 'student':
+          spaceOpponent = '학생회관';
+          break;
+        case '301':
+          spaceOpponent = '301동';
+          break;
+        default:
+          spaceOpponent = '미정';
+          break;
+      }
+      handleShownStatus({ time: time, spaceUser: spaceUser, spaceOpponent: spaceOpponent });
+    }
+  }, [matched]);
   const makeChat: () => void = () => {
     if (matchedOpponent !== null && userState.loggedinuser?.user !== undefined) {
       axios
@@ -64,13 +130,11 @@ const MatchingStatus: React.FC<propsType> = (props) => {
         <h3>매칭이 완료되었습니다</h3>
         <img src={profileImg} width='80' />
         <h3>{matchedOpponent?.name}</h3>
-        <h3>시간:{matchedOpponent?.time === '0' ? '미정' : matchedOpponent?.time}</h3>
-        <h3>
-          내가 원하는 장소:{matchedOpponent?.spaceUser === '' ? '미정' : matchedOpponent?.spaceUser}
-        </h3>
+        <h3>시간:{shownStatus ? shownStatus.time : '미정'}</h3>
+        <h3>내가 원하는 장소:{shownStatus ? shownStatus.spaceUser : '미정'}</h3>
         <h3>
           상대가 원하는 장소:
-          {matchedOpponent?.spaceOpponent === '' ? '미정' : matchedOpponent?.spaceOpponent}
+          {shownStatus ? shownStatus.spaceOpponent : '미정'}
         </h3>
         <h3>나이: {matchedOpponent?.age}</h3>
         <h3>성별: {matchedOpponent?.gender}</h3>

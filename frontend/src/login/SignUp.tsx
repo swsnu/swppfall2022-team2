@@ -17,6 +17,7 @@ export default function SignUp(){
 
     const handleSignUp = () => {
         dispatch(setSignUp({username: username, password: password}))
+        .catch(err=>console.log(err))
         navigate('/login')
     }
 

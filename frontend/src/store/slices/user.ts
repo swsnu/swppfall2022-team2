@@ -1,5 +1,4 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { PayloadAction } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '..';
 import axios from 'axios';
 
@@ -49,6 +48,7 @@ export const setSignUp = createAsyncThunk(
   'user/setSignUp',
   async (loginForm: LoginFormType, { dispatch }) => {
     const response = await axios.post('/chat/user/signup/', loginForm);
+    return response
   },
 );
 
@@ -58,8 +58,8 @@ export const setSignIn = createAsyncThunk(
     const loginResponse = await axios.post('/chat/user/signin/', loginForm);
     if (loginResponse.status === 200) {
       const userlistResponse = await axios.get('/chat/user/');
-      const userid = loginResponse.data.id;
-      const chatroomlistResponse = await axios.get('/chat/user/' + userid + '/');
+      const userid: number = loginResponse.data.id;
+      const chatroomlistResponse = await axios.get(`/chat/user/${userid}/`);
       const serverdata: LoggedInUserType = {
         user: loginResponse.data,
         chatrooms: chatroomlistResponse.data,
@@ -67,7 +67,7 @@ export const setSignIn = createAsyncThunk(
       dispatch(userActions.updateLoggedInUser(serverdata));
       dispatch(userActions.updateUserList(userlistResponse.data));
     } else {
-      //this is not working...
+      //  this is not working...
       window.alert('wrong username or password');
     }
   },
@@ -79,6 +79,7 @@ export const setSignOut = createAsyncThunk(
     const response = await axios.get('/chat/user/signout/');
     dispatch(userActions.updateLoggedInUser(null));
     dispatch(userActions.updateUserList([]));
+    return response
   },
 );
 

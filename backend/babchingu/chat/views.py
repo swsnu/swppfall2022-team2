@@ -70,7 +70,7 @@ def user_list(request):
         return HttpResponseNotAllowed(['GET'])
 
 
-#GET, DELETE : 
+#GET : 
 @csrf_exempt
 def user_info(request, user_id):
     if request.method == 'GET':
@@ -99,25 +99,9 @@ def user_info(request, user_id):
                     chatroom_list.append({"id": chatroom.id, "opponent_id": user1, "last_chat": last_message})
             return JsonResponse(chatroom_list, safe=False)
         else: # not signed in
-            return HttpResponse(status=401)
-
-
-    elif request.method == 'DELETE':
-        # delete user
-        if request.user.is_authenticated:
-            try:
-                user = User.objects.get(id=user_id)
-            except: # no user with id
-                return HttpResponseNotFound()
-            #if there is the user check if the user is current user
-            if user.id != request.user.id:
-                return HttpResponseForbidden()
-            user.delete()
-            return HttpResponse(status=200)
-        else: # not signed in
-            return HttpResponse(status=401)   
+            return HttpResponse(status=401)  
     else:
-        return HttpResponseNotAllowed(['GET', 'DELETE'])
+        return HttpResponseNotAllowed(['GET'])
 
 
 #POST
@@ -129,14 +113,14 @@ def post_chatroom(request):
                 #get the two user ids and put it in new chatroom object
                 body = request.body.decode()
                 opponent = json.loads(body)['opponent'] # this should be list
-            except (KeyError, JSONDecodeError) as e:
+            except:
                 return HttpResponseBadRequest()
 
             # call the user by the ids in the list 
             try:
                 user1 = request.user
                 user2 = User.objects.get(id=opponent)
-            except (KeyError, JSONDecodeError) as e:
+            except:
                 return HttpResponseBadRequest()
 
             new_chatroom = Chatroom(chatuser1=user1.id, chatuser2=user2.id)
@@ -177,9 +161,6 @@ def chatroom_info(request, chatroom_id):
                 chatroom = Chatroom.objects.get(id=chatroom_id)
             except: 
                 return HttpResponseNotFound()
-            #increase the chatnumbers
-            chatroom.chatnumbers = chatroom.chatnumbers+1
-            chatroom.save()
             # { content, author_id }
             try:
                 body = request.body.decode()
@@ -187,7 +168,9 @@ def chatroom_info(request, chatroom_id):
                 content = json.loads(body)['content']
             except (KeyError, JSONDecodeError) as e:
                 return HttpResponseBadRequest()
-
+            #increase the chatnumbers
+            chatroom.chatnumbers = chatroom.chatnumbers+1
+            chatroom.save()
             message_author = User.objects.get(id=author_id)
             
             new_message = Message(order=chatroom.chatnumbers, content=content, author=author_id)
@@ -241,7 +224,7 @@ def chat_info(request, chatroom_id, chat_id):
         else: # not signed in
             return HttpResponse(status=401)
     else:
-        return HttpResponseNotAllowed(['POST'])
+        return HttpResponseNotAllowed(['DELETE'])
 
 
 

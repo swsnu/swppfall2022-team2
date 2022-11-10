@@ -1,4 +1,4 @@
-import { createChatRoom, selectUser, setSignIn } from '../store/slices/user';
+import { selectUser, setSignIn } from '../store/slices/user';
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, Navigate } from "react-router-dom";
 import React, { useState } from "react";
@@ -20,6 +20,7 @@ export default function Login(){
         dispatch(setSignIn({username: username, password: password}))
             .catch(err=>console.log(err))
             .then()
+            .catch(err=>console.log(err))
     }
 
     const handleRedirect = () => {

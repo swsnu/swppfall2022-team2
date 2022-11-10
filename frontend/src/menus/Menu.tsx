@@ -8,7 +8,7 @@ const Menu = () => {
   return (
     <div className='card menu-list'>
       <div className='card-header'>
-        <h5 className='card-title'>Today's Menu</h5>
+        <h5 className='card-title'>Today&apos;s Menu</h5>
       </div>
       <Tabs defaultActiveKey='profile' id='uncontrolled-tab-example' className='mb-3'>
         <Tab eventKey='home' title='아침'></Tab>

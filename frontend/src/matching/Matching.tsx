@@ -57,7 +57,6 @@ const Matching: React.FunctionComponent = () => {
   const [matchingId, handleMatchingId] = useState<number>(0);
   const [matchedOpponent, handleMatchedOpponent] = useState<matchedOpponentType | null>(null);
   const [numMatching, handlenumMatching] = useState<number | null>(null);
-  const navigate = useNavigate();
   const checkMatching = (): void => {
     // check whether matching is completed or not
     if (matchingId === 0) {
@@ -103,9 +102,6 @@ const Matching: React.FunctionComponent = () => {
       });
     console.log('matchingcondition:', matchingCondition);
   };
-  const toMain = (): void => {
-    navigate('/main');
-  };
   useEffect(() => {
     // for re-logined
     // get previous matching info
@@ -146,9 +142,6 @@ const Matching: React.FunctionComponent = () => {
   return (
     <div>
       <NavBar />
-      {/* <button onClick={toMain}>
-        <img src={homeImg} width='35' />
-      </button> */}
       <div className='status'>
         <MatchingStatus
           matched={matched}

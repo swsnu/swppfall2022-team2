@@ -114,6 +114,7 @@ const MatchingStatus: React.FC<propsType> = (props) => {
               navigate(`/chatroom/${chatRoomId}`);
             } else {
               void dispatch(createChatRoom(matchedOpponent.id)).then((response) => {
+                // there is a problem in testing below navigate
                 // eslint-disable-next-line
                 navigate(`/chatroom/${response.payload}`);
               });

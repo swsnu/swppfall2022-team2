@@ -83,9 +83,7 @@ const Matching: React.FunctionComponent = () => {
           });
         }
       })
-      .catch((err) => {
-        console.log(err);
-      });
+      .catch(() => {});
   };
   const startMatching = (): void => {
     handleMatched(false);
@@ -96,11 +94,7 @@ const Matching: React.FunctionComponent = () => {
       .then((response) => {
         handleMatchingId(response.data.id);
         handlenumMatching(Number(response.data.num_matching));
-      })
-      .catch((err) => {
-        console.log(err);
       });
-    console.log('matchingcondition:', matchingCondition);
   };
   useEffect(() => {
     // for re-logined
@@ -109,7 +103,6 @@ const Matching: React.FunctionComponent = () => {
       .get(`matching/get`)
       .then((response) => {
         if (response.status === 200) {
-          console.log(response.data);
           handleMatched(true);
           handleMatchedOpponent({
             time: String(response.data.time),
@@ -122,7 +115,6 @@ const Matching: React.FunctionComponent = () => {
             name: response.data.last_name + response.data.first_name,
           });
         } else if (response.status === 201) {
-          console.log(response);
           handleMatchingId(response.data.id);
           handlenumMatching(response.data.num_matching);
         }
@@ -157,11 +149,23 @@ const Matching: React.FunctionComponent = () => {
       </div>
 
       {numMatching !== null ? (
-        <Button variant='secondary' className='button' onClick={checkMatching} disabled={matched}>
+        <Button
+          id='checkButton'
+          variant='secondary'
+          className='button'
+          onClick={checkMatching}
+          disabled={matched}
+        >
           <span className='buttonTextM'>Check Matching</span>
         </Button>
       ) : (
-        <Button variant='secondary' className='button' onClick={startMatching} disabled={matched}>
+        <Button
+          id='startButton'
+          variant='secondary'
+          className='button'
+          onClick={startMatching}
+          disabled={matched}
+        >
           <span className='buttonTextM'>Start Matching</span>
         </Button>
       )}

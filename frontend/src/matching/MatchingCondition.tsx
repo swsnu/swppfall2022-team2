@@ -82,7 +82,7 @@ const MatchingCondition: React.FC<propsType> = (props: propsType) => {
       <div className='conditions'>
         <p className='conditionP'>시간</p>
         <label className='selectLabel'>
-          <Form.Select className='select' onChange={(e) => handleTime(e)}>
+          <Form.Select id='timeSelect' className='select' onChange={(e) => handleTime(e)}>
             <option value='0'>직접선택</option>
             <option value='1200'>12:00</option>
             <option value='1230'>12:30</option>
@@ -97,7 +97,7 @@ const MatchingCondition: React.FC<propsType> = (props: propsType) => {
       <div className='conditions'>
         <p className='conditionP'>장소</p>
         <label className='selectLabel'>
-          <Form.Select className='select' onChange={(e) => handleSpace(e)}>
+          <Form.Select id='spaceSelect' className='select' onChange={(e) => handleSpace(e)}>
             <option value=''>직접선택</option>
             <option value='dormitory'>기숙사</option>
             <option value='301'>301동</option>
@@ -117,7 +117,7 @@ const MatchingCondition: React.FC<propsType> = (props: propsType) => {
       </div>
       <div className='conditions'>
         <p className='conditionP'>선호하는 성별</p>
-        <Form.Select className='select' onChange={(e) => handleGender(e)}>
+        <Form.Select id='genderSelect' className='select' onChange={(e) => handleGender(e)}>
           <option value=''>상관없음</option>
           <option value='M'>남자</option>
           <option value='F'>여자</option>

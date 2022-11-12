@@ -1,15 +1,11 @@
-from http.client import HTTPResponse
 import json
 from django.http import HttpResponse, HttpResponseNotAllowed, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from .models import MatchingEntity, MatchingQueue
-from django.contrib.auth.models import User
 from datetime import datetime
-def index(request):
-    return HttpResponse("hello")
 
 @csrf_exempt
-def start(request):# matching/start/
+def start(request):# /matching/start/
     if(request.method=='POST'):
         if not MatchingQueue.objects.all().exists():#check queue is initialized
             queue=MatchingQueue()
@@ -38,8 +34,8 @@ def start(request):# matching/start/
         return HttpResponseNotAllowed(['POST'])
 
 @csrf_exempt
-def check_matched(request, id):
-    if request.method=='GET':
+def check_matched(request, id):# /matching/check/<int:id>/
+    if request.method=='GET': 
         if not MatchingQueue.objects.all().exists():
             return HttpResponse(status=404)# no matching requested yet
         queue=MatchingQueue.objects.all()[0]
@@ -57,7 +53,8 @@ def check_matched(request, id):
         return JsonResponse(response_dic)
 
 @csrf_exempt
-def get_matching(request):#when re-logined get previous info
+def get_matching(request): # /matching/get/
+    #when re-logined get previous info
     if request.method=='GET':
         if not MatchingQueue.objects.all().exists():
             return HttpResponse(status=404)# no matching requested yet

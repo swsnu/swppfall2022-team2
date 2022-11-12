@@ -20,10 +20,10 @@ const NavBar: React.FunctionComponent = () => {
     navigate('/main');
   };
   const handleLogout = () => {
-    dispatch(setSignOut(userState.loggedinuser?.user ?? { id: 0, username: 'noone' }))
-      .catch((err) => console.log(err))
-      .then(()=>navigate('/main'))
-      .catch((err)=>console.log(err));
+    try{dispatch(setSignOut(userState.loggedinuser?.user ?? { id: 0, username: 'noone' }))}
+        catch(err){
+            
+        }
   };
 
   return (

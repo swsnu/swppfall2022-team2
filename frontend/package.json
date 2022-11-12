@@ -65,5 +65,24 @@
     "eslint-plugin-react": "^7.31.10",
     "node-sass": "npm:sass@^1.56.0"
   },
+  "jest": {
+    "collectCoverageFrom": [
+    "src/**/*.{js,jsx,ts,tsx}",
+    "!src/index.tsx",
+    "!src/App.tsx",
+    "!src/chatting/components/Chat/*",
+    "!src/chatting/components/Chat/MessagesList/*",
+    "!src/chatting/components/Landing/*",
+    "!src/chatting/components/Notfound/*",
+    "!src/store/index.ts",
+    "!src/store/reducers.ts",
+    "!src/test-utils/*",
+    "!src/react-app-env.d.ts",
+    "!src/chatting/ChatRoom.tsx",
+    "!src/reportWebVitals.ts",
+    "!src/serviceWorker.ts",
+    "!src/socketEvents.ts"
+    ]
+  },
   "proxy": "http://localhost:8000"
 }

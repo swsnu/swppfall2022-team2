@@ -13,6 +13,7 @@ jobs:
           token:
             secure: "eejNFsqMiNmmqEMWD4lhxD20/ar/izpjC3iw7RzZ/Zw19MFm+K0HvWgE1AbPxOolFhACGspG5XqBhG5KQ80O2kWN7vRkCCSBLdxz6azp/I2KugL7n8yu4HlTTAkiELGPhV/04hn5e9oL1O4sTvvH0z1J3In64rT8bXO6X86mdB/f+qTMCuWPrYbkTFVYqnC/aKoEjYQQne2Y8B+pIIPvTs+KpWnyAg6bYfbMN+ebwEEtzyUMZLYIrHKjEikt8/vK8zYUKFHQ8/Pmp1YbpGtGuSm9sMcVr8BYD1odfO9PeAjpkUhxG/l5FAlMmHGXvAzz79ig3CEj4TcqYmpB0HOz/SrZJ62CLPo1sdA31sNuUbj6dDT9hwxFFxsBKPLHEbmue8j7BVc7emAP9jXfLrEWp38seJG/QKthwNzq6porYfM5JQseekdDcAyS9pyEhwwjf3jaFoIvl8Z/aEGNr3moFW7SPBEskeN0ipRQcY2/b+IBZPqkhIcFT+PSGhQc6F3JQLgl5RCObAB2r8r8O/4fT5U0eeijXTiiXiJ50jLIgNOUXWmKlAoQrllAVHHdA77XGAvOrivINzwZYGb1qQ7GOuuP7Aen7UJbv5AZOljTWUqdza4ylC3huoi9+LmP9MrGmE4hc8AX3uQjAG0SEjij6CyH7ek8/M0cyXOQz5XPw7c="
       install:
+        - source ~/virtualenv/python3.9/bin/activate
         - cd frontend
         - yarn install
         - yarn global add coveralls

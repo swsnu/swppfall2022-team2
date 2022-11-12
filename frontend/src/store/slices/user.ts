@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '..';
 import axios from 'axios';
 
-interface LoginFormType {
+export interface LoginFormType {
   username: string;
   password: string;
 }

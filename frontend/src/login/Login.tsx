@@ -1,4 +1,4 @@
-import { selectUser, setSignIn } from '../store/slices/user';
+import { selectUser, setSignIn, UserInfoType } from '../store/slices/user';
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, Navigate } from "react-router-dom";
 import React, { useState } from "react";
@@ -17,10 +17,10 @@ export default function Login(){
 
 
     const handleLogin = () => {
-        dispatch(setSignIn({username: username, password: password}))
-            .catch(err=>console.log(err))
-            .then()
-            .catch(err=>console.log(err))
+        try{dispatch(setSignIn({username: username, password: password}))}
+        catch(err){
+            
+        }
     }
 
     const handleRedirect = () => {

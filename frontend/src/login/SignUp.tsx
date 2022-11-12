@@ -16,9 +16,13 @@ export default function SignUp(){
     const navigate = useNavigate();
 
     const handleSignUp = () => {
-        dispatch(setSignUp({username: username, password: password}))
-        .catch(err=>console.log(err))
-        navigate('/login')
+        try{dispatch(setSignUp({username: username, password: password}))
+            navigate('/login')
+        
+        }
+        catch(err){
+
+        }
     }
 
     const handleRedirect = () => {

@@ -1,6 +1,6 @@
 .status {
   position: fixed;
-  top: 40px;
+  top: calc(5% + 40px);
   left: 20px;
   width: calc(42%);
   height: calc(60%);
@@ -12,10 +12,10 @@
 
 .condition {
   position: fixed;
-  top: 40px;
+  top: calc(5% + 40px);
   left: calc(52%);
   width: calc(42%);
-  height: calc(86%);
+  height: calc(83%);
   border: 3px solid;
   text-align: center;
   margin: 30px;

@@ -181,3 +181,83 @@ class MatchingEntity(models.Model):
         null=True
     )
     
+
+#
+# below here, group matching models
+#
+
+class GroupMatchingQueue(models.Model):
+    # for improve perpormance, I think storing information of last matching would be good
+    # if many users check continuously, the server can be overloaded so block those danger
+    def num_matching(self):
+        return self.groupEntities.all().filter(matched=False).count()
+
+    def check_condition_match_exactly_same(self, entity1, entity2):
+        # check the whole condition of matching entity1 and entity2
+        # return true only when the all conditions same
+        # it is important that this function do not examine whether entity1=entity2
+        # so before call this function, it should be examined that they are not same entity
+
+        if entity1.matched or entity2.matched:
+            return False
+        if entity1.time !=entity2.time:
+            return False
+        if entity1.menu !=entity2.menu:
+            return False
+        if entity1.num !=entity2.num:
+            return False
+        return True
+
+    def match_exactly_same(self):
+        entities=self.groupEntities.all()
+        no_matched_entities=entities.filter(matched=False)
+        for entity1 in no_matched_entities:
+            for entity2 in no_matched_entities:
+                if entity1!=entity2 and self.check_condition_match_exactly_same(entity1, entity2):
+                    if entity1.id not in entity2.matched_opponents:
+                        entity2.matched_opponents.append(entity1.id)
+                        entity1.matched_opponents.append(entity2.id)
+                        entity1.save()
+                        entity2.save()
+        # At here, all entities having same conditions have each other in matched_opponents
+        # now check the size of matched_opponents and make them really matched if possible
+        for entity in no_matched_entities:
+            if entity.matched==True: # matched by other entity
+                continue
+            num_opponent=len(entity.matched_opponents)
+            if (int(entity.num[0])-1)==num_opponent or (int(entity.num[1])-1)==num_opponent:
+                # enough people assembled
+                # do not consider the case when assembled exceeding the condition num
+                # because everytime a person start match, this function would be executed
+                entity.matched=True
+                entity.save()
+                for entity_id in entity.matched_opponents:
+                    entity_matched=GroupMatchingEntity.objects.get(id=entity_id)
+                    entity_matched.matched=True
+                    entity_matched.save()
+
+
+class GroupMatchingEntity(models.Model):
+    time_matching=models.TimeField()#How long this matching is not success
+    user=models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='groupMatching'
+    )
+
+    ''' matching conditions '''
+    time=models.IntegerField()#this field type should be changed
+    menu=models.TextField()
+    num=models.CharField(max_length=2)
+    ''' matching conditions '''
+
+    
+    matched_opponents=models.JSONField()
+    matched=models.BooleanField(default=False)
+
+    queue=models.ForeignKey(
+        GroupMatchingQueue,
+        on_delete=models.CASCADE,
+        related_name="groupEntities",
+        null=True
+    )

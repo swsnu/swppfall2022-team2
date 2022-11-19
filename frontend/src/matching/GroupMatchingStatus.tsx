@@ -75,7 +75,7 @@ const GroupMatchingStatus: React.FC<propsType> = (props) => {
           </div>
         </div>
       ) : (
-        <h3>아래의 매칭 버튼을 눌러 매칭을 시작하세요</h3>
+        <h3>아래의 매칭 버튼을 눌러 그룹 매칭을 시작하세요</h3>
       )}
     </div>
   );

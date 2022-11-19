@@ -88,7 +88,7 @@ const Matching: React.FunctionComponent = () => {
   };
   const startMatching = (): void => {
     handleMatched(false);
-    axios // include the information of user is needed???
+    axios
       .post(`matching/start/`, {
         condition: matchingCondition,
       })
@@ -97,6 +97,30 @@ const Matching: React.FunctionComponent = () => {
         handlenumMatching(Number(response.data.num_matching));
       })
       .catch(() => {});
+  };
+  const stopMatching = (): void => {
+    axios
+      .delete(`matching/stop/`)
+      .then(() => {
+        handleMatchingId(0);
+        handlenumMatching(null);
+      })
+      .catch(() => {
+        // already matching is done
+        checkMatching();
+      });
+  };
+  const newMatching = (): void => {
+    if (window.confirm('정말로 새로운 매칭을 시작하시겠습니까?')) {
+      axios
+        .post(`matching/end/`)
+        .then(() => {
+          handleMatchingId(0);
+          handlenumMatching(null);
+          handleMatched(false);
+        })
+        .catch(() => {});
+    }
   };
   useEffect(() => {
     // for re-logined
@@ -151,16 +175,25 @@ const Matching: React.FunctionComponent = () => {
               handleMatchingCondition={handleMatchingCondition}
             />
           </div>
-
-          {numMatching !== null ? (
+          {matched ? (
             <Button
-              id='checkButton'
+              id='newButton'
               variant='secondary'
               className='button'
-              onClick={checkMatching}
+              onClick={newMatching}
+              disabled={!matched}
+            >
+              <span className='buttonTextM'>매칭 다시 시작하기</span>
+            </Button>
+          ) : numMatching !== null ? (
+            <Button
+              id='stopButton'
+              variant='light'
+              className='button'
+              onClick={stopMatching}
               disabled={matched}
             >
-              <span className='buttonTextM'>Check Matching</span>
+              <span className='buttonTextM'>Stop Matching</span>
             </Button>
           ) : (
             <Button

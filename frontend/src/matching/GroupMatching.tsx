@@ -48,14 +48,19 @@ const GroupMatching: React.FC = () => {
             menu: response.data.menu,
             num: String(Number(response.data.opponents.length) + 1),
           });
-          // re-store at here for re-enter matching, should call checkMatching in useEffect
         }
       })
       .catch(() => {});
   };
   const startMatching = (): void => {
-    // should check condition and open a modal if not selected
-    // I think in group matching the condition should be selected
+    if (
+      matchingCondition.time === '0' ||
+      matchingCondition.menu === '' ||
+      matchingCondition.num === ''
+    ) {
+      window.alert('그룹 매칭은 조건을 반드시 선택해야합니다.');
+      return;
+    }
     handleMatched(false);
     axios
       .post(`matching/group/start/`, {
@@ -67,6 +72,51 @@ const GroupMatching: React.FC = () => {
       })
       .catch(() => {});
   };
+  const stopMatching = (): void => {
+    axios
+      .delete(`matching/group/stop/`)
+      .then(() => {
+        handleMatchingId(0);
+        handlenumMatching(null);
+      })
+      .catch(() => {
+        // already matching is done
+        checkMatching();
+      });
+  };
+  const newMatching = (): void => {
+    if (window.confirm('정말로 새로운 매칭을 시작하시겠습니까?')) {
+      axios
+        .post(`matching/group/end/`)
+        .then(() => {
+          handleMatchingId(0);
+          handlenumMatching(null);
+          handleMatched(false);
+        })
+        .catch(() => {});
+    }
+  };
+  useEffect(() => {
+    // for re-logined
+    // get previous matching info
+    axios
+      .get(`matching/group/get/`)
+      .then((response) => {
+        if (response.status === 200) {
+          handleMatched(true);
+          handleMatchedOpponents(response.data.opponents);
+          handleMatchedCondition({
+            time: response.data.time,
+            menu: response.data.menu,
+            num: String(Number(response.data.opponents.length) + 1),
+          });
+        } else if (response.status === 201) {
+          handleMatchingId(response.data.id);
+          handlenumMatching(Number(response.data.num_matching));
+        }
+      })
+      .catch(() => {});
+  }, []); // only executed when rendered
   useEffect(() => {
     // after start matching, automatically called
     if (matchingId !== 0) {
@@ -93,15 +143,25 @@ const GroupMatching: React.FC = () => {
           handleMatchingCondition={handleMatchingCondition}
         />
       </div>
-      {numMatching !== null ? (
+      {matched ? (
         <Button
-          id='checkButton'
+          id='newButton'
           variant='secondary'
           className='button'
-          onClick={checkMatching}
+          onClick={newMatching}
+          disabled={!matched}
+        >
+          <span className='buttonTextM'>매칭 다시 시작하기</span>
+        </Button>
+      ) : numMatching !== null ? (
+        <Button
+          id='stopButton'
+          variant='light'
+          className='button'
+          onClick={stopMatching}
           disabled={matched}
         >
-          <span className='buttonTextM'>Check Matching</span>
+          <span className='buttonTextM'>Stop Matching</span>
         </Button>
       ) : (
         <Button

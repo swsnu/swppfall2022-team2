@@ -173,7 +173,7 @@ class MatchingEntity(models.Model):
     #when matched, indicating the opponent
     #https://stackoverflow.com/questions/15285626/django-self-referential-foreign-key
     matched_opponent=models.ForeignKey('self', null=True, on_delete=models.CASCADE)
-
+    invalid=models.BooleanField(default=False) #for user start new matching
     queue=models.ForeignKey(
         MatchingQueue,
         on_delete=models.CASCADE,
@@ -235,6 +235,16 @@ class GroupMatchingQueue(models.Model):
                     entity_matched=GroupMatchingEntity.objects.get(id=entity_id)
                     entity_matched.matched=True
                     entity_matched.save()
+    
+    def remove_entity(self, id):
+        # when stop group matching, the id of target entity should be removed
+        # from other entity's matched_opponents
+        entities=self.groupEntities.all()
+        no_matched_entities=entities.filter(matched=False)
+        for entity in no_matched_entities:
+            if id in entity.matched_opponents:
+                entity.matched_opponents.remove(id)
+
 
 
 class GroupMatchingEntity(models.Model):
@@ -254,7 +264,7 @@ class GroupMatchingEntity(models.Model):
     
     matched_opponents=models.JSONField()
     matched=models.BooleanField(default=False)
-
+    invalid=models.BooleanField(default=False) #for user start new matching
     queue=models.ForeignKey(
         GroupMatchingQueue,
         on_delete=models.CASCADE,

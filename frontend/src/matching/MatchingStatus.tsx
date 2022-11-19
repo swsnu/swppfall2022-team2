@@ -4,7 +4,7 @@ import { Button } from 'react-bootstrap';
 import profileImg from '../img/profile.png';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch } from '../store';
-import { createChatRoom, selectUser, userActions } from '../store/slices/user';
+import { createChatRoom, selectUser, userActions, ChatRoomType } from '../store/slices/user';
 import { useNavigate } from 'react-router';
 import axios from 'axios';
 interface matchedOpponentType {
@@ -90,7 +90,7 @@ const MatchingStatus: React.FC<propsType> = (props) => {
           spaceOpponent = '미정';
           break;
       }
-      handleShownStatus({ time: time, spaceUser: spaceUser, spaceOpponent: spaceOpponent });
+      handleShownStatus({ time, spaceUser, spaceOpponent }); // object-shorthand
     }
   }, [matched]);
   const makeChat: () => void = () => {
@@ -105,8 +105,8 @@ const MatchingStatus: React.FC<propsType> = (props) => {
                 chatrooms: response.data,
               }),
             );
-            const chatRoomId = response.data.find(
-              (chatroom: any) =>
+            const chatRoomId: number | undefined = response.data.find(
+              (chatroom: ChatRoomType) =>
                 chatroom.opponent_id === matchedOpponent.id ||
                 chatroom.opponent_id === userState.loggedinuser?.user.id,
             )?.id;
@@ -131,11 +131,11 @@ const MatchingStatus: React.FC<propsType> = (props) => {
         <h3>매칭이 완료되었습니다</h3>
         <img src={profileImg} width='80' />
         <h3>{matchedOpponent?.name}</h3>
-        <h3>시간:{shownStatus ? shownStatus.time : '미정'}</h3>
-        <h3>내가 원하는 장소:{shownStatus ? shownStatus.spaceUser : '미정'}</h3>
+        <h3>시간:{shownStatus !== null ? shownStatus.time : '미정'}</h3>
+        <h3>내가 원하는 장소:{shownStatus !== null ? shownStatus.spaceUser : '미정'}</h3>
         <h3>
           상대가 원하는 장소:
-          {shownStatus ? shownStatus.spaceOpponent : '미정'}
+          {shownStatus !== null ? shownStatus.spaceOpponent : '미정'}
         </h3>
         <h3>나이: {matchedOpponent?.age}</h3>
         <h3>성별: {matchedOpponent?.gender}</h3>
@@ -158,7 +158,7 @@ const MatchingStatus: React.FC<propsType> = (props) => {
           </div>
         </div>
       ) : (
-        <h3>아래의 매칭 버튼을 눌러 매칭을 시작하세요</h3>
+        <h3>아래의 매칭 버튼을 눌러 1대1 매칭을 시작하세요</h3>
       )}
     </div>
   );

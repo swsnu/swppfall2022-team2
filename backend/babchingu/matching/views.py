@@ -49,6 +49,8 @@ def check_matched(request, id):# /matching/check/<int:id>/
          'mbti':opponent.user_mbti, 'gender':opponent.user_gender, 'age':opponent.user_age,
           'id':opponent.user.id,'first_name':opponent.user.userinfo.first_name, 'last_name':opponent.user.userinfo.last_name}
         return JsonResponse(response_dic)
+    else:
+        return HttpResponseNotAllowed(['GET'])
 
 @csrf_exempt
 def get_matching(request): # /matching/get/
@@ -58,7 +60,7 @@ def get_matching(request): # /matching/get/
             return HttpResponse(status=404)# no matching requested yet
         queue=MatchingQueue.objects.all()[0]
         try:
-            entity=MatchingEntity.objects.get(user=request.user)
+            entity=MatchingEntity.objects.get(user=request.user, invalid=False)
         except MatchingEntity.DoesNotExist:
             return HttpResponse(status=404) # if such entity not exist
         opponent=entity.matched_opponent
@@ -69,8 +71,43 @@ def get_matching(request): # /matching/get/
          'mbti':opponent.user_mbti, 'gender':opponent.user_gender, 'age':opponent.user_age, 
          'id':opponent.user.id, 'first_name':opponent.user.userinfo.first_name, 'last_name':opponent.user.userinfo.last_name}
         return JsonResponse(response_dic)
+    else:
+        return HttpResponseNotAllowed(['GET'])
+
+@csrf_exempt
+def stop_matching(request): # /matching/stop/
+    if request.method=='DELETE':
+        try:
+            entity=MatchingEntity.objects.get(user=request.user, invalid=False)
+        except MatchingEntity.DoesNotExist:
+            return HttpResponse(status=404) # if such entity not exist
+        opponent=entity.matched_opponent
+        if opponent is None:
+            entity.delete()
+            return HttpResponse(status=200)
+        else:
+            # already matched
+            return HttpResponse(status=403)
+    else:
+        return HttpResponseNotAllowed(['DELETE'])
+
+@csrf_exempt
+def end_matching(request): # /matching/end/
+    if request.method=='POST':
+        try:
+            entity=MatchingEntity.objects.get(user=request.user, invalid=False)
+        except MatchingEntity.DoesNotExist:
+            return HttpResponse(status=404) # if such entity not exist
+        entity.invalid=True
+        entity.save()
+        return HttpResponse(status=200)
+    else:
+        return HttpResponseNotAllowed(['POST'])
 
 
+# 
+# below is group matching
+# 
 
 @csrf_exempt
 def group_start(request):# /matching/group/start/
@@ -110,3 +147,60 @@ def group_check_matched(request, id):# /matching/group/check/<int:id>/
         'opponents':[{'id':GroupMatchingEntity.objects.get(id=opponent).user.id,
         'name':GroupMatchingEntity.objects.get(id=opponent).user.userinfo.last_name+GroupMatchingEntity.objects.get(id=opponent).user.userinfo.first_name}for opponent in opponents]}
         return JsonResponse(response_dic)
+    else:
+        return HttpResponseNotAllowed(['GET'])
+
+        
+@csrf_exempt
+def group_get_matching(request): # /matching/group/get/
+    #when re-logined get previous info
+    if request.method=='GET':
+        if not GroupMatchingQueue.objects.all().exists():
+            return HttpResponse(status=404)# no matching requested yet
+        queue=GroupMatchingQueue.objects.all()[0]
+        try:
+            entity=GroupMatchingEntity.objects.get(user=request.user, invalid=False)
+        except GroupMatchingEntity.DoesNotExist:
+            return HttpResponse(status=404) # if such entity not exist
+        
+        if entity.matched==False:
+            response_dic={'id':entity.id, 'num_matching':queue.num_matching()}
+            return JsonResponse(response_dic, status=201)
+        opponents=entity.matched_opponents
+        response_dic={'time':entity.time,'menu':entity.menu,
+        'opponents':[{'id':GroupMatchingEntity.objects.get(id=opponent).user.id,
+        'name':GroupMatchingEntity.objects.get(id=opponent).user.userinfo.last_name+GroupMatchingEntity.objects.get(id=opponent).user.userinfo.first_name}for opponent in opponents]}
+        return JsonResponse(response_dic)
+    else:
+        return HttpResponseNotAllowed(['GET'])
+
+@csrf_exempt
+def group_stop_matching(request): # /matching/group/stop/
+    if request.method=='DELETE':
+        try:
+            entity=GroupMatchingEntity.objects.get(user=request.user, invalid=False)
+        except GroupMatchingEntity.DoesNotExist:
+            return HttpResponse(status=404) # if such entity not exist
+        if entity.matched==False:
+            queue=GroupMatchingQueue.objects.all()[0]
+            queue.remove_entity(entity.id)
+            entity.delete()
+            return HttpResponse(status=200)
+        else:
+            # already matched
+            return HttpResponse(status=403)
+    else:
+        return HttpResponseNotAllowed(['DELETE'])
+
+@csrf_exempt
+def group_end_matching(request): # /matching/group/end/
+    if request.method=='POST':
+        try:
+            entity=GroupMatchingEntity.objects.get(user=request.user, invalid=False)
+        except GroupMatchingEntity.DoesNotExist:
+            return HttpResponse(status=404) # if such entity not exist
+        entity.invalid=True
+        entity.save()
+        return HttpResponse(status=200)
+    else:
+        return HttpResponseNotAllowed(['POST'])

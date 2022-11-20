@@ -1,10 +1,8 @@
 from email.policy import default
 from django.db import models
 from django.contrib.auth.models import User
-from datetime import datetime, date
+from datetime import datetime
 class MatchingQueue(models.Model):
-    # for improve perpormance, I think storing information of last matching would be good
-    # if many users check continuously, the server can be overloaded so block those danger
     def num_matching(self):
         return self.entities.all().filter(matched_opponent=None).count()
         
@@ -187,8 +185,6 @@ class MatchingEntity(models.Model):
 #
 
 class GroupMatchingQueue(models.Model):
-    # for improve perpormance, I think storing information of last matching would be good
-    # if many users check continuously, the server can be overloaded so block those danger
     def num_matching(self):
         return self.groupEntities.all().filter(matched=False).count()
 
@@ -222,8 +218,6 @@ class GroupMatchingQueue(models.Model):
         # At here, all entities having same conditions have each other in matched_opponents
         # now check the size of matched_opponents and make them really matched if possible
         for entity in no_matched_entities:
-            if entity.matched==True: # matched by other entity
-                continue
             num_opponent=len(entity.matched_opponents)
             if (int(entity.num[0])-1)==num_opponent or (int(entity.num[1])-1)==num_opponent:
                 # enough people assembled

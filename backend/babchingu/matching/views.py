@@ -100,6 +100,9 @@ def end_matching(request): # /matching/end/
             return HttpResponse(status=404) # if such entity not exist
         entity.invalid=True
         entity.save()
+        opponent=entity.matched_opponent
+        opponent.invalid=True
+        opponent.save()
         return HttpResponse(status=200)
     else:
         return HttpResponseNotAllowed(['POST'])
@@ -201,6 +204,11 @@ def group_end_matching(request): # /matching/group/end/
             return HttpResponse(status=404) # if such entity not exist
         entity.invalid=True
         entity.save()
+        for id in entity.matched_opponents:
+            opponent=GroupMatchingEntity.objects.get(id=id)
+            opponent.invalid=True
+            opponent.save()
+
         return HttpResponse(status=200)
     else:
         return HttpResponseNotAllowed(['POST'])

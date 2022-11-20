@@ -84,8 +84,8 @@ const GroupMatching: React.FC = () => {
         checkMatching();
       });
   };
-  const newMatching = (): void => {
-    if (window.confirm('정말로 새로운 매칭을 시작하시겠습니까?')) {
+  const endMatching = (): void => {
+    if (window.confirm('정말로 매칭을 종료하시겠습니까?')) {
       axios
         .post(`matching/group/end/`)
         .then(() => {
@@ -145,13 +145,13 @@ const GroupMatching: React.FC = () => {
       </div>
       {matched ? (
         <Button
-          id='newButton'
+          id='endButton'
           variant='secondary'
           className='button'
-          onClick={newMatching}
+          onClick={endMatching}
           disabled={!matched}
         >
-          <span className='buttonTextM'>매칭 다시 시작하기</span>
+          <span className='buttonTextM'>매칭 끝내기</span>
         </Button>
       ) : numMatching !== null ? (
         <Button

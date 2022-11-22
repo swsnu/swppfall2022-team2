@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './MyPage.css';
 import MyManner from './MyManner';
 import MyStatus from './MyStatus';
@@ -8,53 +8,59 @@ import axios from 'axios';
 import NavBar from '../NavBar';
 
 
-export interface timeTableDataType {
-  mon: boolean[];
-  tue: boolean[];
-  wed: boolean[];
-  thu: boolean[];
-  fri: boolean[];
-}
 export interface statusType {
-  first_name: string;
-  last_name: string;
+  name: string;
   mbti: string;
   intro: string;
   age: string;
   gender: string;
+  nickname: string;
+  timeTable: JSON;
 }
 
 const MyPage: React.FunctionComponent = () => {
-  const [timeTable, handleTimeTable] = useState<timeTableDataType>({
-    mon: [],
-    tue: [],
-    wed: [],
-    thu: [],
-    fri: [],
-  });
-
   const [status, handleStatus] = useState<statusType>({
-    first_name: '',
-    last_name: '',
+    name: '',
     mbti: '',
     intro: '',
     age: '',
     gender: '',
+    nickname: '',
+    timeTable: JSON.parse('{}'),
   });
+
+  // fetch status from userinfo model
+  useEffect(()=>{
+    axios
+    .get(`mypage/get/`)
+    .then((response)=>{
+      status.name = response.data.name;
+      status.mbti = response.data.mbti;
+      status.intro = response.data.intro;
+      status.age = response.data.age;
+      status.gender = response.data.gender;
+      status.nickname = response.data.nickname;
+      status.timeTable = response.data.timeTable;
+    })
+    .catch((err) => {console.log(err)})
+  },[]);
+  
   const statusSubmit = (): void => {
     axios
       .post(`mypage/submit/`, {
-        first_name: status.first_name,
-        last_name: status.last_name,
+        name: status.name,
         mbti: status.mbti,
         intro: status.intro,
         age: status.age,
         gender: status.gender,
+        nickname: status.nickname,
+        timeTable: status.timeTable,
       })
       .catch((err) => {
         console.log(err.response.data);
       });
-    console.log('User Status:', status);
+    alert("변경 사항이 저장되었습니다.");
+    console.log('Submitted User Status:', status);
   };
   return (
     <div>
@@ -68,7 +74,7 @@ const MyPage: React.FunctionComponent = () => {
         </div>
         <div className='pad'>
             <div>
-                <MyTimeTable timeTable={timeTable} handleTimeTable={handleTimeTable} />
+                <MyTimeTable status={status} handleStatus={handleStatus} />
             </div>
             <div>
                 <MyStatus status={status} handleStatus={handleStatus} />

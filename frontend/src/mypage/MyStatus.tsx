@@ -8,11 +8,8 @@ interface propsType {
   }
 const MyStatus: React.FC<propsType> = (props:propsType) => {
     const {status, handleStatus } = props;
-    const handleLastName = (e: React.BaseSyntheticEvent) : void => {
-        handleStatus({ ...status, last_name: e.currentTarget.value as string});
-    };
-    const handleFirstName = (e: React.BaseSyntheticEvent) : void => {
-        handleStatus({ ...status, first_name: e.target.value });
+    const handleName = (e: React.BaseSyntheticEvent) : void => {
+        handleStatus({ ...status, name: e.target.value });
     };
     const handleAge = (e: React.BaseSyntheticEvent) : void => {
         handleStatus({ ...status, age: e.target.value });
@@ -26,20 +23,28 @@ const MyStatus: React.FC<propsType> = (props:propsType) => {
     const handleMBTI: (e: React.ChangeEvent<HTMLSelectElement>) => void = (e) => {
         handleStatus({ ...status, mbti: e.target.value });
     };
-
+    const handleNickname = (e: React.BaseSyntheticEvent) : void => {
+        handleStatus({ ...status, nickname: e.target.value });
+    };
+    //useEffect(()=>{},[status]);
     return (
         <div>
         <Form>
+            <p>
+                별명을 입력해주세요
+            </p>
+            <Row className='mb-3'>
+                <Form.Group as={Col}>
+                    <Form.Control name="nickname" defaultValue={status.nickname} type="text" placeholder='별명' onChange={handleNickname} maxLength={30}/>
+                </Form.Group>
+            </Row>
+
             <p>
                 이름을 입력해주세요
             </p>
             <Row className='mb-3'>
                 <Form.Group as={Col}>
-                    <Form.Control type="text" placeholder='성' onChange={handleLastName} maxLength={30} />
-                </Form.Group>
-
-                <Form.Group as={Col}>
-                    <Form.Control type="text" placeholder='이름' onChange={handleFirstName} maxLength={30}/>
+                    <Form.Control name="name" defaultValue={status.name} type="text" placeholder='이름' onChange={handleName} maxLength={30}/>
                 </Form.Group>
             </Row>
 
@@ -48,10 +53,10 @@ const MyStatus: React.FC<propsType> = (props:propsType) => {
             </p>
             <Row className='mb-3'>
                 <Form.Group as={Col}>
-                    <Form.Control type="text" placeholder='나이' onChange={handleAge} maxLength={3}/>
+                    <Form.Control name="age" defaultValue={status.age} type="text" placeholder='나이' onChange={handleAge} maxLength={3}/>
                 </Form.Group>
                 <Form.Group as={Col}>
-                    <Form.Select onChange={(e) => handleGender(e)}>
+                    <Form.Select name="gender" defaultValue={status.gender} onChange={(e) => handleGender(e)}>
                         <option value = ''>선택 안함</option>
                         <option value = 'M'>남자</option>
                         <option value = 'F'>여자</option>
@@ -64,14 +69,14 @@ const MyStatus: React.FC<propsType> = (props:propsType) => {
             </p>
             <Row className='mb-3'>
                 <Form.Group>
-                    <Form.Control type="text" placeholder='소개말' onChange={handleIntro} maxLength={100}/>
+                    <Form.Control name="intro" defaultValue={status.intro} type="text" placeholder='소개말' onChange={handleIntro} maxLength={100}/>
                 </Form.Group>
             </Row>
 
             <p>
                 자신의 MBTI를 선택해주세요
             </p>
-            <Form.Select onChange={(e) => handleMBTI(e)}>
+            <Form.Select name='mbti' defaultValue={status.mbti} onChange={(e) => handleMBTI(e)}>
                 <option value = ''>선택 안함</option>
                 <option value = 'ENTJ'>ENTJ</option>
                 <option value = 'ENTP'>ENTP</option>

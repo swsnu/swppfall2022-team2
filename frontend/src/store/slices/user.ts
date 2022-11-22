@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '..';
 import axios from 'axios';
+import { TemperatureFormType } from '../../chatting/ChatList';
 
 export interface MenuType {
   mealtype: string;
@@ -18,6 +19,7 @@ export interface LoginFormType {
 export interface UserType {
   id: number;
   username: string;
+  temperature: number;
 }
 
 export interface ChatType {
@@ -103,6 +105,14 @@ export const createChatRoom = createAsyncThunk(
     dispatch(userActions.selectChatRoom(response.data));
     dispatch(userActions.addChatRoom(response.data));
     return response.data.id; // for redirect in matching
+  },
+);
+
+export const setTemperature = createAsyncThunk(
+  'user/setTemperature',
+  async (Form: TemperatureFormType, { dispatch }) => {
+    const response = await axios.post(`/mypage/temp/${Form.user}/`, {"eval":Form.eval});
+    return response
   },
 );
 

@@ -20,6 +20,7 @@ const initialState: UserInfoType = {
   loggedinuser: null,
   userlist: [],
   chosenchatroom: null,
+  menulist: [],
 };
 
 const mockStore = getMockStore({ user: initialState });

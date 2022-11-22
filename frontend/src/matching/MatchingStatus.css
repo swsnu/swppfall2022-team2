@@ -16,8 +16,6 @@
 }
 
 /** BEGIN CSS **/
-body {
-}
 @keyframes rotate-loading {
   0% {
     transform: rotate(0deg);

@@ -95,7 +95,7 @@ describe('MatchingCondition', () => {
       </Provider>
     );
     render(status);
-    expect(screen.getByText('아래의 매칭 버튼을 눌러 매칭을 시작하세요')).toBeInTheDocument();
+    expect(screen.getByText('아래의 매칭 버튼을 눌러 1대1 매칭을 시작하세요')).toBeInTheDocument();
     status = (
       <Provider store={mockStore}>
         <MemoryRouter>

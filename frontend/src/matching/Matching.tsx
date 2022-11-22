@@ -4,9 +4,10 @@ import MatchingStatus from './MatchingStatus';
 import './Matching.css';
 import { Button } from 'react-bootstrap';
 import axios from 'axios';
-import { useNavigate } from 'react-router';
-import homeImg from '../img/home.png';
 import NavBar from '../NavBar';
+import Tab from 'react-bootstrap/Tab';
+import Tabs from 'react-bootstrap/Tabs';
+import GroupMatching from './GroupMatching';
 export interface conditionType {
   // this is temporary because another type for time and space is needed
   time: string;
@@ -25,7 +26,7 @@ interface matchedOpponentType {
   id: number;
   name: string;
 }
-function useInterval(callback: () => void, delay: number): void {
+export function useInterval(callback: () => void, delay: number): void {
   // https://overreacted.io/making-setinterval-declarative-with-react-hooks/
   const savedCallback = useRef<typeof callback | null>(null);
 
@@ -79,7 +80,7 @@ const Matching: React.FunctionComponent = () => {
             gender: response.data.gender,
             age: response.data.age,
             id: response.data.id,
-            name: response.data.last_name + response.data.first_name,
+            name: String(response.data.last_name) + String(response.data.first_name),
           });
         }
       })
@@ -87,14 +88,39 @@ const Matching: React.FunctionComponent = () => {
   };
   const startMatching = (): void => {
     handleMatched(false);
-    axios // include the information of user is needed???
+    axios
       .post(`matching/start/`, {
         condition: matchingCondition,
       })
       .then((response) => {
         handleMatchingId(response.data.id);
         handlenumMatching(Number(response.data.num_matching));
+      })
+      .catch(() => {});
+  };
+  const stopMatching = (): void => {
+    axios
+      .delete(`matching/stop/`)
+      .then(() => {
+        handleMatchingId(0);
+        handlenumMatching(null);
+      })
+      .catch(() => {
+        // already matching is done
+        checkMatching();
       });
+  };
+  const endMatching = (): void => {
+    if (window.confirm('정말로 매칭을 종료하시겠습니까?')) {
+      axios
+        .post(`matching/end/`)
+        .then(() => {
+          handleMatchingId(0);
+          handlenumMatching(null);
+          handleMatched(false);
+        })
+        .catch(() => {});
+    }
   };
   useEffect(() => {
     // for re-logined
@@ -112,7 +138,7 @@ const Matching: React.FunctionComponent = () => {
             gender: response.data.gender,
             age: response.data.age,
             id: response.data.id,
-            name: response.data.last_name + response.data.first_name,
+            name: String(response.data.last_name) + String(response.data.first_name),
           });
         } else if (response.status === 201) {
           handleMatchingId(response.data.id);
@@ -134,41 +160,57 @@ const Matching: React.FunctionComponent = () => {
   return (
     <div>
       <NavBar />
-      <div className='status'>
-        <MatchingStatus
-          matched={matched}
-          matchedOpponent={matchedOpponent}
-          numMatching={numMatching}
-        />
-      </div>
-      <div className='condition'>
-        <MatchingCondition
-          matchingCondition={matchingCondition}
-          handleMatchingCondition={handleMatchingCondition}
-        />
-      </div>
-
-      {numMatching !== null ? (
-        <Button
-          id='checkButton'
-          variant='secondary'
-          className='button'
-          onClick={checkMatching}
-          disabled={matched}
-        >
-          <span className='buttonTextM'>Check Matching</span>
-        </Button>
-      ) : (
-        <Button
-          id='startButton'
-          variant='secondary'
-          className='button'
-          onClick={startMatching}
-          disabled={matched}
-        >
-          <span className='buttonTextM'>Start Matching</span>
-        </Button>
-      )}
+      <Tabs defaultActiveKey='one' id='tabs' className='mb-3' justify>
+        <Tab eventKey='one' title='1대1매칭' className='one'>
+          <div className='status'>
+            <MatchingStatus
+              matched={matched}
+              matchedOpponent={matchedOpponent}
+              numMatching={numMatching}
+            />
+          </div>
+          <div className='condition'>
+            <MatchingCondition
+              matchingCondition={matchingCondition}
+              handleMatchingCondition={handleMatchingCondition}
+            />
+          </div>
+          {matched ? (
+            <Button
+              id='endButton'
+              variant='secondary'
+              className='button'
+              onClick={endMatching}
+              disabled={!matched}
+            >
+              <span className='buttonTextM'>매칭 끝내기</span>
+            </Button>
+          ) : numMatching !== null ? (
+            <Button
+              id='stopButton'
+              variant='light'
+              className='button'
+              onClick={stopMatching}
+              disabled={matched}
+            >
+              <span className='buttonTextM'>Stop Matching</span>
+            </Button>
+          ) : (
+            <Button
+              id='startButton'
+              variant='secondary'
+              className='button'
+              onClick={startMatching}
+              disabled={matched}
+            >
+              <span className='buttonTextM'>Start Matching</span>
+            </Button>
+          )}
+        </Tab>
+        <Tab eventKey='group' title='그룹매칭' className='group'>
+          <GroupMatching />
+        </Tab>
+      </Tabs>
     </div>
   );
 };

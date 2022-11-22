@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 class UserInfo(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     temperature = models.FloatField(default = 36.5)
+    evaluation_num = models.IntegerField(default=10) # 10 * 36.5로 총 온도값이 시작됨
     mbti=models.CharField(default='',max_length=4)
     gender=models.CharField(default='',max_length=1)
     first_name = models.CharField(default='',max_length=30) # 이름

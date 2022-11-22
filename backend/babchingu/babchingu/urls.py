@@ -21,4 +21,5 @@ urlpatterns = [
     path('matching/', include('matching.urls')),
     path('chat/', include('chat.urls')),
     path('mypage/', include('mypage.urls')),
+    path('menu/', include('menu.urls')),
 ]

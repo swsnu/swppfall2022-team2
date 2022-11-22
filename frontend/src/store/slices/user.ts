@@ -2,6 +2,14 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '..';
 import axios from 'axios';
 
+export interface MenuType {
+  mealtype: string;
+  menuplace: string;
+  menuname: string;
+  menuprice: string;
+  menuextra: string;
+}
+
 export interface LoginFormType {
   username: string;
   password: string;
@@ -35,12 +43,14 @@ export interface LoggedInUserType {
 export interface UserInfoType {
   loggedinuser: LoggedInUserType | null;
   userlist: UserType[];
+  menulist: MenuType[];
   chosenchatroom: ChatRoomType | null;
 }
 
 const initialState: UserInfoType = {
   loggedinuser: null,
   userlist: [],
+  menulist: [],
   chosenchatroom: null,
 };
 
@@ -64,8 +74,10 @@ export const setSignIn = createAsyncThunk(
         user: loginResponse.data,
         chatrooms: chatroomlistResponse.data,
       };
+      const menulistResponse = await axios.get('/menu/');
       dispatch(userActions.updateLoggedInUser(serverdata));
       dispatch(userActions.updateUserList(userlistResponse.data));
+      dispatch(userActions.updateMenuList(menulistResponse.data));
     } else {
       //  this is not working...
       window.alert('wrong username or password');
@@ -105,6 +117,11 @@ export const userSlice = createSlice({
     updateUserList: (state, action: PayloadAction<UserType[]>) => {
       state.userlist = action.payload;
     },
+
+    updateMenuList: (state, action: PayloadAction<MenuType[]>) => {
+      state.menulist = action.payload;
+    },
+
     selectChatRoom: (state, action: PayloadAction<ChatRoomType>) => {
       state.chosenchatroom = action.payload;
     },

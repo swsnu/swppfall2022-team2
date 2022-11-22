@@ -62,7 +62,10 @@ def signout(request):
 def user_list(request):
     if request.method == 'GET':
         if request.user.is_authenticated:
-            user_all_list = [{"id": user["id"], "username": user["username"] } for user in User.objects.all().values()]
+            user_all_list = []
+            user_set = User.objects.all()
+            for user in user_set.iterator():
+                user_all_list.append({"id": user.id, "username": user.username, "temperature": user.userinfo.temperature})
             return JsonResponse(user_all_list, safe=False)
         else: # not signed in
             return HttpResponse(status=401)

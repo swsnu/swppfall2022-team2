@@ -17,6 +17,7 @@ import { nextTick } from 'process';
 const initialState: UserInfoType = {
   loggedinuser: null,
   userlist: [],
+  menulist: [],
   chosenchatroom: null,
 };
 const mockStore = getMockStore({ user: initialState });

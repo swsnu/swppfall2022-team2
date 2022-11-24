@@ -16,6 +16,7 @@ export interface statusType {
   gender: string;
   nickname: string;
   timeTable: JSON;
+  temperature: number;
 }
 
 const MyPage: React.FunctionComponent = () => {
@@ -27,6 +28,7 @@ const MyPage: React.FunctionComponent = () => {
     gender: '',
     nickname: '',
     timeTable: JSON.parse('{}'),
+    temperature: 0.0,
   });
 
   // fetch status from userinfo model
@@ -34,18 +36,22 @@ const MyPage: React.FunctionComponent = () => {
     axios
     .get(`mypage/get/`)
     .then((response)=>{
-      status.name = response.data.name;
-      status.mbti = response.data.mbti;
-      status.intro = response.data.intro;
-      status.age = response.data.age;
-      status.gender = response.data.gender;
-      status.nickname = response.data.nickname;
-      status.timeTable = response.data.timeTable;
+      handleStatus({...status, 
+      name : response.data.name,
+      mbti : response.data.mbti,
+      intro : response.data.intro,
+      age : response.data.age,
+      gender : response.data.gender,
+      nickname : response.data.nickname,
+      timeTable : response.data.timeTable,
+      temperature : response.data.temperature,});
     })
     .catch((err) => {console.log(err)})
   },[]);
   
+  // submit changes
   const statusSubmit = (): void => {
+    alert("변경 사항이 저장되었습니다.");
     axios
       .post(`mypage/submit/`, {
         name: status.name,
@@ -59,14 +65,13 @@ const MyPage: React.FunctionComponent = () => {
       .catch((err) => {
         console.log(err.response.data);
       });
-    alert("변경 사항이 저장되었습니다.");
     console.log('Submitted User Status:', status);
   };
   return (
     <div>
       <NavBar />
       <div className='manner'>
-        <MyManner />
+        <MyManner temperature={status.temperature}/>
       </div>
       <div className='others card overflow-auto'>
         <div className="card-header">
@@ -74,13 +79,13 @@ const MyPage: React.FunctionComponent = () => {
         </div>
         <div className='pad'>
             <div>
-                <MyTimeTable status={status} handleStatus={handleStatus} />
-            </div>
-            <div>
                 <MyStatus status={status} handleStatus={handleStatus} />
                 <Button variant='secondary' className='submitbutton' onClick={statusSubmit}>
                     <span className='buttonText'>변경사항 저장하기</span>
                 </Button>
+            </div>
+            <div>
+                <MyTimeTable status={status} handleStatus={handleStatus} />
             </div>
         </div>
       </div>

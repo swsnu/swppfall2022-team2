@@ -81,7 +81,8 @@ def mypage_get(request):# mypage/get/
         user=request.user
         user_info=user.userinfo
         response_dict = {'mbti': user_info.mbti, 'gender': user_info.gender, 'name':user_info.name, \
-            'intro':user_info.intro, 'age':user_info.age, 'nickname':user_info.nickname,'timeTable':user_info.time_table}
+            'temperature':user_info.temperature, 'intro':user_info.intro, 'age':user_info.age, \
+            'nickname':user_info.nickname,'timeTable':user_info.time_table}
         return JsonResponse(response_dict)
     else:
         return HttpResponseNotAllowed(['GET'])

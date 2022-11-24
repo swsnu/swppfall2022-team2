@@ -2,10 +2,13 @@ import React from 'react';
 import ProgressBar from 'react-bootstrap/ProgressBar';
 import './MyPage.css';
 
-const MyManner: React.FC = () => {
+type Temp = {
+    temperature: number
+}
+
+const MyManner: React.FC<Temp> = ({temperature}) => {
     function TempBar(){
-        const now = 36.5
-        return <ProgressBar variant='danger' animated now = {now}  className='tempbar'/>;
+        return <ProgressBar variant='danger' animated now = {temperature}  className='tempbar'/>;
     }
     return (
         <div>
@@ -13,7 +16,7 @@ const MyManner: React.FC = () => {
                 <TempBar/>
             </div>
             <p>
-                당신의 매너 온도는 36.5입니다.
+                당신의 매너 온도는 {temperature}입니다.
             </p>
         </div>
     );

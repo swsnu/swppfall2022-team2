@@ -15,6 +15,7 @@ import axios from 'axios';
 const initialState: UserInfoType = {
   loggedinuser: null,
   userlist: [],
+  menulist: [],
   chosenchatroom: null,
 };
 const mockStore = getMockStore({ user: initialState });

@@ -13,7 +13,8 @@ import { Provider, useDispatch } from 'react-redux';
 import { MemoryRouter, Route, Routes } from 'react-router';
 import axios from 'axios';
 const initialState: UserInfoType = {
-  loggedinuser: { user: { id: 3, username: 'test' }, chatrooms: [] },
+  loggedinuser: { user: { id: 3, username: 'test', temperature: 36.5 }, chatrooms: [] },
+  menulist: [],
   userlist: [],
   chosenchatroom: null,
 };

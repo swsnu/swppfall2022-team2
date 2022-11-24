@@ -11,7 +11,7 @@
 .others{
     float:right;
     height:calc(100%);
-    width: calc(50%);
+    width: calc(100% - 370px);
     margin: 30px;
     border: 1px solid;
 }

@@ -1,11 +1,11 @@
 import React, {useState, useEffect} from 'react';
 import './MyPage.css';
 import styled from "styled-components";
-import {timeTableDataType} from './MyPage'
+import {statusType} from './MyPage'
 
 interface propsType {
-    timeTable: timeTableDataType;
-    handleTimeTable: (a: timeTableDataType) => void;
+    status: statusType;
+    handleStatus: (a: statusType) => void;
   }
 const MyTimeTable: React.FC<propsType> = (props:propsType) => {
     function CustomCheckbox(){

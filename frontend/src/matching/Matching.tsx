@@ -80,7 +80,7 @@ const Matching: React.FunctionComponent = () => {
             gender: response.data.gender,
             age: response.data.age,
             id: response.data.id,
-            name: String(response.data.last_name) + String(response.data.first_name),
+            name: String(response.data.name),
           });
         }
       })

@@ -17,7 +17,8 @@ describe("user reducer", () => {
     
     const loggedinuser: UserType = {
             id: 1,
-            username: "user1"
+            username: "user1",
+            temperature: 36.5
         };
     
     const mychatroom: ChatRoomType = {
@@ -40,11 +41,13 @@ describe("user reducer", () => {
     const userlist: UserType[] = [
         {
             id:1,
-            username: "user1"
+            username: "user1",
+            temperature: 36.5
         },
         {
             id:2,
-            username: "user2"
+            username: "user2",
+            temperature: 36.5
         }
     ];
 
@@ -83,7 +86,7 @@ describe("user reducer", () => {
 
     it("should handle setSignOut correctly", async () => {
         (axios.get as jest.Mock).mockResolvedValue({ });
-        await store.dispatch(setSignOut({id:1, username: "user1"}));
+        await store.dispatch(setSignOut({id:1, username: "user1", temperature: 0}));
         expect(store.getState().user.loggedinuser).toEqual(null);
         expect(store.getState().user.userlist).toEqual([]);
     });

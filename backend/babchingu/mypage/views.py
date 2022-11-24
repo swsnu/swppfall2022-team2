@@ -1,5 +1,5 @@
 import json
-from django.http import HttpResponse, HttpResponseNotAllowed
+from django.http import HttpResponse, HttpResponseNotAllowed, HttpResponseBadRequest, JsonResponse, HttpResponseForbidden, HttpResponseNotFound
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
 from mypage.models import UserInfo
@@ -39,8 +39,7 @@ def touch_temp(request, user_id):
 
         user_info = user.userinfo
         temp = user_info.temperature
-        eval_nam = user_info.evaluation_num
-
+        eval_num = user_info.evaluation_num
         return JsonResponse({"id":user.id, "temp":temp, "eval_num":eval_num})
 
 
@@ -52,7 +51,7 @@ def touch_temp(request, user_id):
 
         user_info = user.userinfo
         old_temp = user_info.temperature
-        old_eval_nam = user_info.evaluation_num
+        old_eval_num = user_info.evaluation_num
 
         body = request.body.decode()
         eval = json.loads(body)['eval']
@@ -64,13 +63,13 @@ def touch_temp(request, user_id):
         elif eval == "보통":
             new_temp = ((old_eval_num*old_temp)+36.5)/(old_eval_num+1)
         elif eval == "별로":
-            new_temp = ((old_eval_num*old_temp)+18)/(old_eval_num+1)
-        else:
             new_temp = ((old_eval_num*old_temp)+0)/(old_eval_num+1)
+        else:
+            new_temp = ((old_eval_num*old_temp)-36)/(old_eval_num+1)
         
         user_info.temperature = new_temp
-        user_info.evaluation_num = old_eval_nam + 1
+        user_info.evaluation_num = old_eval_num + 1
         user_info.save()
-        return JsonResponse({"id":user.id, "new_temp":user_info.temperature})
+        return JsonResponse({"id":user.id, "new_temp":user_info.temperature, "new_eval_num":user_info.evaluation_num})
     else:
         return HttpResponseNotAllowed(['POST', 'GET'])

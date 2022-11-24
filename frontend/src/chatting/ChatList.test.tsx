@@ -18,7 +18,8 @@ const initialState: UserInfoType = {
   loggedinuser: {
     user:{
         id: 1,
-        username: "user1"
+        username: "user1",
+        temperature : 36.5
     },
     chatrooms:[
         {
@@ -38,14 +39,17 @@ const initialState: UserInfoType = {
   userlist: [
     {
         id:1,
-        username: "user1"
+        username: "user1",
+        temperature : 36.5
     },
     {
         id:2,
-        username: "user2"
+        username: "user2",
+        temperature : 36.5
     }
   ],
   chosenchatroom: null,
+  menulist: []
 };
 
 const mockStore = getMockStore({ user: initialState });

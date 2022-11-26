@@ -4,7 +4,7 @@ const WebSocketContext = React.createContext<any>(null);
 export { WebSocketContext };
 
 export default ({ children}: { children: React.ReactNode }) => {
-  const webSocketUrl = `ws://localhost:8000/ws/chatroom/1/` 
+  const webSocketUrl = `ws://localhost:8000/ws/chatroom/${`\d`}/` 
   let ws = useRef<WebSocket | null>(null);
 
   if (!ws.current) {

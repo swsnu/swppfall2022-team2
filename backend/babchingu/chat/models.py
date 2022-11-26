@@ -22,8 +22,6 @@ class Message(models.Model):
         on_delete = models.CASCADE,
         related_name = 'message_in_this_chat_room'
     )
-    
     author = models.IntegerField()
-
     content = models.TextField()
     date = models.DateTimeField(default=now, editable=False)

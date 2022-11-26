@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { selectUser, ChatRoomType, setTemperature } from '../store/slices/user';
+import { selectUser, ChatRoomType, setTemperature, userActions } from '../store/slices/user';
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from '../store';
 import { useNavigate } from "react-router-dom";
@@ -55,8 +55,8 @@ const ChatList: React.FunctionComponent = () => {
 
     const clickChatListTitleHandler= (chatroom: ChatRoomType)=>{
         // problem if you enable this function, it redirects to the the chatroom page before 
-        //dispatch(userActions.selectChatRoom(chatroom))
-        //navigate(`/chatroom/${chatroom.id}`);   
+        dispatch(userActions.selectChatRoom(chatroom))
+        navigate(`/chatroom/${chatroom.id}`);   
     }
 
     return(

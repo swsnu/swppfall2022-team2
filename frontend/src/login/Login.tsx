@@ -1,4 +1,4 @@
-import { selectUser, setSignIn, UserInfoType } from '../store/slices/user';
+import { createChatRoom, selectUser, setSignIn, UserInfoType } from '../store/slices/user';
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, Navigate } from "react-router-dom";
 import React, { useState } from "react";
@@ -17,7 +17,10 @@ export default function Login(){
 
 
     const handleLogin = () => {
-        try{dispatch(setSignIn({username: username, password: password}))}
+        try{dispatch(setSignIn({username: username, password: password}))
+            dispatch(createChatRoom(1))
+    }
+
         catch(err){
             
         }

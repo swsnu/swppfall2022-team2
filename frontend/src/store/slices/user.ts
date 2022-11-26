@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '..';
 import axios from 'axios';
 import { TemperatureFormType } from '../../chatting/ChatList';
+import { chatActions } from './chat';
 
 export interface MenuType {
   mealtype: string;
@@ -102,6 +103,7 @@ export const createChatRoom = createAsyncThunk(
   async (chatOpponent: number, { dispatch }) => {
     const chatpost = { opponent: chatOpponent };
     const response = await axios.post('chat/chatroom/', chatpost);
+    dispatch(chatActions.setSocket(response.data.chatroom_id));
     dispatch(userActions.selectChatRoom(response.data));
     dispatch(userActions.addChatRoom(response.data));
     return response.data.id; // for redirect in matching

@@ -27,10 +27,12 @@
     "react-scripts": "5.0.1",
     "react-uuid": "^2.0.0",
     "redux": "4.2.0",
+    "redux-saga": "^1.2.1",
     "socket.io-client": "^4.5.3",
     "styled-components": "^5.3.6",
     "typescript": "*",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "websocket": "^1.0.34"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -59,6 +61,7 @@
   "devDependencies": {
     "@types/react-alert": "^7.0.2",
     "@types/styled-components": "^5.1.26",
+    "@types/websocket": "^1.0.5",
     "@typescript-eslint/eslint-plugin": "^5.0.0",
     "eslint-config-standard-with-typescript": "^23.0.0",
     "eslint-plugin-import": "^2.25.2",

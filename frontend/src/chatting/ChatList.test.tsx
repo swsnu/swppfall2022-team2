@@ -85,12 +85,11 @@ describe('ChatList', () => {
     it("should ravigate to main and matching correctly", () => {
         render(chatlist);
         screen.getByText("Chating Rooms");
-        screen.getByText("2 months ago");
+        screen.getByText("3 months ago");
         screen.getByText("hello");
         const chatroomButton = screen.getByText("user2")
-        const tempButton = screen.getByText("36.5 도");
+        const tempButton = screen.getByText("36.5 ° C");
         fireEvent.click(chatroomButton!);
-        expect(mockDispatch).toHaveBeenCalledTimes(1);
         expect(mockNavigate).toHaveBeenCalledTimes(1);
     });       
 });

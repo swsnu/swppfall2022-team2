@@ -25,3 +25,7 @@ python manage.py makemigrations
 python manage.py migrate
 python manage.py runserver
 ```
+
+##Docker
+(Using django channels)
+docker run -p 6379:6379 -d redis:5

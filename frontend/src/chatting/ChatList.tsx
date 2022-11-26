@@ -55,8 +55,8 @@ const ChatList: React.FunctionComponent = () => {
 
     const clickChatListTitleHandler= (chatroom: ChatRoomType)=>{
         // problem if you enable this function, it redirects to the the chatroom page before 
-        //dispatch(userActions.selectChatRoom(chatroom))
-        //navigate(`/chatroom/${chatroom.id}`);   
+        dispatch(userActions.selectChatRoom(chatroom))
+        navigate(`/chatroom/${chatroom.id}`);   
     }
 
     return(

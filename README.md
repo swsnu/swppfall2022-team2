@@ -23,5 +23,7 @@ cd backend/babchingu
 pip install -r requirements.txt
 python manage.py makemigrations
 python manage.py migrate
+sudo service cron start
+python manage.py crontab add
 python manage.py runserver
 ```

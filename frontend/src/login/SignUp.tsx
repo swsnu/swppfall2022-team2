@@ -8,7 +8,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './SignUp.css';
 import logoImg from '../images/logo.jpg';
 
-interface signUpStatusType{
+export interface signUpStatusType{
     name: string;
     mbti: string;
     gender: string;
@@ -26,6 +26,18 @@ export default function SignUp(){
         gender: '',
         nickname: '',
     });
+    const handleName = (e: React.BaseSyntheticEvent) : void => {
+        handleSignUpStatus({ ...signUpStatus, name: e.target.value });
+    };
+    const handleMBTI: (e: React.ChangeEvent<HTMLSelectElement>) => void = (e) => {
+        handleSignUpStatus({ ...signUpStatus, mbti: e.target.value });
+    };
+    const handleGender: (e: React.ChangeEvent<HTMLSelectElement>) => void = (e) => {
+        handleSignUpStatus({ ...signUpStatus, gender: e.target.value });
+    };
+    const handleNickname = (e: React.BaseSyntheticEvent) : void => {
+        handleSignUpStatus({ ...signUpStatus, nickname: e.target.value });
+    };
     const navigate = useNavigate();
 
     const handleSignUp = () => {
@@ -78,27 +90,31 @@ export default function SignUp(){
                         </Form.Group>
                         <Form.Group className="mb-3">
                             <Form.Label>비밀번호 재확인</Form.Label>
-                            <Form.Control type="password" placeholder="" maxLength={15}/>
+                            <Form.Control type="password" placeholder="비밀번호를 재입력해주세요." maxLength={15}/>
                         </Form.Group>
                         <Form.Group className="mb-3">
                             <Form.Label>이름</Form.Label>
-                            <Form.Control type="text" placeholder="본인의 실명입니다." maxLength={30}/>
+                            <Form.Control type="text" placeholder="본인의 실명입니다." maxLength={30} onChange={handleName}/>
                         </Form.Group>
                         <Form.Group className="mb-3">
                             <Form.Label>별명</Form.Label>
-                            <Form.Control type="text" placeholder="다른 이용자에게 보여질 이름입니다." maxLength={10}/>
+                            <Form.Control type="text" placeholder="다른 이용자에게 보여질 이름입니다." maxLength={10} onChange={handleNickname}/>
                         </Form.Group>
                         <Form.Group className="mb-3">
                             <Form.Label>성별</Form.Label>
-                            <Form.Select name="gender" defaultValue={''}>
+                            <Form.Select id="gender" defaultValue={''} onChange={handleGender}>
                                 <option value = '' disabled>선택 안함</option>
                                 <option value = 'M'>남자</option>
                                 <option value = 'F'>여자</option>
                             </Form.Select>
                         </Form.Group>
                         <Form.Group className="mb-3">
+                            <Form.Label>생년월일</Form.Label>
+                            <Form.Control type="text" placeholder="XXXX.XX.XX 형태로 입력해주세요." maxLength={10}/>
+                        </Form.Group>
+                        <Form.Group className="mb-3">
                             <Form.Label>MBTI</Form.Label>
-                            <Form.Select name='mbti' defaultValue={''}>
+                            <Form.Select name='mbti' defaultValue={''} onChange={handleMBTI}>
                                 <option value = '' disabled>선택 안함</option>
                                 <option value = 'ENTJ'>ENTJ</option>
                                 <option value = 'ENTP'>ENTP</option>
@@ -118,9 +134,10 @@ export default function SignUp(){
                                 <option value = 'ISFP'>ISFP</option>
                             </Form.Select>
                         </Form.Group>
-                        <p>
-                            TODO:  생년월일(나이), 이메일
-                        </p>
+                        <Form.Group className="mb-3">
+                            <Form.Label>이메일</Form.Label>
+                            <Form.Control type="text" placeholder="youremail@snu.ac.kr" maxLength={30}/>
+                        </Form.Group>
                         <Button className="mb-3" variant='primary' onClick={handleSignUp}>
                             가입하기
                         </Button>

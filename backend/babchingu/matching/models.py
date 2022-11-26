@@ -138,6 +138,18 @@ class MatchingQueue(models.Model):
                     if 0<=entity1_conditions_unmet<=adapt_entity1 and 0<=entity2_conditions_unmet<=adapt_entity2:
                         entity1.matched_opponent=entity2
                         entity2.matched_opponent=entity1
+                        userinfo1=entity1.user.userinfo
+                        userinfo2=entity2.user.userinfo
+                        if entity2.user.id not in userinfo1.matched_users:
+                            userinfo1.matched_users.append(entity2.user.id)
+                        if entity1.user.id not in userinfo2.matched_users:
+                            userinfo2.matched_users.append(entity1.user.id)
+                        if entity2.user.id not in userinfo1.unevaluated_users:
+                            userinfo1.unevaluated_users.append(entity2.user.id)
+                        if entity1.user.id not in userinfo2.unevaluated_users:
+                            userinfo2.unevaluated_users.append(entity1.user.id)
+                        userinfo1.save()
+                        userinfo2.save()
                         entity1.save()
                         entity2.save()
 
@@ -228,7 +240,35 @@ class GroupMatchingQueue(models.Model):
                 for entity_id in entity.matched_opponents:
                     entity_matched=GroupMatchingEntity.objects.get(id=entity_id)
                     entity_matched.matched=True
+                    userinfo=entity.user.userinfo
+                    if entity_matched.user.id not in userinfo.matched_users:
+                        userinfo.matched_users.append(entity_matched.user.id)
+                    if entity_matched.user.id not in userinfo.unevaluated_users:
+                        userinfo.unevaluated_users.append(entity_matched.user.id)
+                    userinfo.save()
+                    entity.save()
                     entity_matched.save()
+
+                # save the history of matching in userinfo
+                for entity1_id in entity.matched_opponents:
+                    for entity2_id in entity.matched_opponents:
+                        if entity1_id !=entity2_id:
+                            entity1=GroupMatchingEntity.objects.get(id=entity1_id)
+                            entity2=GroupMatchingEntity.objects.get(id=entity2_id)
+                            userinfo1=entity1.user.userinfo
+                            userinfo2=entity2.user.userinfo
+                            if entity2.user.id not in userinfo1.matched_users:
+                                userinfo1.matched_users.append(entity2.user.id)
+                            if entity1.user.id not in userinfo2.matched_users:
+                                userinfo2.matched_users.append(entity1.user.id)
+                            if entity2.user.id not in userinfo1.unevaluated_users:
+                                userinfo1.unevaluated_users.append(entity2.user.id)
+                            if entity1.user.id not in userinfo2.unevaluated_users:
+                                userinfo2.unevaluated_users.append(entity1.user.id)
+                            userinfo1.save()
+                            userinfo2.save()
+                            entity1.save()
+                            entity2.save()
     
     def remove_entity(self, id):
         # when stop group matching, the id of target entity should be removed

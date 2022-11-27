@@ -118,6 +118,17 @@ class MatchingQueue(models.Model):
     #                     entity2.matched_opponent=entity1
     #                     entity1.save()
     #                     entity2.save()
+    def check_block_user(self, entity1, entity2):
+        # return False if entity1 or entity2 blocked the other
+        # else return true
+        userinfo1=entity1.user.userinfo
+        userinfo2=entity2.user.userinfo
+        if entity1.user.id in userinfo2.blocked_users:
+            return False
+        if entity2.user.id in userinfo1.blocked_users:
+            return False
+        return True
+
     def match_adapt(self):
         # as time goes, reduce the num of conditions that should meet
         # for test, currently every 1 mins
@@ -135,23 +146,24 @@ class MatchingQueue(models.Model):
                     adapt_entity2=(time_cur-entity2_time).seconds/60 # num of ignoring conditions
                     entity1_conditions_unmet=self.check_condition_oneway(entity1, entity2) # num of unmet conditions
                     entity2_conditions_unmet=self.check_condition_oneway(entity2, entity1) # num of unmet conditions
-                    if 0<=entity1_conditions_unmet<=adapt_entity1 and 0<=entity2_conditions_unmet<=adapt_entity2:
-                        entity1.matched_opponent=entity2
-                        entity2.matched_opponent=entity1
-                        userinfo1=entity1.user.userinfo
-                        userinfo2=entity2.user.userinfo
-                        if entity2.user.id not in userinfo1.matched_users:
-                            userinfo1.matched_users.append(entity2.user.id)
-                        if entity1.user.id not in userinfo2.matched_users:
-                            userinfo2.matched_users.append(entity1.user.id)
-                        if entity2.user.id not in userinfo1.unevaluated_users:
-                            userinfo1.unevaluated_users.append(entity2.user.id)
-                        if entity1.user.id not in userinfo2.unevaluated_users:
-                            userinfo2.unevaluated_users.append(entity1.user.id)
-                        userinfo1.save()
-                        userinfo2.save()
-                        entity1.save()
-                        entity2.save()
+                    if self.check_block_user(entity1, entity2): # if users not blocked each other
+                        if 0<=entity1_conditions_unmet<=adapt_entity1 and 0<=entity2_conditions_unmet<=adapt_entity2:
+                            entity1.matched_opponent=entity2
+                            entity2.matched_opponent=entity1
+                            userinfo1=entity1.user.userinfo
+                            userinfo2=entity2.user.userinfo
+                            if entity2.user.id not in userinfo1.matched_users:
+                                userinfo1.matched_users.append(entity2.user.id)
+                            if entity1.user.id not in userinfo2.matched_users:
+                                userinfo2.matched_users.append(entity1.user.id)
+                            if entity2.user.id not in userinfo1.unevaluated_users:
+                                userinfo1.unevaluated_users.append(entity2.user.id)
+                            if entity1.user.id not in userinfo2.unevaluated_users:
+                                userinfo2.unevaluated_users.append(entity1.user.id)
+                            userinfo1.save()
+                            userinfo2.save()
+                            entity1.save()
+                            entity2.save()
 
     def save(self, *args, **kwargs):
         if MatchingQueue.objects.exists(): #singleton

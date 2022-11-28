@@ -5,8 +5,7 @@ from django.contrib.auth.models import User
 
 
 class Chatroom(models.Model):
-    chatuser1 = models.IntegerField(default=0)
-    chatuser2 = models.IntegerField(default=0)
+    roomtype = models.CharField(max_length=120, default="개인") # "개인", "단체"
     chatnumbers = models.IntegerField(default=0)
     chatusers = models.ManyToManyField(
         User,

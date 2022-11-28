@@ -32,7 +32,9 @@ export interface ChatType {
 
 export interface ChatRoomType {
   id: number;
-  opponent_id: number;
+  roomtype: string;
+  user_id: number[];
+  name: string;
   last_chat: ChatType;
 }
 
@@ -104,6 +106,19 @@ export const createChatRoom = createAsyncThunk(
     dispatch(userActions.selectChatRoom(response.data));
     dispatch(userActions.addChatRoom(response.data));
     return response.data.id; // for redirect in matching
+  },
+);
+
+export const deleteChatRoom = createAsyncThunk(
+  'user/deleteChatRoom',
+  async (chatroom: ChatRoomType, { dispatch }) => {
+    const deleteResponse = await axios.delete(`chat/chatroom/${chatroom.id}/`);
+    const currentResponse = await axios.get('chat/user/current/');
+    const serverdata: LoggedInUserType = {
+      user: currentResponse.data,
+      chatrooms: deleteResponse.data,
+    };
+    dispatch(userActions.updateLoggedInUser(serverdata));
   },
 );
 

@@ -112,8 +112,13 @@ export const createChatRoom = createAsyncThunk(
 export const deleteChatRoom = createAsyncThunk(
   'user/deleteChatRoom',
   async (chatroom: ChatRoomType, { dispatch }) => {
-    const response = await axios.delete(`chat/chatroom/${chatroom.id}/`);
-    dispatch(userActions.removeChatRoom(chatroom));
+    const deleteResponse = await axios.delete(`chat/chatroom/${chatroom.id}/`);
+    const currentResponse = await axios.get('chat/user/current/');
+    const serverdata: LoggedInUserType = {
+      user: currentResponse.data,
+      chatrooms: deleteResponse.data,
+    };
+    dispatch(userActions.updateLoggedInUser(serverdata));
   },
 );
 
@@ -146,10 +151,6 @@ export const userSlice = createSlice({
     },
     addChatRoom: (state, action: PayloadAction<ChatRoomType>) => {
       state.loggedinuser?.chatrooms.push(action.payload);
-    },
-
-    removeChatRoom: (state, action: PayloadAction<ChatRoomType>) => {
-      state.loggedinuser?.chatrooms.filter((element)=>element.id!==action.payload.id)
     },
   },
   extraReducers: (builder) => {},

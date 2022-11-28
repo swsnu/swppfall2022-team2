@@ -46,6 +46,14 @@ def signin(request):
 
 #GET
 @csrf_exempt
+def currentuser(request):
+    if request.method == 'GET':
+        return JsonResponse({"id":request.user.id,"username":request.user.username})
+    else:
+        return HttpResponseNotAllowed(['POST'])
+
+#GET
+@csrf_exempt
 def signout(request):
     if request.method == 'GET':
         if request.user.is_authenticated:
@@ -217,10 +225,37 @@ def chatroom_info(request, chatroom_id):
             #if there is the chatroom, delete the chatroom
             if chatroom.roomtype == "개인":
                 chatroom.delete()
-                return HttpResponse(status=200)
+                #return the list of chatrooms with this user
+                chatroomQuery = request.user.chatroom_with_this_user.values()
+                chatroom_list = []
+                for chatroom_entry in chatroomQuery:
+                    chatroom=Chatroom.objects.get(id=chatroom_entry["id"])
+                    user_query = chatroom.chatusers.exclude(id=request.user.id).all()
+                    messages = chatroom.message_in_this_chat_room.values()
+                    if len(messages) ==0:
+                        last_message = {}
+                    else:
+                        last_message = messages.latest('order')
+                    nickname_string = ', '.join([user.userinfo.nickname for user in user_query])
+                    chatroom_list.append({"id": chatroom.id, "roomtype":chatroom.roomtype, "user_id": [user.id for user in user_query], "name":nickname_string, "last_chat": last_message})
+                return JsonResponse(chatroom_list, safe=False)
             else:
                 chatroom.chatusers.remove(request.user)
-                return HttpResponse(status=200)
+                chatroom.save()
+                #return the list of chatrooms with this user
+                chatroomQuery = request.user.chatroom_with_this_user.values()
+                chatroom_list = []
+                for chatroom_entry in chatroomQuery:
+                    chatroom=Chatroom.objects.get(id=chatroom_entry["id"])
+                    user_query = chatroom.chatusers.exclude(id=request.user.id).all()
+                    messages = chatroom.message_in_this_chat_room.values()
+                    if len(messages) ==0:
+                        last_message = {}
+                    else:
+                        last_message = messages.latest('order')
+                    nickname_string = ', '.join([user.userinfo.nickname for user in user_query])
+                    chatroom_list.append({"id": chatroom.id, "roomtype":chatroom.roomtype, "user_id": [user.id for user in user_query], "name":nickname_string, "last_chat": last_message})
+                return JsonResponse(chatroom_list, safe=False)
         else: # not signed in
             return HttpResponse(status=401)   
     else:

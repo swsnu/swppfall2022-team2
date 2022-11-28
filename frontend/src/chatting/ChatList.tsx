@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { selectUser, ChatRoomType, setTemperature } from '../store/slices/user';
+import { selectUser, ChatRoomType, setTemperature, userActions } from '../store/slices/user';
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from '../store';
 import { useNavigate } from "react-router-dom";
@@ -64,34 +64,35 @@ const ChatList: React.FunctionComponent = () => {
           <h5 className="card-title">Chating Rooms</h5>
             <div className="list-group">
               {userState.loggedinuser?.chatrooms.map((chatroom)=>(
-                <a className="list-group-item list-group-item-action" key={chatroom.id} onClick={()=>clickChatListTitleHandler(chatroom)}>
+                <a className="list-group-item list-group-item-action" key={chatroom.id} onClick={(e)=> {e.stopPropagation(); e.preventDefault();clickChatListTitleHandler(chatroom);}}>
                   <div className="d-flex w-100 justify-content-between">
-                    <h5 className="mb-1">{(userState.userlist.find(element => element.id===chatroom.opponent_id))?.username ?? ''}</h5>
+                    <h5 className="mb-1">{(userState.userlist.find(element => element.id===chatroom.opponent_id))?.nickname ?? ''}</h5>
                     <small>{moment(chatroom.last_chat?.date).fromNow()}</small>
                   </div>
                   <p className="mb-1">{chatroom.last_chat?.content}</p>
-                  <Button className="btn-primary" onClick={()=>{handleShow(chatroom.opponent_id)}}>
-                    {`${Math.round(((userState.userlist.find(element => element.id===chatroom.opponent_id))?.temperature ?? 36.5)*10)/10} \xB0 C`}
-                  </Button>
-                  <Modal show={show} onHide={handleClose}>
-                    <Modal.Header closeButton>
+                    <Button className="btn-primary" onClick={(e)=>{e.stopPropagation(); e.preventDefault(); handleShow(chatroom.opponent_id);}}>
+                      {(userState.userlist.find(element => element.id===chatroom.opponent_id))?.nickname ?? ''} 
+                    </Button>
+                  <Modal show={show}>
+                    <Modal.Header>
+                      <button type="button" className="btn-close" aria-lable="Close" onClick={(e)=>{handleClose();  e.stopPropagation(); e.preventDefault();}}></button>
                       <Modal.Title>매너 평가를 해주세요</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>Woohoo, you're reading this text in a modal!</Modal.Body>
                     <Modal.Footer>
-                      <Button variant="success" onClick={handleBest}>
+                      <Button variant="success" onClick={(e)=>{handleBest(); e.stopPropagation(); e.preventDefault();}}>
                         최고
                       </Button>
-                      <Button variant="primary" onClick={handleGood}>
+                      <Button variant="primary" onClick={(e)=>{handleGood(); e.stopPropagation(); e.preventDefault();}}>
                         좋음
                       </Button>
-                      <Button variant="secondary" onClick={handleMed}>
+                      <Button variant="secondary" onClick={(e)=>{handleMed(); e.stopPropagation(); e.preventDefault();}}>
                         보통
                       </Button>
-                      <Button variant="warning" onClick={handleBad}>
+                      <Button variant="warning" onClick={(e)=>{handleBad(); e.stopPropagation(); e.preventDefault();}}>
                         별로
                       </Button>
-                      <Button variant="danger" onClick={handleWorst}>
+                      <Button variant="danger" onClick={(e)=>{handleWorst(); e.stopPropagation(); e.preventDefault();}}>
                         최악
                       </Button>
                     </Modal.Footer>

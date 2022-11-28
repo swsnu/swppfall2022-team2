@@ -23,6 +23,12 @@ export default function Login(){
         }
     }
 
+    const handleKeyDown = (event) => {
+        if(event.key==='Enter'){
+            handleLogin();
+        }
+    }
+
     const handleRedirect = () => {
         navigate('/signup')
     }
@@ -57,7 +63,7 @@ export default function Login(){
                         </Form.Group>
                         <Form.Group className="mb-3">
                             <Form.Label>Enter Password</Form.Label>
-                            <Form.Control type="password" placeholder="password" onChange={event => setPassword(event.target.value)}/>
+                            <Form.Control type="password" placeholder="password" onKeyDown={(event)=>{handleKeyDown(event)}} onChange={event => setPassword(event.target.value)}/>
                         </Form.Group>
                         <Button className="mb-3" variant='primary' onClick={handleLogin}>
                             Login!

@@ -65,7 +65,8 @@ def user_list(request):
             user_all_list = []
             user_set = User.objects.all()
             for user in user_set.iterator():
-                user_all_list.append({"id": user.id, "username": user.username, "temperature": user.userinfo.temperature})
+                user_info = user.userinfo
+                user_all_list.append({"id": user.id, "nickname": user_info.nickname})
             return JsonResponse(user_all_list, safe=False)
         else: # not signed in
             return HttpResponse(status=401)

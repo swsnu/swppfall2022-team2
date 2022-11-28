@@ -18,8 +18,7 @@ export interface LoginFormType {
 
 export interface UserType {
   id: number;
-  username: string;
-  temperature: number;
+  nickname: string;
 }
 
 export interface ChatType {

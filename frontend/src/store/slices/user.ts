@@ -32,7 +32,9 @@ export interface ChatType {
 
 export interface ChatRoomType {
   id: number;
-  opponent_id: number;
+  roomtype: string;
+  user_id: number[];
+  name: string;
   last_chat: ChatType;
 }
 
@@ -107,6 +109,14 @@ export const createChatRoom = createAsyncThunk(
   },
 );
 
+export const deleteChatRoom = createAsyncThunk(
+  'user/deleteChatRoom',
+  async (chatroom: ChatRoomType, { dispatch }) => {
+    const response = await axios.delete(`chat/chatroom/${chatroom.id}/`);
+    dispatch(userActions.removeChatRoom(chatroom));
+  },
+);
+
 export const setTemperature = createAsyncThunk(
   'user/setTemperature',
   async (Form: TemperatureFormType, { dispatch }) => {
@@ -136,6 +146,10 @@ export const userSlice = createSlice({
     },
     addChatRoom: (state, action: PayloadAction<ChatRoomType>) => {
       state.loggedinuser?.chatrooms.push(action.payload);
+    },
+
+    removeChatRoom: (state, action: PayloadAction<ChatRoomType>) => {
+      state.loggedinuser?.chatrooms.filter((element)=>element.id!==action.payload.id)
     },
   },
   extraReducers: (builder) => {},

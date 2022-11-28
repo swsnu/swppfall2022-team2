@@ -23,7 +23,7 @@ export default function Login(){
         }
     }
 
-    const handleKeyDown = (event) => {
+    const handleKeyDown = (event:any) => {
         if(event.key==='Enter'){
             handleLogin();
         }

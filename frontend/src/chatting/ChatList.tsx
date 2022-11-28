@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { selectUser, ChatRoomType, setTemperature, userActions } from '../store/slices/user';
+import React, { useState, useEffect } from 'react';
+import { selectUser, ChatRoomType, setTemperature, userActions, deleteChatRoom } from '../store/slices/user';
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from '../store';
 import { useNavigate } from "react-router-dom";
@@ -7,6 +7,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import moment from 'moment';
 import  Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
+import axios from 'axios';
 
 export interface TemperatureFormType {
   user: number;
@@ -18,7 +19,8 @@ const ChatList: React.FunctionComponent = () => {
     const userState = useSelector(selectUser);
     const navigate = useNavigate();
     const dispatch = useDispatch<AppDispatch>();
-
+    const [chatlist, setChatlist] = useState({"chatrooms": userState.loggedinuser?.chatrooms})
+    
     const [show, setShow] = useState(false);
     const [chatuser, setChatuser] = useState(0);
     const handleClose = () => setShow(false);
@@ -59,44 +61,62 @@ const ChatList: React.FunctionComponent = () => {
         navigate(`/chatroom/${chatroom.id}`);   
     }
 
+    const closeChatroom= (chatroom: ChatRoomType)=>{
+      // problem if you enable this function, it redirects to the the chatroom page before 
+        dispatch(deleteChatRoom(chatroom))
+      axios
+      .get(`/chat/user/${userState.loggedinuser?.user.id}/`)
+      .then((response)=>{
+      setChatlist({...chatlist, 
+      chatrooms: response.data
+      });
+    })
+    .catch((err) => {console.log(err)})
+  }
+
     return(
         <div className="card chat-list overflow-auto">
           <h5 className="card-title">Chating Rooms</h5>
             <div className="list-group">
-              {userState.loggedinuser?.chatrooms.map((chatroom)=>(
+              {chatlist.chatrooms!.map((chatroom)=>(
                 <a className="list-group-item list-group-item-action" key={chatroom.id} onClick={(e)=> {e.stopPropagation(); e.preventDefault();clickChatListTitleHandler(chatroom);}}>
                   <div className="d-flex w-100 justify-content-between">
-                    <h5 className="mb-1">{(userState.userlist.find(element => element.id===chatroom.opponent_id))?.nickname ?? ''}</h5>
+                      <h5 className="mb-1">{chatroom.name}</h5>
                     <small>{moment(chatroom.last_chat?.date).fromNow()}</small>
+                    <button type="button" className="btn-close" aria-lable="Close" onClick={(e)=>{e.stopPropagation(); e.preventDefault();closeChatroom(chatroom);}}></button>
                   </div>
                   <p className="mb-1">{chatroom.last_chat?.content}</p>
-                    <Button className="btn-primary" onClick={(e)=>{e.stopPropagation(); e.preventDefault(); handleShow(chatroom.opponent_id);}}>
-                      {(userState.userlist.find(element => element.id===chatroom.opponent_id))?.nickname ?? ''} 
-                    </Button>
-                  <Modal show={show}>
-                    <Modal.Header>
-                      <button type="button" className="btn-close" aria-lable="Close" onClick={(e)=>{handleClose();  e.stopPropagation(); e.preventDefault();}}></button>
-                      <Modal.Title>매너 평가를 해주세요</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>Woohoo, you're reading this text in a modal!</Modal.Body>
-                    <Modal.Footer>
-                      <Button variant="success" onClick={(e)=>{handleBest(); e.stopPropagation(); e.preventDefault();}}>
-                        최고
-                      </Button>
-                      <Button variant="primary" onClick={(e)=>{handleGood(); e.stopPropagation(); e.preventDefault();}}>
-                        좋음
-                      </Button>
-                      <Button variant="secondary" onClick={(e)=>{handleMed(); e.stopPropagation(); e.preventDefault();}}>
-                        보통
-                      </Button>
-                      <Button variant="warning" onClick={(e)=>{handleBad(); e.stopPropagation(); e.preventDefault();}}>
-                        별로
-                      </Button>
-                      <Button variant="danger" onClick={(e)=>{handleWorst(); e.stopPropagation(); e.preventDefault();}}>
-                        최악
-                      </Button>
-                    </Modal.Footer>
-                  </Modal>
+                      {chatroom.user_id.map((userid) =>(
+                        <a>
+                        <Button className="btn-primary" onClick={(e)=>{e.stopPropagation(); e.preventDefault(); handleShow(userid);}}>
+                          {(userState.userlist.find(element => element.id===userid))?.nickname ?? ''} 
+                        </Button>
+                            <Modal show={show}>
+                            <Modal.Header>
+                              <button type="button" className="btn-close" aria-lable="Close" onClick={(e)=>{handleClose();  e.stopPropagation(); e.preventDefault();}}></button>
+                              <Modal.Title>매너 평가를 해주세요</Modal.Title>
+                            </Modal.Header>
+                            <Modal.Body>Woohoo, you're reading this text in a modal!</Modal.Body>
+                            <Modal.Footer>
+                              <Button variant="success" onClick={(e)=>{handleBest(); e.stopPropagation(); e.preventDefault();}}>
+                                최고
+                              </Button>
+                              <Button variant="primary" onClick={(e)=>{handleGood(); e.stopPropagation(); e.preventDefault();}}>
+                                좋음
+                              </Button>
+                              <Button variant="secondary" onClick={(e)=>{handleMed(); e.stopPropagation(); e.preventDefault();}}>
+                                보통
+                              </Button>
+                              <Button variant="warning" onClick={(e)=>{handleBad(); e.stopPropagation(); e.preventDefault();}}>
+                                별로
+                              </Button>
+                              <Button variant="danger" onClick={(e)=>{handleWorst(); e.stopPropagation(); e.preventDefault();}}>
+                                최악
+                              </Button>
+                                </Modal.Footer>
+                              </Modal>
+                      </a>
+                      ))}
                 </a>
               ))}
             </div>

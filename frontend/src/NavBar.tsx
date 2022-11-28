@@ -20,7 +20,7 @@ const NavBar: React.FunctionComponent = () => {
     navigate('/main');
   };
   const handleLogout = () => {
-    try{dispatch(setSignOut(userState.loggedinuser?.user ?? { id: 0, username: 'noone', temperature: 0}))}
+    try{dispatch(setSignOut(userState.loggedinuser?.user ?? { id: 0, nickname: 'noone'}))}
         catch(err){
             
         }
@@ -66,7 +66,7 @@ const NavBar: React.FunctionComponent = () => {
               Logout
             </a>
             <span className='loginusertext'>
-              Logged in as {userState.loggedinuser?.user.username}
+              Logged in as {userState.loggedinuser?.user.nickname}
             </span>
           </div>
         </div>

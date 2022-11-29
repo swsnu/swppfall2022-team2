@@ -13,6 +13,8 @@ export interface signUpStatusType{
     mbti: string;
     gender: string;
     nickname: string;
+    birth: string;
+    email: string;
 }
 
 export default function SignUp(){
@@ -25,6 +27,8 @@ export default function SignUp(){
         mbti: '',
         gender: '',
         nickname: '',
+        birth: '',
+        email: '',
     });
     const handleName = (e: React.BaseSyntheticEvent) : void => {
         handleSignUpStatus({ ...signUpStatus, name: e.target.value });
@@ -38,16 +42,21 @@ export default function SignUp(){
     const handleNickname = (e: React.BaseSyntheticEvent) : void => {
         handleSignUpStatus({ ...signUpStatus, nickname: e.target.value });
     };
+    const handleBirth = (e: React.BaseSyntheticEvent) : void => {
+        handleSignUpStatus({ ...signUpStatus, birth: e.target.value });
+    };
     const navigate = useNavigate();
 
     const handleSignUp = () => {
-        try{dispatch(setSignUp({username: username, password: password}))
+        try{dispatch(setSignUp({username: username, password: password, name: signUpStatus.name,
+            mbti: signUpStatus.mbti, gender: signUpStatus.gender, nickname: signUpStatus.nickname,
+            birth: signUpStatus.birth, email: signUpStatus.email}))
             alert('회원 가입이 정상적으로 완료되었습니다.');
             navigate('/login');
         
         }
         catch(err){
-
+            alert('예기치 않은 오류가 발생했습니다.');
         }
     }
 
@@ -110,7 +119,7 @@ export default function SignUp(){
                         </Form.Group>
                         <Form.Group className="mb-3">
                             <Form.Label>생년월일</Form.Label>
-                            <Form.Control type="text" placeholder="XXXX.XX.XX 형태로 입력해주세요." maxLength={10}/>
+                            <Form.Control type="text" placeholder="YYMMDD 형태로 입력해주세요. 예) 970816" maxLength={6} onChange={handleBirth}/>
                         </Form.Group>
                         <Form.Group className="mb-3">
                             <Form.Label>MBTI</Form.Label>
@@ -136,7 +145,7 @@ export default function SignUp(){
                         </Form.Group>
                         <Form.Group className="mb-3">
                             <Form.Label>이메일</Form.Label>
-                            <Form.Control type="text" placeholder="youremail@snu.ac.kr" maxLength={30}/>
+                            <Form.Control type="text" placeholder="youremail@snu.ac.kr" maxLength={100}/>
                         </Form.Group>
                         <Button className="mb-3" variant='primary' onClick={handleSignUp}>
                             가입하기

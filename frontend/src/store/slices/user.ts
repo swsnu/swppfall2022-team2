@@ -14,6 +14,12 @@ export interface MenuType {
 export interface LoginFormType {
   username: string;
   password: string;
+  nickname: string;
+  name: string;
+  mbti: string;
+  gender: string;
+  birth: string;
+  email: string;
 }
 
 export interface UserType {

@@ -1,4 +1,10 @@
+import axios from 'axios';
 import React, { useEffect, useState } from 'react';
+import { Button } from 'react-bootstrap';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router';
+import { AppDispatch } from '../store';
+import { createChatRoom, selectUser, userActions, ChatRoomType } from '../store/slices/user';
 import './MatchingStatus.css';
 interface matchedOpponentType {
   id: number;
@@ -17,10 +23,14 @@ interface propsType {
 }
 const GroupMatchingStatus: React.FC<propsType> = (props) => {
   const { matched, matchedOpponents, numMatching, matchedCondition } = props;
+  const navigate = useNavigate();
+  const dispatch = useDispatch<AppDispatch>();
+  const userState = useSelector(selectUser);
+
   const [shownTime, handleShownTime] = useState<string>('');
   useEffect(() => {
     let time;
-    switch (matchedCondition.time) {
+    switch (String(matchedCondition.time)) {
       case '1200':
         time = '12:00';
         break;
@@ -45,6 +55,49 @@ const GroupMatchingStatus: React.FC<propsType> = (props) => {
     }
     handleShownTime(time);
   });
+  const checkSameChatRoom: (arr1: number[], arr2: number[]) => boolean = (arr1, arr2) => {
+    // checks whether the two array is same regardless of order
+    if (arr1.length === arr2.length) {
+      for (let i = 0; i < arr1.length; i++) {
+        if (!arr2.includes(arr1[i])) {
+          return false;
+        }
+      }
+    }
+    return true;
+  };
+  const makeChat: () => void = () => {
+    if (matchedOpponents !== null && userState.loggedinuser?.user !== undefined) {
+      axios
+        .get(`/chat/user/${userState.loggedinuser?.user.id}/`)
+        .then((response) => {
+          const matchedOpponentsIds: number[] = matchedOpponents.map((opponent) => opponent.id);
+          if (userState.loggedinuser?.user !== undefined) {
+            dispatch(
+              userActions.updateLoggedInUser({
+                user: userState.loggedinuser?.user,
+                chatrooms: response.data,
+              }),
+            );
+            const chatRoomId = response.data.find((chatroom: ChatRoomType) =>
+              checkSameChatRoom(chatroom.user_id, matchedOpponentsIds),
+            )?.id;
+            if (chatRoomId !== undefined) {
+              navigate(`/chatroom/${chatRoomId}`);
+            } else {
+              void dispatch(
+                createChatRoom([userState.loggedinuser.user.id, ...matchedOpponentsIds]),
+              ).then((response) => {
+                // there is a problem in testing below navigate
+                // eslint-disable-next-line
+                navigate(`/chatroom/${response.payload}`);
+              });
+            }
+          }
+        })
+        .catch(() => {});
+    }
+  };
   return matched ? (
     <div>
       <div>
@@ -56,10 +109,9 @@ const GroupMatchingStatus: React.FC<propsType> = (props) => {
         {matchedOpponents?.map((opponent) => (
           <h3 key={opponent.id}>{opponent.name}</h3>
         ))}
-        {/*
         <Button className='chatButton' variant='secondary' size='lg' onClick={makeChat}>
-          채팅시작
-        </Button> */}
+          그룹채팅시작
+        </Button>
       </div>
     </div>
   ) : (

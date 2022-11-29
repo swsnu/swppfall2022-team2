@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from mypage.models import UserInfo
 from datetime import datetime
 import json
-from .models import MatchingQueue, GroupMatchingEntity, GroupMatchingQueue
+from .models import MatchingQueue, GroupMatchingEntity, GroupMatchingQueue, MatchingEntity
 class MatchTestCase(TestCase):
     def setUp(self):
         user1 = User.objects.create_user(username="user1", password="pw1")
@@ -446,3 +446,23 @@ class MatchTestCase(TestCase):
          content_type='application/json')
         response2=client2.delete('/matching/group/stop/')
         self.assertEqual(response2.status_code,200)
+    
+    def test_check_block_user(self):
+        queue=MatchingQueue()
+        queue.save()
+        user1=User.objects.get(username="user1")
+        user2=User.objects.get(username="user2")
+        userinfo1=user1.userinfo
+        userinfo1.blocked_users.append(user2.id)
+        userinfo1.save()
+        userinfo2=user2.userinfo
+        entity1=MatchingEntity(user=user1, user_mbti=userinfo1.mbti,user_gender=userinfo1.gender,
+            user_age=userinfo1.age,time='', space='', mbti_wanted=[], gender_wanted='', 
+            age_wanted_from='0', age_wanted_to='100', queue=queue, time_matching=datetime.now())
+        entity2=MatchingEntity(user=user2, user_mbti=userinfo2.mbti,user_gender=userinfo2.gender,
+            user_age=userinfo2.age,time='', space='', mbti_wanted=[], gender_wanted='', 
+            age_wanted_from='0', age_wanted_to='100', queue=queue, time_matching=datetime.now())
+        response=queue.check_block_user(entity1, entity2)
+        self.assertEqual(response,False)
+        response=queue.check_block_user(entity2, entity1)
+        self.assertEqual(response,False)

@@ -13,7 +13,7 @@ import { Provider, useDispatch } from 'react-redux';
 import { MemoryRouter, Route, Routes } from 'react-router';
 import axios from 'axios';
 const initialState: UserInfoType = {
-  loggedinuser: { user: { id: 3, username: 'test', temperature: 36.5 }, chatrooms: [] },
+  loggedinuser: { user: { id: 3, nickname: 'test' }, chatrooms: [] },
   menulist: [],
   userlist: [],
   chosenchatroom: null,
@@ -189,8 +189,8 @@ describe('MatchingCondition', () => {
   it('makechat when exist', async () => {
     axios.get = jest.fn().mockResolvedValue({
       data: [
-        { id: 1, opponent_id: 3 },
-        { id: 2, opponent_id: 1 },
+        { id: 1, user_id: [3] },
+        { id: 2, user_id: [1] },
       ],
     });
     render(status);
@@ -200,7 +200,7 @@ describe('MatchingCondition', () => {
   });
   it('makechat when not exist', async () => {
     axios.get = jest.fn().mockResolvedValue({
-      data: [{ id: 7, opponent_id: 7 }],
+      data: [{ id: 7, user_id: [7] }],
     });
     render(status);
     const makeChatButton = screen.getByText('채팅시작');

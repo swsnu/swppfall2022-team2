@@ -61,7 +61,7 @@ export const setSignUp = createAsyncThunk(
   'user/setSignUp',
   async (loginForm: LoginFormType, { dispatch }) => {
     const response = await axios.post('/chat/user/signup/', loginForm);
-    return response
+    return response;
   },
 );
 
@@ -94,14 +94,16 @@ export const setSignOut = createAsyncThunk(
     const response = await axios.get('/chat/user/signout/');
     dispatch(userActions.updateLoggedInUser(null));
     dispatch(userActions.updateUserList([]));
-    return response
+    return response;
   },
 );
 
 export const createChatRoom = createAsyncThunk(
   'user/createChatRoom',
-  async (chatOpponent: number, { dispatch }) => {
-    const chatpost = { opponent: chatOpponent };
+  async (chatOpponents: number[], { dispatch }) => {
+    // chatOpponents should also include the user self
+    let roomtype: string = chatOpponents.length === 2 ? '개인' : '단체';
+    const chatpost = { users: chatOpponents, roomtype: roomtype };
     const response = await axios.post('chat/chatroom/', chatpost);
     dispatch(userActions.selectChatRoom(response.data));
     dispatch(userActions.addChatRoom(response.data));
@@ -125,8 +127,8 @@ export const deleteChatRoom = createAsyncThunk(
 export const setTemperature = createAsyncThunk(
   'user/setTemperature',
   async (Form: TemperatureFormType, { dispatch }) => {
-    const response = await axios.post(`/mypage/temp/${Form.user}/`, {"eval":Form.eval});
-    return response
+    const response = await axios.post(`/mypage/temp/${Form.user}/`, { eval: Form.eval });
+    return response;
   },
 );
 

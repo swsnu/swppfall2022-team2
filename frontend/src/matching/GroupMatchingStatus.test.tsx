@@ -13,7 +13,7 @@ import { Provider, useDispatch } from 'react-redux';
 import { MemoryRouter, Route, Routes } from 'react-router';
 import axios from 'axios';
 const initialState: UserInfoType = {
-  loggedinuser: { user: { id: 3, username: 'test', temperature: 36.5 }, chatrooms: [] },
+  loggedinuser: { user: { id: 3, nickname: 'test' }, chatrooms: [] },
   menulist: [],
   userlist: [],
   chosenchatroom: null,
@@ -113,5 +113,48 @@ describe('MatchingCondition', () => {
       </Provider>
     );
     render(status);
+  });
+  it('makechat when exist', async () => {
+    axios.get = jest.fn().mockResolvedValue({
+      data: [
+        { id: 1, user_id: [1, 2] },
+        { id: 2, user_id: [1] },
+      ],
+    });
+    render(status);
+    const makeChatButton = screen.getByText('그룹채팅시작');
+    fireEvent.click(makeChatButton!);
+    await waitFor(() => expect(mockNavigate).toHaveBeenCalled());
+  });
+  it('makechat when not exist1 : test checkSameChatRoom', async () => {
+    axios.get = jest.fn().mockResolvedValue({
+      data: [{ id: 7, user_id: [7] }],
+    });
+    render(status);
+    const makeChatButton = screen.getByText('그룹채팅시작');
+    fireEvent.click(makeChatButton!);
+    await waitFor(() => expect(mockDispatch).toHaveBeenCalled());
+    // await waitFor(() => expect(mockNavigate).toHaveBeenCalled());
+  });
+  it('makechat when not exist2 : test checkSameChatRoom', async () => {
+    axios.get = jest.fn().mockResolvedValue({
+      data: [
+        { id: 7, user_id: [7, 8] },
+        { id: 8, user_id: [8] },
+      ],
+    });
+    render(status);
+    const makeChatButton = screen.getByText('그룹채팅시작');
+    fireEvent.click(makeChatButton!);
+    await waitFor(() => expect(mockDispatch).toHaveBeenCalled());
+  });
+  it('makechat when not exist3 : undefined chatRoomId', async () => {
+    axios.get = jest.fn().mockResolvedValue({
+      data: [],
+    });
+    render(status);
+    const makeChatButton = screen.getByText('그룹채팅시작');
+    fireEvent.click(makeChatButton!);
+    await waitFor(() => expect(mockDispatch).toHaveBeenCalled());
   });
 });

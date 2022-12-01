@@ -1,12 +1,17 @@
 .sign-up {
     position: absolute;
     background-color: rgba(0,0,0,0.2);
-    height:calc(150%);
+    height:calc(170%);
     width:calc(100%);
     mix-blend-mode: normal;
 }
 
 form {
     background-color: white;
+    
+}
+
+.errormessage{
+    color: #ff0000
     
 }

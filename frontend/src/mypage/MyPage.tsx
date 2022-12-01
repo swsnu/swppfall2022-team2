@@ -67,11 +67,17 @@ const MyPage: React.FunctionComponent = () => {
           alert("변경 사항이 저장되었습니다.");
           location.reload();
         }
+        else{
+          alert("예기치 않은 오류가 발생했습니다.");
+        }
       })
       .catch((err) => {
+        alert("예기치 않은 오류가 발생했습니다.");
         console.log(err.response.data);
       });
-    } catch(err){console.log(err);}
+    } catch(err){
+        alert("예기치 않은 오류가 발생했습니다.");
+        console.log(err);}
     console.log('Submitted User Status:', status);
   },[status]
   );

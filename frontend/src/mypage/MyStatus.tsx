@@ -37,8 +37,8 @@ const MyStatus: React.FC<propsType> = (props:propsType) => {
         }
         /*
         else if(e.target.value.length > 30){
-            setNicknameErrorMessage('이름이 너무 깁니다.');
-            setNicknameIsValid(false);
+            setNameErrorMessage('이름이 너무 깁니다.');
+            setNameIsValid(false);
         */
         else if (!nameReg.test(e.target.value)) {
             setNameErrorMessage('허용되지 않는 문자가 포함되어 있습니다.')
@@ -52,12 +52,21 @@ const MyStatus: React.FC<propsType> = (props:propsType) => {
     const handleBirth = (e: React.BaseSyntheticEvent) : void => {
         handleStatus({ ...status, birth: e.target.value });
         setSomethingModified(true);
-        const birthReg = /^[0-9]{6}$/; //수정 필요
+        const birthReg = /^[0-9]{2}(0[1-9]|1[0-2])(0[1-9]|[1-2][0-9]|3[0-1])$/;
         if(e.target.value.length < 6){
             setBirthErrorMessage('올바른 형식으로 입력해주세요.');
             setBirthIsValid(false);
         }
         else if (!birthReg.test(e.target.value)) {
+            setBirthErrorMessage('올바른 형식으로 입력해주세요.')
+            setBirthIsValid(false);
+        }
+        else if(+e.target.value%100 === 31 && 
+            ((~~(+e.target.value/100))%100 === 4 || (~~(+e.target.value/100))%100 === 6 || (~~(+e.target.value/100))%100 === 9 || (~~(+e.target.value/100))%100 === 11)) {
+            setBirthErrorMessage('올바른 형식으로 입력해주세요.')
+            setBirthIsValid(false);
+        }
+        else if((~~(+e.target.value/100))%100 === 2 && (~~(+e.target.value/10))%10 === 3) {
             setBirthErrorMessage('올바른 형식으로 입력해주세요.')
             setBirthIsValid(false);
         }
@@ -88,7 +97,7 @@ const MyStatus: React.FC<propsType> = (props:propsType) => {
         setSomethingModified(true);
     };
     const handleNickname = (e: React.BaseSyntheticEvent) : void => {
-        //TODO: check nickname whether it is duplicated
+        // TODO: check nickname whether it is duplicated
         handleStatus({ ...status, nickname: e.target.value });
         setSomethingModified(true);
         const nicknameReg = /^[a-zA-Z가-힣0-9]{2,10}$/;
@@ -133,7 +142,7 @@ const MyStatus: React.FC<propsType> = (props:propsType) => {
             <Row className='mb-3'>
                 <Form.Group as={Col}>
                     <Form.Label>생년월일</Form.Label>
-                    <Form.Control name="birth" defaultValue={status.birth} type="text" placeholder='YYMMDD 형태로 입력해주세요. 예) 970816' onChange={handleBirth} maxLength={3}/>
+                    <Form.Control name="birth" defaultValue={status.birth} type="text" placeholder='YYMMDD 형태로 입력해주세요. 예) 970816' onChange={handleBirth} maxLength={6}/>
                     {<span className='errormessage'> {birthErrorMessage}</span>}
                 </Form.Group>
                 <Form.Group as={Col}>

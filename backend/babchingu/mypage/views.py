@@ -19,7 +19,7 @@ def mypage_submit(request):# mypage/submit/
         user_info.gender=data['gender']
         user_info.name=data['name']
         user_info.intro=data['intro']
-        user_info.age=data['age']
+        user_info.birth=data['birth']
         user_info.nickname=data['nickname']
         #user_info.time_table
         user_info.save()
@@ -81,7 +81,7 @@ def mypage_get(request):# mypage/get/
         user=request.user
         user_info=user.userinfo
         response_dict = {'mbti': user_info.mbti, 'gender': user_info.gender, 'name':user_info.name, \
-            'temperature':user_info.temperature, 'intro':user_info.intro, 'age':user_info.age, \
+            'temperature':user_info.temperature, 'intro':user_info.intro, 'birth':user_info.birth, \
             'nickname':user_info.nickname,'timeTable':user_info.time_table}
         return JsonResponse(response_dict)
     else:

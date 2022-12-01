@@ -45,6 +45,9 @@ export default function SignUp(){
     const handleBirth = (e: React.BaseSyntheticEvent) : void => {
         handleSignUpStatus({ ...signUpStatus, birth: e.target.value });
     };
+    const handleEmail = (e: React.BaseSyntheticEvent) : void => {
+        handleSignUpStatus({ ...signUpStatus, email: e.target.value });
+    };
     const navigate = useNavigate();
 
     const handleSignUp = () => {
@@ -145,7 +148,7 @@ export default function SignUp(){
                         </Form.Group>
                         <Form.Group className="mb-3">
                             <Form.Label>이메일</Form.Label>
-                            <Form.Control type="text" placeholder="youremail@snu.ac.kr" maxLength={100}/>
+                            <Form.Control type="text" placeholder="youremail@snu.ac.kr" maxLength={100} onChange={handleEmail}/>
                         </Form.Group>
                         <Button className="mb-3" variant='primary' onClick={handleSignUp}>
                             가입하기

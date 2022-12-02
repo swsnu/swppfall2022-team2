@@ -61,13 +61,12 @@ const NavBar: React.FunctionComponent = () => {
             <a className='nav-link' onClick={handleMyPage}>
               MyPage
             </a>
-            <a className='nav-link'>Board</a>
-            <a className='nav-link-logout' onClick={handleLogout}>
-              Logout
-            </a>
             <span className='loginusertext'>
               Logged in as {userState.loggedinuser?.user.nickname}
             </span>
+            <a className='nav-link-logout' onClick={handleLogout}>
+              Logout
+            </a>
           </div>
         </div>
       </div>

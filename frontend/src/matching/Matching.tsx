@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { useSelector } from 'react-redux';
-import { selectUser } from '../store/slices/user';
+import { useDispatch, useSelector } from 'react-redux';
+import { setSignIn, selectUser } from '../store/slices/user';
 import MatchingCondition from './MatchingCondition';
 import MatchingStatus from './MatchingStatus';
 import './Matching.css';
@@ -11,6 +11,7 @@ import NavBar from '../NavBar';
 import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
 import GroupMatching from './GroupMatching';
+import { AppDispatch } from '../store';
 export interface conditionType {
   // this is temporary because another type for time and space is needed
   time: string;
@@ -143,7 +144,7 @@ const Matching: React.FunctionComponent = () => {
             gender: response.data.gender,
             age: response.data.age,
             id: response.data.id,
-            name: String(response.data.last_name) + String(response.data.first_name),
+            name: String(response.data.name),
           });
         } else if (response.status === 201) {
           handleMatchingId(response.data.id);
@@ -163,8 +164,14 @@ const Matching: React.FunctionComponent = () => {
     checkMatching();
   }, 5000);
 
+  const dispatch = useDispatch<AppDispatch>();
   if (userState.loggedinuser === null) {
-    return <Navigate to='/login' />;
+    if (window.localStorage.getItem('Token') !== null) {
+      dispatch(setSignIn(Number(window.localStorage.getItem('id'))));
+      console.log(window.localStorage.getItem('id'));
+    } else {
+      return <Navigate to='/login' />;
+    }
   }
 
   return (

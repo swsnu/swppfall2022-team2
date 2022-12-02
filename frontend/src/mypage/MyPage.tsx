@@ -5,7 +5,10 @@ import MyStatus from './MyStatus';
 import MyTimeTable from './MyTimeTable';
 import axios from 'axios';
 import NavBar from '../NavBar';
-
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch } from '../store';
+import { setSignIn, selectUser } from '../store/slices/user';
+import { Navigate } from 'react-router-dom';
 
 export interface statusType {
   name: string;
@@ -31,73 +34,91 @@ const MyPage: React.FunctionComponent = () => {
   });
 
   // fetch status from userinfo model
-  useEffect(()=>{
+  useEffect(() => {
     axios
-    .get(`mypage/get/`)
-    .then((response)=>{
-      handleStatus({...status, 
-      name : response.data.name,
-      mbti : response.data.mbti,
-      intro : response.data.intro,
-      birth : response.data.birth,
-      gender : response.data.gender,
-      nickname : response.data.nickname,
-      timeTable : response.data.timeTable,
-      temperature : response.data.temperature,});
-    })
-    .catch((err) => {console.log(err)})
-  },[]);
-  
-  // submit changes
-  const statusSubmit = useCallback(async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    try {
-    await axios
-      .post(`mypage/submit/`, {
-        name: status.name,
-        mbti: status.mbti,
-        intro: status.intro,
-        birth: status.birth,
-        gender: status.gender,
-        nickname: status.nickname,
-        timeTable: status.timeTable,
-      })
-      .then((res) => {
-        if (res.status === 200){
-          alert("변경 사항이 저장되었습니다.");
-          location.reload();
-        }
-        else{
-          alert("예기치 않은 오류가 발생했습니다.");
-        }
+      .get(`mypage/get/`)
+      .then((response) => {
+        handleStatus({
+          ...status,
+          name: response.data.name,
+          mbti: response.data.mbti,
+          intro: response.data.intro,
+          birth: response.data.birth,
+          gender: response.data.gender,
+          nickname: response.data.nickname,
+          timeTable: response.data.timeTable,
+          temperature: response.data.temperature,
+        });
       })
       .catch((err) => {
-        alert("예기치 않은 오류가 발생했습니다.");
-        console.log(err.response.data);
+        console.log(err);
       });
-    } catch(err){
-        alert("예기치 않은 오류가 발생했습니다.");
-        console.log(err);}
-    console.log('Submitted User Status:', status);
-  },[status]
+  }, []);
+
+  const dispatch = useDispatch<AppDispatch>();
+  const userState = useSelector(selectUser);
+
+  if (userState.loggedinuser === null) {
+    if (window.localStorage.getItem('Token') !== null) {
+      dispatch(setSignIn(Number(window.localStorage.getItem('id'))));
+      console.log(window.localStorage.getItem('id'));
+    } else {
+      return <Navigate to='/login' />;
+    }
+  }
+
+  // submit changes
+  const statusSubmit = useCallback(
+    async (e: React.FormEvent<HTMLFormElement>) => {
+      e.preventDefault();
+      try {
+        await axios
+          .post(`mypage/submit/`, {
+            name: status.name,
+            mbti: status.mbti,
+            intro: status.intro,
+            birth: status.birth,
+            gender: status.gender,
+            nickname: status.nickname,
+            timeTable: status.timeTable,
+          })
+          .then((res) => {
+            if (res.status === 200) {
+              alert('변경 사항이 저장되었습니다.');
+              location.reload();
+            } else {
+              alert('예기치 않은 오류가 발생했습니다.');
+            }
+          })
+          .catch((err) => {
+            alert('예기치 않은 오류가 발생했습니다.');
+            console.log(err.response.data);
+          });
+      } catch (err) {
+        alert('예기치 않은 오류가 발생했습니다.');
+        console.log(err);
+      }
+      console.log('Submitted User Status:', status);
+    },
+    [status],
   );
   return (
     <div>
       <NavBar />
       <div className='manner'>
-        <MyManner temperature={status.temperature}/>
+        <MyManner temperature={status.temperature} />
       </div>
       <div className='others card overflow-auto'>
-        <div className="card-header">
-            <h5 className="card-title">프로필 설정</h5>
+        <div className='card-header'>
+          <h5 className='card-title'>프로필 설정</h5>
         </div>
         <div className='pad'>
-            <div>
-                <MyStatus status={status} handleStatus={handleStatus} statusSubmit={statusSubmit}/>
-            </div>
-            <div>
-                <MyTimeTable status={status} handleStatus={handleStatus} />
-            </div>
+          <div>
+            <MyStatus status={status} handleStatus={handleStatus} statusSubmit={statusSubmit} />
+          </div>
+          <div>
+            <MyTimeTable status={status} handleStatus={handleStatus} />
+          </div>
         </div>
       </div>
     </div>

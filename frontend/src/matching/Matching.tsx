@@ -1,8 +1,11 @@
 import React, { useEffect, useState, useRef } from 'react';
+import { useSelector } from 'react-redux';
+import { selectUser } from '../store/slices/user';
 import MatchingCondition from './MatchingCondition';
 import MatchingStatus from './MatchingStatus';
 import './Matching.css';
 import { Button } from 'react-bootstrap';
+import { Navigate } from 'react-router-dom';
 import axios from 'axios';
 import NavBar from '../NavBar';
 import Tab from 'react-bootstrap/Tab';
@@ -47,6 +50,8 @@ export function useInterval(callback: () => void, delay: number): void {
   }, [delay]);
 }
 const Matching: React.FunctionComponent = () => {
+  const userState = useSelector(selectUser);
+
   const [matchingCondition, handleMatchingCondition] = useState<conditionType>({
     time: '0',
     space: '',
@@ -157,6 +162,11 @@ const Matching: React.FunctionComponent = () => {
     // every 5 second, check whether matched
     checkMatching();
   }, 5000);
+
+  if (userState.loggedinuser === null) {
+    return <Navigate to='/login' />;
+  }
+
   return (
     <div>
       <NavBar />

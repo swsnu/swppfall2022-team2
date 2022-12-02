@@ -16,9 +16,11 @@ class UserInfo(models.Model):
     gender=models.CharField(default='',max_length=1)
     name = models.CharField(default='',max_length=30) # 이름
     intro=models.CharField(default='',max_length=100)
-    age=models.IntegerField(default =20)
+    age=models.IntegerField(default = 20)
+    birth=models.CharField(default = '000101', max_length=6) #YYMMDD
     time_table=models.JSONField(default=timeTable_default)
     nickname = models.CharField(default='',max_length=30) # 별명
     matched_users=models.JSONField(default=empty_list) # 지금까지 매칭되었던 사람 리스트 (by user id, 중복x)
     unevaluated_users=models.JSONField(default=empty_list) #매칭되었던 사람 중 아직 온도평가안한 유저 (by user id, 중복x)
     blocked_users=models.JSONField(default=empty_list) #차단리스트 (by user id)
+    email=models.CharField(default='', max_length=130)

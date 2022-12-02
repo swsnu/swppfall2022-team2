@@ -13,6 +13,9 @@ export interface signUpStatusType{
     mbti: string;
     gender: string;
     nickname: string;
+    birth: string;
+    email: string;
+    domain: string;
 }
 
 export default function SignUp(){
@@ -20,14 +23,118 @@ export default function SignUp(){
     const dispatch = useDispatch<AppDispatch>();
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+    const [passwordConfirm, setPasswordConfirm] = useState("");
     const [signUpStatus, handleSignUpStatus] = useState<signUpStatusType>({
         name: '',
         mbti: '',
         gender: '',
         nickname: '',
+        birth: '',
+        email: '',
+        domain: '',
     });
+
+
+    const [usernameErrorMessage, setUsernameErrorMessage] = useState<string>('');
+    const [usernameIsValid, setUsernameIsValid] = useState<boolean>(false);
+
+    const [passwordErrorMessage, setPasswordErrorMessage] = useState<string>('');
+    const [passwordIsValid, setPasswordIsValid] = useState<boolean>(false);
+
+    const [passwordConfirmErrorMessage, setPasswordConfirmErrorMessage] = useState<string>('');
+    const [passwordConfirmIsValid, setPasswordConfirmIsValid] = useState<boolean>(false);
+
+    const [nameErrorMessage, setNameErrorMessage] = useState<string>('');
+    const [nameIsValid, setNameIsValid] = useState<boolean>(false);
+
+    const [nicknameErrorMessage, setNicknameErrorMessage] = useState<string>('');
+    const [nicknameIsValid, setNicknameIsValid] = useState<boolean>(false);
+
+    const [birthErrorMessage, setBirthErrorMessage] = useState<string>('');
+    const [birthIsValid, setBirthIsValid] = useState<boolean>(false);
+
+    const [emailErrorMessage, setEmailErrorMessage] = useState<string>('');
+    const [emailIsValid, setEmailIsValid] = useState<boolean>(false);
+
+    const [domainIsSelected, setDomainIsSelected] = useState<boolean>(false);
+
+    const handleUsername = (e: React.BaseSyntheticEvent) : void => {
+        setUsername(e.target.value);
+        // TODO: check username whether it is duplicated
+        const usernameReg = /^[a-zA-Z0-9]{5,20}$/ 
+        if(e.target.value.length < 5){
+            setUsernameErrorMessage('아이디가 너무 짧습니다.');
+            setUsernameIsValid(false);
+        }
+        /*
+        else if(e.target.value.length > 20){
+            setUsernameErrorMessage('이름이 너무 깁니다.');
+            setUsernameIsValid(false);
+        */
+        else if (!usernameReg.test(e.target.value)) {
+            setUsernameErrorMessage('허용되지 않는 문자가 포함되어 있습니다.')
+            setUsernameIsValid(false);
+        }
+        else{
+            setUsernameErrorMessage('');
+            setUsernameIsValid(true);
+        }
+    };
+
+    const handlePassword = (e: React.BaseSyntheticEvent) : void => {
+        setPassword(e.target.value);
+        const passwordReg = /^[!-~]{8,20}$/
+        // 영어 알파벳, 숫자, 자판으로 칠 수 있는 특수문자 허용. 그 외의 문자도 복사+붙여넣기로 입력할 수 있으니 거르는 역할
+        if(e.target.value.length < 8){
+            setPasswordErrorMessage('비밀번호가 너무 짧습니다.');
+            setPasswordIsValid(false);
+        }
+        else if(!passwordReg.test(e.target.value)){
+            setPasswordErrorMessage('허용되지 않는 문자가 포함되어 있습니다.');
+            setPasswordIsValid(false);
+        }
+        else{
+            setPasswordErrorMessage('');
+            setPasswordIsValid(true);
+        }
+        if(e.target.value !== passwordConfirm){
+            setPasswordConfirmErrorMessage('비밀번호를 똑같이 입력해주세요.');
+            setPasswordConfirmIsValid(false);
+        }
+    };
+
+    const handlePasswordConfirm = (e: React.BaseSyntheticEvent) : void => {
+        setPasswordConfirm(e.target.value);
+        if(e.target.value !== password){
+            setPasswordConfirmErrorMessage('비밀번호를 똑같이 입력해주세요.');
+            setPasswordConfirmIsValid(false);
+        }
+        else{
+            setPasswordConfirmErrorMessage('');
+            setPasswordConfirmIsValid(true);
+        }
+    };
+
     const handleName = (e: React.BaseSyntheticEvent) : void => {
         handleSignUpStatus({ ...signUpStatus, name: e.target.value });
+        const nameReg = /^[가-힣]{2,30}$/
+        if(e.target.value.length < 2){
+            setNameErrorMessage('이름이 너무 짧습니다.');
+            setNameIsValid(false);
+        }
+        /*
+        else if(e.target.value.length > 30){
+            setNameErrorMessage('이름이 너무 깁니다.');
+            setNameIsValid(false);
+        */
+        else if (!nameReg.test(e.target.value)) {
+            setNameErrorMessage('허용되지 않는 문자가 포함되어 있습니다.')
+            setNameIsValid(false);
+        }
+        else{
+            setNameErrorMessage('');
+            setNameIsValid(true);
+        }
     };
     const handleMBTI: (e: React.ChangeEvent<HTMLSelectElement>) => void = (e) => {
         handleSignUpStatus({ ...signUpStatus, mbti: e.target.value });
@@ -37,17 +144,83 @@ export default function SignUp(){
     };
     const handleNickname = (e: React.BaseSyntheticEvent) : void => {
         handleSignUpStatus({ ...signUpStatus, nickname: e.target.value });
+        // TODO: check nickname whether it is duplicated
+        const nicknameReg = /^[a-zA-Z가-힣0-9]{2,10}$/;
+        if(e.target.value.length < 2){
+            setNicknameErrorMessage('별명이 너무 짧습니다.');
+            setNicknameIsValid(false);
+        }
+        /*
+        else if(e.target.value.length > 10){
+            setNicknameErrorMessage('별명이 너무 깁니다.');
+            setNicknameIsValid(false);
+        */
+        else if (!nicknameReg.test(e.target.value)) {
+            setNicknameErrorMessage('허용되지 않는 문자가 포함되어 있습니다.')
+            setNicknameIsValid(false);
+        }
+        else{
+            setNicknameErrorMessage('');
+            setNicknameIsValid(true);
+        }
+    };
+    const handleBirth = (e: React.BaseSyntheticEvent) : void => {
+        handleSignUpStatus({ ...signUpStatus, birth: e.target.value });
+        const birthReg = /^[0-9]{2}(0[1-9]|1[0-2])(0[1-9]|[1-2][0-9]|3[0-1])$/;
+        if(e.target.value.length < 6){
+            setBirthErrorMessage('올바른 형식으로 입력해주세요.');
+            setBirthIsValid(false);
+        }
+        else if (!birthReg.test(e.target.value)) {
+            setBirthErrorMessage('올바른 형식으로 입력해주세요.')
+            setBirthIsValid(false);
+        }
+        else if(+e.target.value%100 === 31 && 
+            ((~~(+e.target.value/100))%100 === 4 || (~~(+e.target.value/100))%100 === 6 || (~~(+e.target.value/100))%100 === 9 || (~~(+e.target.value/100))%100 === 11)) {
+            setBirthErrorMessage('올바른 형식으로 입력해주세요.')
+            setBirthIsValid(false);
+        }
+        else if((~~(+e.target.value/100))%100 === 2 && (~~(+e.target.value/10))%10 === 3) {
+            setBirthErrorMessage('올바른 형식으로 입력해주세요.')
+            setBirthIsValid(false);
+        }
+        else{
+            setBirthErrorMessage('');
+            setBirthIsValid(true);
+        }
+    };
+    const handleEmail = (e: React.BaseSyntheticEvent) : void => {
+        handleSignUpStatus({ ...signUpStatus, email: e.target.value });
+        const emailReg = /^[a-zA-Z0-9\.]{1,100}$/;
+        if(e.target.value.length < 1){
+            setEmailErrorMessage('이메일을 입력해주세요.');
+            setEmailIsValid(false);
+        }
+        else if (!emailReg.test(e.target.value)) {
+            setEmailErrorMessage('허용되지 않는 문자가 포함되어 있습니다.')
+            setEmailIsValid(false);
+        }
+        else{
+            setEmailErrorMessage('');
+            setEmailIsValid(true);
+        }
+    };
+    const handleDomain: (e: React.ChangeEvent<HTMLSelectElement>) => void = (e) => {
+        handleSignUpStatus({ ...signUpStatus, domain: e.target.value });
+        setDomainIsSelected(true);
     };
     const navigate = useNavigate();
 
     const handleSignUp = () => {
-        try{dispatch(setSignUp({username: username, password: password}))
+        try{dispatch(setSignUp({username: username, password: password, name: signUpStatus.name,
+            mbti: signUpStatus.mbti, gender: signUpStatus.gender, nickname: signUpStatus.nickname,
+            birth: signUpStatus.birth, email: (signUpStatus.email+signUpStatus.domain)}))
             alert('회원 가입이 정상적으로 완료되었습니다.');
             navigate('/login');
         
         }
         catch(err){
-
+            alert('예기치 않은 오류가 발생했습니다.');
         }
     }
 
@@ -82,23 +255,28 @@ export default function SignUp(){
                     <Form className="rounded p-4 p-sm-3">
                         <Form.Group className="mb-3">
                             <Form.Label>아이디</Form.Label>
-                            <Form.Control type="username" placeholder="영문, 숫자 (5~15자 이내)" onChange={event => setUsername(event.target.value)} maxLength={15}/>
+                            <Form.Control type="username" placeholder="영문, 숫자 (5~20자 이내)" onChange={handleUsername} maxLength={20}/>
+                            {<span className='errormessage'> {usernameErrorMessage}</span>}
                         </Form.Group>
                         <Form.Group className="mb-3">
                             <Form.Label>비밀번호</Form.Label>
-                            <Form.Control type="password" placeholder="영문, 숫자, 특수문자 (8~15자 이내)" onChange={event => setPassword(event.target.value)} maxLength={15}/>
+                            <Form.Control type="password" placeholder="영문, 숫자, 특수문자 (8~20자 이내)" onChange={handlePassword} maxLength={20}/>
+                            {<span className='errormessage'> {passwordErrorMessage}</span>}
                         </Form.Group>
                         <Form.Group className="mb-3">
                             <Form.Label>비밀번호 재확인</Form.Label>
-                            <Form.Control type="password" placeholder="비밀번호를 재입력해주세요." maxLength={15}/>
+                            <Form.Control type="password" placeholder="비밀번호를 재입력해주세요." onChange={handlePasswordConfirm} maxLength={20}/>
+                            {<span className='errormessage'> {passwordConfirmErrorMessage}</span>}
                         </Form.Group>
                         <Form.Group className="mb-3">
                             <Form.Label>이름</Form.Label>
                             <Form.Control type="text" placeholder="본인의 실명입니다." maxLength={30} onChange={handleName}/>
+                            {<span className='errormessage'> {nameErrorMessage}</span>}
                         </Form.Group>
                         <Form.Group className="mb-3">
                             <Form.Label>별명</Form.Label>
                             <Form.Control type="text" placeholder="다른 이용자에게 보여질 이름입니다." maxLength={10} onChange={handleNickname}/>
+                            {<span className='errormessage'> {nicknameErrorMessage}</span>}
                         </Form.Group>
                         <Form.Group className="mb-3">
                             <Form.Label>성별</Form.Label>
@@ -110,7 +288,8 @@ export default function SignUp(){
                         </Form.Group>
                         <Form.Group className="mb-3">
                             <Form.Label>생년월일</Form.Label>
-                            <Form.Control type="text" placeholder="XXXX.XX.XX 형태로 입력해주세요." maxLength={10}/>
+                            <Form.Control type="text" placeholder="YYMMDD 형태로 입력해주세요. 예) 970816" maxLength={6} onChange={handleBirth}/>
+                            {<span className='errormessage'> {birthErrorMessage}</span>}
                         </Form.Group>
                         <Form.Group className="mb-3">
                             <Form.Label>MBTI</Form.Label>
@@ -134,11 +313,22 @@ export default function SignUp(){
                                 <option value = 'ISFP'>ISFP</option>
                             </Form.Select>
                         </Form.Group>
-                        <Form.Group className="mb-3">
-                            <Form.Label>이메일</Form.Label>
-                            <Form.Control type="text" placeholder="youremail@snu.ac.kr" maxLength={30}/>
-                        </Form.Group>
-                        <Button className="mb-3" variant='primary' onClick={handleSignUp}>
+                        <Row className='mb-3'>
+                            <Form.Label>학교 이메일</Form.Label>
+                            <Form.Group as={Col}>
+                                <Form.Control type="text" placeholder="youremail" maxLength={100} onChange={handleEmail}/>
+                                {<span className='errormessage'> {emailErrorMessage}</span>}
+                            </Form.Group>
+                            <Form.Group as={Col}>
+                                <Form.Select name='domain' defaultValue={''} onChange={handleDomain}>
+                                <option value = '' disabled>선택 안함</option>
+                                <option value = '@snu.ac.kr'>@snu.ac.kr (서울대학교)</option>
+                                </Form.Select>
+                            </Form.Group>
+                        </Row>
+                        <Button className="mb-3" variant='primary' onClick={handleSignUp}
+                        disabled={!(usernameIsValid && passwordIsValid && passwordConfirmIsValid && nicknameIsValid 
+                        && nameIsValid && birthIsValid && emailIsValid && domainIsSelected)}>
                             가입하기
                         </Button>
                         <Form.Group className="mb-3">

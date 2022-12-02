@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import './MyPage.css';
 import MyManner from './MyManner';
 import MyStatus from './MyStatus';
 import MyTimeTable from './MyTimeTable';
-import { Button, Navbar } from 'react-bootstrap';
 import axios from 'axios';
 import NavBar from '../NavBar';
 
@@ -12,7 +11,7 @@ export interface statusType {
   name: string;
   mbti: string;
   intro: string;
-  age: string;
+  birth: string;
   gender: string;
   nickname: string;
   timeTable: JSON;
@@ -24,7 +23,7 @@ const MyPage: React.FunctionComponent = () => {
     name: '',
     mbti: '',
     intro: '',
-    age: '',
+    birth: '',
     gender: '',
     nickname: '',
     timeTable: JSON.parse('{}'),
@@ -40,7 +39,7 @@ const MyPage: React.FunctionComponent = () => {
       name : response.data.name,
       mbti : response.data.mbti,
       intro : response.data.intro,
-      age : response.data.age,
+      birth : response.data.birth,
       gender : response.data.gender,
       nickname : response.data.nickname,
       timeTable : response.data.timeTable,
@@ -50,23 +49,38 @@ const MyPage: React.FunctionComponent = () => {
   },[]);
   
   // submit changes
-  const statusSubmit = (): void => {
-    alert("변경 사항이 저장되었습니다.");
-    axios
+  const statusSubmit = useCallback(async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    try {
+    await axios
       .post(`mypage/submit/`, {
         name: status.name,
         mbti: status.mbti,
         intro: status.intro,
-        age: status.age,
+        birth: status.birth,
         gender: status.gender,
         nickname: status.nickname,
         timeTable: status.timeTable,
       })
+      .then((res) => {
+        if (res.status === 200){
+          alert("변경 사항이 저장되었습니다.");
+          location.reload();
+        }
+        else{
+          alert("예기치 않은 오류가 발생했습니다.");
+        }
+      })
       .catch((err) => {
+        alert("예기치 않은 오류가 발생했습니다.");
         console.log(err.response.data);
       });
+    } catch(err){
+        alert("예기치 않은 오류가 발생했습니다.");
+        console.log(err);}
     console.log('Submitted User Status:', status);
-  };
+  },[status]
+  );
   return (
     <div>
       <NavBar />
@@ -79,10 +93,7 @@ const MyPage: React.FunctionComponent = () => {
         </div>
         <div className='pad'>
             <div>
-                <MyStatus status={status} handleStatus={handleStatus} />
-                <Button variant='secondary' className='submitbutton' onClick={statusSubmit}>
-                    <span className='buttonText'>변경사항 저장하기</span>
-                </Button>
+                <MyStatus status={status} handleStatus={handleStatus} statusSubmit={statusSubmit}/>
             </div>
             <div>
                 <MyTimeTable status={status} handleStatus={handleStatus} />

@@ -20,8 +20,15 @@ def signup(request):
         req_data = json.loads(request.body.decode())
         username = req_data['username']
         password = req_data['password']
+        name = req_data['name']
+        mbti = req_data['mbti']
+        gender = req_data['gender']
+        nickname = req_data['nickname']
+        birth = req_data['birth']
+        age=(123 - int(birth)//10000)%100
+        email = req_data['email']
         user=User.objects.create_user(username=username, password=password)
-        userinfo=UserInfo(user=user)
+        userinfo=UserInfo(user=user, name=name, mbti=mbti, gender=gender, nickname=nickname, birth=birth, email=email, age=age)
         userinfo.save()
         return HttpResponse(status=201)
     else:

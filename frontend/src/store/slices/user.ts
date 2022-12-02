@@ -76,29 +76,29 @@ export const setSignUp = createAsyncThunk(
   },
 );
 
-export const setSignIn = createAsyncThunk(
-  'user/setSignIn',
-  async (id: number, { dispatch }) => {
-    //const loginResponse = await axios.post('/chat/user/signin/', loginForm);
-    const userlistResponse = await axios.get('/chat/user/');
-    const userid: number = id;
-    const currentResponse = await axios.get('chat/user/current/');
-    const chatroomlistResponse = await axios.get(`/chat/user/${userid}/`);
-    const serverdata: LoggedInUserType = {
-      user: currentResponse.data,
-      chatrooms: chatroomlistResponse.data,
-    };
-    const menulistResponse = await axios.get('/menu/');
-    dispatch(userActions.updateLoggedInUser(serverdata));
-    dispatch(userActions.updateUserList(userlistResponse.data));
-    dispatch(userActions.updateMenuList(menulistResponse.data));
-  },
-);
+export const setSignIn = createAsyncThunk('user/setSignIn', async (id: number, { dispatch }) => {
+  //const loginResponse = await axios.post('/chat/user/signin/', loginForm);
+  const userlistResponse = await axios.get('/chat/user/');
+  const userid: number = id;
+  const currentResponse = await axios.get('chat/user/current/');
+  const chatroomlistResponse = await axios.get(`/chat/user/${userid}/`);
+  const serverdata: LoggedInUserType = {
+    user: currentResponse.data,
+    chatrooms: chatroomlistResponse.data,
+  };
+  const menulistResponse = await axios.get('/menu/');
+  dispatch(userActions.updateLoggedInUser(serverdata));
+  dispatch(userActions.updateUserList(userlistResponse.data));
+  dispatch(userActions.updateMenuList(menulistResponse.data));
+});
 
 export const setSignOut = createAsyncThunk(
   'user/setSignOut',
   async (userForm: UserType, { dispatch }) => {
     const response = await axios.get('/chat/user/signout/');
+    window.localStorage.removeItem('Token');
+    window.localStorage.removeItem('id');
+    window.localStorage.removeItem('nickname');
     dispatch(userActions.updateLoggedInUser(null));
     dispatch(userActions.updateUserList([]));
     return response;

@@ -43,6 +43,8 @@ INSTALLED_APPS = [
     'chat',
     'mypage',
     'menu',
+    'rest_framework',
+    'rest_framework.authtoken',
 ]
     
 MIDDLEWARE = [

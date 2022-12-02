@@ -22,7 +22,6 @@ class Message(models.Model):
         related_name = 'message_in_this_chat_room'
     )
     
-    author = models.IntegerField()
-
+    author = models.CharField(max_length=120)
     content = models.TextField()
     date = models.DateTimeField(default=now, editable=False)

@@ -25,12 +25,13 @@ SECRET_KEY = 'django-insecure-crn#z$yn*#enr=4_ir00(1jph5i+u$zym-^@)efgm4td$hkpct
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    'daphne',
     'django_crontab',
     'matching.apps.MatchingConfig',
     'django.contrib.admin',
@@ -129,3 +130,21 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+
+ASGI_APPLICATION = "babchingu.asgi.application"
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("127.0.0.1", 6379)],
+        },
+    },
+}
+
+CORS_ALLOW_CREDENTIALS = True
+CSRF_TRUSTED_ORIGINS = ["http://localhost:8000/", "http://localhost","http://127.0.0.1:8000"]
+CORS_ALLOWED_ORIGINS = ["http://localhost:3000", "http://127.0.0.1:3000", "http://localhost"]
+
+
+os.environ["DJANGO_ALLOW_ASYNC_UNSAFE"] = 'true'

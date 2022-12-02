@@ -8,7 +8,7 @@
     border-radius: 10px;
 }
 
-.others{
+.profile{
     float:right;
     height:calc(100%);
     width: calc(100% - 370px);
@@ -16,9 +16,20 @@
     border: 1px solid;
 }
 
+.block{
+    width: calc(100% - 60px);
+    height:calc(100%);
+    margin: 30px;
+    border: 1px solid;
+}
+
 .submitbutton {
     float:right;
     margin-top: 20px;
+}
+
+.blockbutton{
+    float:right;
 }
 
 .buttonText {
@@ -42,4 +53,9 @@
 .errormessage{
     color: #ff0000
     
+}
+
+.halfdiv{
+    width: calc(50% - 2px);
+    display: inline-block;
 }

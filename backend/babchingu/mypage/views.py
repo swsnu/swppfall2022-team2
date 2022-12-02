@@ -22,7 +22,6 @@ def mypage_submit(request):# mypage/submit/
         user_info.birth=data['birth']
         user_info.age=(123 - int(user_info.birth)//10000)%100
         user_info.nickname=data['nickname']
-        #user_info.time_table
         user_info.save()
         return HttpResponse(status=200)
 
@@ -91,8 +90,40 @@ def mypage_get(request):# mypage/get/
         user_info=user.userinfo
         response_dict = {'mbti': user_info.mbti, 'gender': user_info.gender, 'name':user_info.name, \
             'temperature':user_info.temperature, 'intro':user_info.intro, 'birth':user_info.birth, \
-            'nickname':user_info.nickname,'timeTable':user_info.time_table}
+            'nickname':user_info.nickname, \
+            'blocked_users':[User.objects.get(id=blocked_user).userinfo.nickname for blocked_user in user_info.blocked_users], \
+            'matched_users':[User.objects.get(id=matched_users).userinfo.nickname for matched_users in user_info.matched_users],}
         return JsonResponse(response_dict)
     else:
         return HttpResponseNotAllowed(['GET'])
 
+@login_required
+@csrf_exempt
+def mypage_block(request):# mypage/block/
+    if(request.method=='POST'):
+        data=json.loads(request.body.decode())
+        user=request.user
+        user_info=user.userinfo
+        nickname = data['nickname']
+        temp_user = UserInfo.objects.get(nickname=nickname).user.id
+        user_info.blocked_users.append(temp_user)
+        user_info.matched_users.remove(temp_user)
+        user_info.save()
+        return HttpResponse(status=200)
+    else:
+        return HttpResponseNotAllowed(['POST'])
+@login_required
+@csrf_exempt
+def mypage_unblock(request):# mypage/unblock/
+    if(request.method=='POST'):
+        data=json.loads(request.body.decode())
+        user=request.user
+        user_info=user.userinfo
+        nickname = data['nickname']
+        temp_user = UserInfo.objects.get(nickname=nickname).user.id
+        user_info.matched_users.append(temp_user)
+        user_info.blocked_users.remove(temp_user)
+        user_info.save()
+        return HttpResponse(status=200)
+    else:
+        return HttpResponseNotAllowed(['POST'])

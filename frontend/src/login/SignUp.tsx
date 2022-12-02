@@ -101,6 +101,10 @@ export default function SignUp(){
             setPasswordConfirmErrorMessage('비밀번호를 똑같이 입력해주세요.');
             setPasswordConfirmIsValid(false);
         }
+        else{
+            setPasswordConfirmErrorMessage('');
+            setPasswordConfirmIsValid(true);
+        }
     };
 
     const handlePasswordConfirm = (e: React.BaseSyntheticEvent) : void => {
@@ -214,7 +218,7 @@ export default function SignUp(){
     const handleSignUp = () => {
         try{dispatch(setSignUp({username: username, password: password, name: signUpStatus.name,
             mbti: signUpStatus.mbti, gender: signUpStatus.gender, nickname: signUpStatus.nickname,
-            birth: signUpStatus.birth, email: (signUpStatus.email+signUpStatus.domain)}))
+            birth: signUpStatus.birth, email: (signUpStatus.email+signUpStatus.domain)}));
             alert('회원 가입이 정상적으로 완료되었습니다.');
             navigate('/login');
         

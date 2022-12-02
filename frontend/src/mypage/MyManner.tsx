@@ -16,7 +16,7 @@ const MyManner: React.FC<Temp> = ({temperature}) => {
                 <TempBar/>
             </div>
             <p>
-                당신의 매너 온도는 {temperature}입니다.
+                당신의 매너 온도는 {~~(10*+temperature)/10}입니다.
             </p>
         </div>
     );

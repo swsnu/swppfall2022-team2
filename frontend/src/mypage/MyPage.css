@@ -28,6 +28,10 @@
     margin-top: 20px;
 }
 
+.blockbutton{
+    float:right;
+}
+
 .buttonText {
     font-size: 15px;
 }
@@ -49,4 +53,9 @@
 .errormessage{
     color: #ff0000
     
+}
+
+.halfdiv{
+    width: calc(50% - 2px);
+    display: inline-block;
 }

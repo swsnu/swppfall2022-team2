@@ -97,3 +97,33 @@ def mypage_get(request):# mypage/get/
     else:
         return HttpResponseNotAllowed(['GET'])
 
+@login_required
+@csrf_exempt
+def mypage_block(request):# mypage/block/
+    if(request.method=='POST'):
+        data=json.loads(request.body.decode())
+        user=request.user
+        user_info=user.userinfo
+        nickname = data['nickname']
+        temp_user = UserInfo.objects.get(nickname=nickname).user.id
+        user_info.blocked_users.append(temp_user)
+        user_info.matched_users.remove(temp_user)
+        user_info.save()
+        return HttpResponse(status=200)
+    else:
+        return HttpResponseNotAllowed(['POST'])
+@login_required
+@csrf_exempt
+def mypage_unblock(request):# mypage/unblock/
+    if(request.method=='POST'):
+        data=json.loads(request.body.decode())
+        user=request.user
+        user_info=user.userinfo
+        nickname = data['nickname']
+        temp_user = UserInfo.objects.get(nickname=nickname).user.id
+        user_info.matched_users.append(temp_user)
+        user_info.blocked_users.remove(temp_user)
+        user_info.save()
+        return HttpResponse(status=200)
+    else:
+        return HttpResponseNotAllowed(['POST'])

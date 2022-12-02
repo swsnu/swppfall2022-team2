@@ -2,13 +2,12 @@ import React, { useState, useEffect, useCallback } from 'react';
 import './MyPage.css';
 import MyManner from './MyManner';
 import MyStatus from './MyStatus';
+import BlockUser from './BlockUser';
 import axios from 'axios';
 import NavBar from '../NavBar';
 import { useSelector } from 'react-redux';
 import { Navigate } from 'react-router-dom';
 import { selectUser } from '../store/slices/user';
-import { mockComponent } from 'react-dom/test-utils';
-
 
 export interface statusType {
   name: string;
@@ -18,8 +17,8 @@ export interface statusType {
   gender: string;
   nickname: string;
   temperature: number;
-  matched_users: JSON;
-  blocked_users: JSON;
+  matched_users: string[];
+  blocked_users: string[];
 }
 
 const MyPage: React.FunctionComponent = () => {
@@ -36,8 +35,8 @@ const MyPage: React.FunctionComponent = () => {
     birth: '',
     gender: '',
     nickname: '',
-    matched_users: JSON.parse('{}'),
-    blocked_users: JSON.parse('{}'),
+    matched_users: [],
+    blocked_users: [],
     temperature: 0.0,
   });
 
@@ -95,7 +94,64 @@ const MyPage: React.FunctionComponent = () => {
   );
 
   // block or unblock someone
-  const blockChanges = () => {};
+  const blockSubmit = useCallback(async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>, nickname:string) => {
+    let i = 0;
+    for(;;i++)if(status.matched_users[i] === nickname)break;
+    for(;i<status.matched_users.length-1;i++)status.matched_users[i]=status.matched_users[i+1];
+    status.matched_users.pop();
+    status.blocked_users.push(nickname);
+    handleStatus({ ...status});
+    try {
+      await axios
+        .post(`mypage/block/`, {
+          nickname: nickname,
+        })
+        .then((res) => {
+          if (res.status === 200){
+          }
+          else{
+            alert("예기치 않은 오류가 발생했습니다.");
+          }
+        })
+        .catch((err) => {
+          alert("예기치 않은 오류가 발생했습니다.");
+          console.log(err.response.data);
+        });
+      } catch(err){
+          alert("예기치 않은 오류가 발생했습니다.");
+          console.log(err);}
+  },[status]
+  );
+
+  // unblock someone
+  const unblockSubmit = useCallback(async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>, nickname:string) => {
+    let i = 0;
+    for(;;i++)if(status.blocked_users[i] === nickname)break;
+    for(;i<status.blocked_users.length-1;i++)status.blocked_users[i]=status.blocked_users[i+1];
+    status.blocked_users.pop();
+    status.matched_users.push(nickname);
+    handleStatus({ ...status});
+    try {
+      await axios
+        .post(`mypage/unblock/`, {
+          nickname: nickname,
+        })
+        .then((res) => {
+          if (res.status === 200){
+          }
+          else{
+            alert("예기치 않은 오류가 발생했습니다.");
+          }
+        })
+        .catch((err) => {
+          alert("예기치 않은 오류가 발생했습니다.");
+          console.log(err.response.data);
+        });
+      } catch(err){
+          alert("예기치 않은 오류가 발생했습니다.");
+          console.log(err);}
+  },[status]
+  );
 
   return (
     <div>
@@ -108,18 +164,16 @@ const MyPage: React.FunctionComponent = () => {
             <h5 className="card-title">프로필 설정</h5>
         </div>
         <div className='pad'>
-            <div>
-                <MyStatus status={status} handleStatus={handleStatus} statusSubmit={statusSubmit}/>
-            </div>
+            <MyStatus status={status} handleStatus={handleStatus} statusSubmit={statusSubmit}/>
         </div>
       </div>
       <div className='block card overflow-auto'>
       <div className="card-header">
-            <h5 className="card-title">차단 관리하기</h5>
+            <h5 className="card-title">차단 / 해제하기</h5>
         </div>
-        <div className='pad'>
+        <div>
+            <BlockUser status={status} blockSubmit={blockSubmit} unblockSubmit={unblockSubmit}/>
         </div>
-
       </div>
     </div>
   );

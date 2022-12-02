@@ -6,7 +6,7 @@ from mypage.models import UserInfo
 from django.views.decorators.csrf import ensure_csrf_cookie, csrf_exempt
 import json
 from json.decoder import JSONDecodeError
-
+from rest_framework.authtoken.models import Token
 # Create your views here.
 
 @csrf_exempt
@@ -30,6 +30,7 @@ def signup(request):
         user=User.objects.create_user(username=username, password=password)
         userinfo=UserInfo(user=user, name=name, mbti=mbti, gender=gender, nickname=nickname, birth=birth, email=email, age=age)
         userinfo.save()
+        token=Token.objects.create(user=user)
         return HttpResponse(status=201)
     else:
         return HttpResponseNotAllowed(['POST'])
@@ -45,7 +46,8 @@ def signin(request):
         if user is not None:
             #change the login status
             login(request, user)
-            return JsonResponse({"id":request.user.id,"nickname":request.user.userinfo.nickname})
+            token=Token.objects.get(user=user)
+            return JsonResponse({"id":request.user.id,"nickname":request.user.userinfo.nickname, "Token":token.key})
         else: # wrong username, password
             return HttpResponse(status=401)
     else:

@@ -139,7 +139,7 @@ export const setTemperature = createAsyncThunk(
   'user/setTemperature',
   async (Form: TemperatureFormType, { dispatch }) => {
     const response = await axios.post(`/mypage/temp/${Form.user}/`, { eval: Form.eval });
-    return response;
+    return response.data;
   },
 );
 

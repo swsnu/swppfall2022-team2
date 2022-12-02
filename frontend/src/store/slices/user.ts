@@ -78,24 +78,20 @@ export const setSignUp = createAsyncThunk(
 
 export const setSignIn = createAsyncThunk(
   'user/setSignIn',
-  async (loginForm: LoginFormType, { dispatch }) => {
-    const loginResponse = await axios.post('/chat/user/signin/', loginForm);
-    if (loginResponse.status === 200) {
-      const userlistResponse = await axios.get('/chat/user/');
-      const userid: number = loginResponse.data.id;
-      const chatroomlistResponse = await axios.get(`/chat/user/${userid}/`);
-      const serverdata: LoggedInUserType = {
-        user: loginResponse.data,
-        chatrooms: chatroomlistResponse.data,
-      };
-      const menulistResponse = await axios.get('/menu/');
-      dispatch(userActions.updateLoggedInUser(serverdata));
-      dispatch(userActions.updateUserList(userlistResponse.data));
-      dispatch(userActions.updateMenuList(menulistResponse.data));
-    } else {
-      //  this is not working...
-      window.alert('wrong username or password');
-    }
+  async (id: number, { dispatch }) => {
+    //const loginResponse = await axios.post('/chat/user/signin/', loginForm);
+    const userlistResponse = await axios.get('/chat/user/');
+    const userid: number = id;
+    const currentResponse = await axios.get('chat/user/current/');
+    const chatroomlistResponse = await axios.get(`/chat/user/${userid}/`);
+    const serverdata: LoggedInUserType = {
+      user: currentResponse.data,
+      chatrooms: chatroomlistResponse.data,
+    };
+    const menulistResponse = await axios.get('/menu/');
+    dispatch(userActions.updateLoggedInUser(serverdata));
+    dispatch(userActions.updateUserList(userlistResponse.data));
+    dispatch(userActions.updateMenuList(menulistResponse.data));
   },
 );
 

@@ -8,10 +8,17 @@
     border-radius: 10px;
 }
 
-.others{
+.profile{
     float:right;
     height:calc(100%);
     width: calc(100% - 370px);
+    margin: 30px;
+    border: 1px solid;
+}
+
+.block{
+    width: calc(100% - 60px);
+    height:calc(100%);
     margin: 30px;
     border: 1px solid;
 }

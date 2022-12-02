@@ -2,9 +2,6 @@ from django.db import models
 #from django.contrib.postgres.fields import ArrayField
 from django.contrib.auth.models import User
 
-def timeTable_default():
-    return {key:False for key in range(140)}
-
 def empty_list():
     return []
 
@@ -18,7 +15,6 @@ class UserInfo(models.Model):
     intro=models.CharField(default='',max_length=100)
     age=models.IntegerField(default = 20)
     birth=models.CharField(default = '000101', max_length=6) #YYMMDD
-    time_table=models.JSONField(default=timeTable_default)
     nickname = models.CharField(default='',max_length=30) # 별명
     matched_users=models.JSONField(default=empty_list) # 지금까지 매칭되었던 사람 리스트 (by user id, 중복x)
     unevaluated_users=models.JSONField(default=empty_list) #매칭되었던 사람 중 아직 온도평가안한 유저 (by user id, 중복x)

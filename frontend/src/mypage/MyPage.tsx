@@ -2,9 +2,12 @@ import React, { useState, useEffect, useCallback } from 'react';
 import './MyPage.css';
 import MyManner from './MyManner';
 import MyStatus from './MyStatus';
-import MyTimeTable from './MyTimeTable';
 import axios from 'axios';
 import NavBar from '../NavBar';
+import { useSelector } from 'react-redux';
+import { Navigate } from 'react-router-dom';
+import { selectUser } from '../store/slices/user';
+import { mockComponent } from 'react-dom/test-utils';
 
 
 export interface statusType {
@@ -14,11 +17,18 @@ export interface statusType {
   birth: string;
   gender: string;
   nickname: string;
-  timeTable: JSON;
   temperature: number;
+  matched_users: JSON;
+  blocked_users: JSON;
 }
 
 const MyPage: React.FunctionComponent = () => {
+  const userState = useSelector(selectUser);
+
+  if (userState.loggedinuser === null) {
+    return <Navigate to='/login' />;
+  }
+
   const [status, handleStatus] = useState<statusType>({
     name: '',
     mbti: '',
@@ -26,7 +36,8 @@ const MyPage: React.FunctionComponent = () => {
     birth: '',
     gender: '',
     nickname: '',
-    timeTable: JSON.parse('{}'),
+    matched_users: JSON.parse('{}'),
+    blocked_users: JSON.parse('{}'),
     temperature: 0.0,
   });
 
@@ -42,8 +53,10 @@ const MyPage: React.FunctionComponent = () => {
       birth : response.data.birth,
       gender : response.data.gender,
       nickname : response.data.nickname,
-      timeTable : response.data.timeTable,
-      temperature : response.data.temperature,});
+      temperature : response.data.temperature,
+      matched_users : response.data.matched_users,
+      blocked_users : response.data.blocked_users,
+    });
     })
     .catch((err) => {console.log(err)})
   },[]);
@@ -60,7 +73,6 @@ const MyPage: React.FunctionComponent = () => {
         birth: status.birth,
         gender: status.gender,
         nickname: status.nickname,
-        timeTable: status.timeTable,
       })
       .then((res) => {
         if (res.status === 200){
@@ -81,13 +93,17 @@ const MyPage: React.FunctionComponent = () => {
     console.log('Submitted User Status:', status);
   },[status]
   );
+
+  // block or unblock someone
+  const blockChanges = () => {};
+
   return (
     <div>
       <NavBar />
       <div className='manner'>
         <MyManner temperature={status.temperature}/>
       </div>
-      <div className='others card overflow-auto'>
+      <div className='profile card overflow-auto'>
         <div className="card-header">
             <h5 className="card-title">프로필 설정</h5>
         </div>
@@ -95,10 +111,15 @@ const MyPage: React.FunctionComponent = () => {
             <div>
                 <MyStatus status={status} handleStatus={handleStatus} statusSubmit={statusSubmit}/>
             </div>
-            <div>
-                <MyTimeTable status={status} handleStatus={handleStatus} />
-            </div>
         </div>
+      </div>
+      <div className='block card overflow-auto'>
+      <div className="card-header">
+            <h5 className="card-title">차단 관리하기</h5>
+        </div>
+        <div className='pad'>
+        </div>
+
       </div>
     </div>
   );

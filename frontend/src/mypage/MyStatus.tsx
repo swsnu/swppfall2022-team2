@@ -148,7 +148,6 @@ const MyStatus: React.FC<propsType> = (props:propsType) => {
                 <Form.Group as={Col}>
                     <Form.Label>성별</Form.Label>
                     <Form.Select name="gender" key={uuid()} defaultValue={status.gender} onChange={(e) => handleGender(e)}>
-                        <option value = '' disabled>선택 안함</option>
                         <option value = 'M'>남자</option>
                         <option value = 'F'>여자</option>
                     </Form.Select>
@@ -166,7 +165,6 @@ const MyStatus: React.FC<propsType> = (props:propsType) => {
             <Form.Group>
                 <Form.Label>MBTI</Form.Label>
                 <Form.Select name='mbti' key={uuid()} defaultValue={status.mbti} onChange={(e) => handleMBTI(e)}>
-                    <option value = '' disabled>선택 안함</option>
                     <option value = 'ENTJ'>ENTJ</option>
                     <option value = 'ENTP'>ENTP</option>
                     <option value = 'ENFJ'>ENFJ</option>

@@ -6,19 +6,10 @@ import Matching from './matching/Matching';
 import Login from './login/Login'
 import SignUp from './login/SignUp'
 import MyPage from './mypage/MyPage'
-import Chat from './chatting/components/Chat/Chat';
-import { Socket } from 'socket.io-client';
-import { UserType } from './store/slices/user';
+import ChatRoom from './chatting/ChatRoom';
 
-interface IUser {
-  username: string;
-  room: string;
-}
 
 function App(): any {
-
-  const [socket, setSocket] = useState<Socket | null>(null);
-  const [user, setUser] = useState<UserType>();
 
 
   return (
@@ -26,7 +17,7 @@ function App(): any {
       <Routes>
         <Route path='/signup' element={<SignUp/>} />
         <Route path='/login' element={<Login/>} />
-        <Route path="/chatroom/:id" element={<Chat setUser={setUser} setSocket={setSocket}/>}/>
+        <Route path="/chatroom/:id" element={<ChatRoom/>}/>
         <Route path='/main' element={<Main />} />
         <Route path='/matching' element={<Matching />} />
         <Route path='/mypage' element={<MyPage />} />

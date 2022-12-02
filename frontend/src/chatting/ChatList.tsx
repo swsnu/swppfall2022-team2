@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { selectUser, ChatRoomType, setTemperature, userActions, deleteChatRoom } from '../store/slices/user';
+import { selectUser, ChatRoomType, userActions, deleteChatRoom } from '../store/slices/user';
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from '../store';
 import { useNavigate } from "react-router-dom";
@@ -31,38 +31,61 @@ const ChatList: React.FunctionComponent = () => {
 
     const handleBest = () => {
       setShow(false);
-      dispatch(setTemperature({user: chatuser, eval: "최고" }))
+      axios.post(`/mypage/temp/${chatuser}/`, { eval: "최고" })
+        .then((response)=>
+          {if(response.status==204){
+            window.alert("이미 평가한 유저입니다.")
+          }})
+        .catch()
     }
 
     const handleGood = () => {
       setShow(false);
-      dispatch(setTemperature({user: chatuser, eval: "좋음" }))
+      axios.post(`/mypage/temp/${chatuser}/`, { eval: "좋음" })
+        .then((response)=>
+          {if(response.status==204){
+            window.alert("이미 평가한 유저입니다.")
+          }})
+        .catch()
     }
 
     const handleMed = () => {
       setShow(false);
-      dispatch(setTemperature({user: chatuser, eval: "보통" }))
+      axios.post(`/mypage/temp/${chatuser}/`, { eval: "보통" })
+        .then((response)=>
+          {if(response.status==204){
+            window.alert("이미 평가한 유저입니다.")
+          }})
+        .catch()
     }
 
     const handleBad = () => {
       setShow(false);
-      dispatch(setTemperature({user: chatuser, eval: "별로" }))
+      axios.post(`/mypage/temp/${chatuser}/`, { eval: "별로" })
+        .then((response)=>
+          {if(response.status==204){
+            window.alert("이미 평가한 유저입니다.")
+          }})
+        .catch()
     }
 
     const handleWorst = () => {
       setShow(false);
-      dispatch(setTemperature({user: chatuser, eval: "최악" }))
+      axios.post(`/mypage/temp/${chatuser}/`, { eval: "최악" })
+        .then((response)=>
+          {if(response.status==204){
+            window.alert("이미 평가한 유저입니다.")
+          }})
+        .catch()
     }
 
 
     const clickChatListTitleHandler= (chatroom: ChatRoomType)=>{
-        // problem if you enable this function, it redirects to the the chatroom page before 
         dispatch(userActions.selectChatRoom(chatroom))
         navigate(`/chatroom/${chatroom.id}`);   
     }
 
     const closeChatroom= (chatroom: ChatRoomType)=>{
-      // problem if you enable this function, it redirects to the the chatroom page before 
         dispatch(deleteChatRoom(chatroom))
       axios
       .get(`/chat/user/${userState.loggedinuser?.user.id}/`)
@@ -78,7 +101,7 @@ const ChatList: React.FunctionComponent = () => {
         <div className="card chat-list overflow-auto">
           <h5 className="card-title">Chating Rooms</h5>
             <div className="list-group">
-              {chatlist.chatrooms!.map((chatroom)=>(
+              {userState.loggedinuser?.chatrooms!.map((chatroom)=>(
                 <a className="list-group-item list-group-item-action" key={chatroom.id} onClick={(e)=> {e.stopPropagation(); e.preventDefault();clickChatListTitleHandler(chatroom);}}>
                   <div className="d-flex w-100 justify-content-between">
                       <h5 className="mb-1">{chatroom.name}</h5>
@@ -91,10 +114,10 @@ const ChatList: React.FunctionComponent = () => {
                         <Button className="btn-primary" onClick={(e)=>{e.stopPropagation(); e.preventDefault(); handleShow(userid);}}>
                           {(userState.userlist.find(element => element.id===userid))?.nickname ?? ''} 
                         </Button>
-                            <Modal show={show}>
+                            <Modal show={show} onClick={(e:any)=>{e.stopPropagation(); e.preventDeafult();}}>
                             <Modal.Header>
-                              <button type="button" className="btn-close" aria-lable="Close" onClick={(e)=>{handleClose();  e.stopPropagation(); e.preventDefault();}}></button>
                               <Modal.Title>매너 평가를 해주세요</Modal.Title>
+                              <button type="button" className="btn-close" aria-lable="Close" onClick={(e)=>{handleClose();  e.stopPropagation(); e.preventDefault();}}></button>
                             </Modal.Header>
                             <Modal.Body>Woohoo, you're reading this text in a modal!</Modal.Body>
                             <Modal.Footer>

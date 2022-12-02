@@ -1,4 +1,4 @@
-import { selectUser, setSignIn, UserInfoType } from '../store/slices/user';
+import { selectUser, setSignIn, UserInfoType, UserType } from '../store/slices/user';
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, Navigate } from "react-router-dom";
 import React, { useState } from "react";
@@ -7,6 +7,7 @@ import './Login.css';
 import { Button, Form, Card, Image } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import logoImg from '../images/logo.jpg';
+import axios from 'axios';
 
 export default function Login(){
     const userState = useSelector(selectUser);
@@ -17,10 +18,18 @@ export default function Login(){
 
 
     const handleLogin = () => {
-        try{dispatch(setSignIn({username: username, password: password}))}
-        catch(err){
-            
-        }
+        axios.post('/chat/user/signin/', {username: username, password: password})
+            .then((response)=>{
+                if(response.status===200){
+                    const user: UserType = response.data;
+                    dispatch(setSignIn(user.id))
+                }else{
+                    console.log("login failure")
+                }
+            })
+            .catch(function(error){
+                window.alert("비밀번호나 아이디가 잘못되었습니다.")
+            })
     }
 
     const handleKeyDown = (event:any) => {

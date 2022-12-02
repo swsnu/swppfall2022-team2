@@ -45,7 +45,7 @@ def signin(request):
         if user is not None:
             #change the login status
             login(request, user)
-            return JsonResponse({"id":request.user.id,"username":request.user.username})
+            return JsonResponse({"id":request.user.id,"nickname":request.user.userinfo.nickname})
         else: # wrong username, password
             return HttpResponse(status=401)
     else:
@@ -55,7 +55,7 @@ def signin(request):
 @csrf_exempt
 def currentuser(request):
     if request.method == 'GET':
-        return JsonResponse({"id":request.user.id,"username":request.user.username})
+        return JsonResponse({"id":request.user.id,"nickname":request.user.userinfo.nickname})
     else:
         return HttpResponseNotAllowed(['POST'])
 

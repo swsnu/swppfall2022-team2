@@ -50,28 +50,36 @@ def touch_temp(request, user_id):
         except: # no user with the id
             return HttpResponseNotFound()
 
-        user_info = user.userinfo
-        old_temp = user_info.temperature
-        old_eval_num = user_info.evaluation_num
+        #now check if the user.id is in the request.user.userinfo.unevaluated user
+        req_userinfo = request.user.userinfo
 
-        body = request.body.decode()
-        eval = json.loads(body)['eval']
-
-        if eval == "최고":
-            new_temp = ((old_eval_num*old_temp)+100)/(old_eval_num+1)
-        elif eval == "좋음":
-            new_temp = ((old_eval_num*old_temp)+68)/(old_eval_num+1)
-        elif eval == "보통":
-            new_temp = ((old_eval_num*old_temp)+36.5)/(old_eval_num+1)
-        elif eval == "별로":
-            new_temp = ((old_eval_num*old_temp)+0)/(old_eval_num+1)
+        if user.id not in req_userinfo.unevaluated_users:
+            return HttpResponse(status=204)
         else:
-            new_temp = ((old_eval_num*old_temp)-36)/(old_eval_num+1)
-        
-        user_info.temperature = new_temp
-        user_info.evaluation_num = old_eval_num + 1
-        user_info.save()
-        return JsonResponse({"id":user.id, "new_temp":user_info.temperature, "new_eval_num":user_info.evaluation_num})
+            user_info = user.userinfo
+            old_temp = user_info.temperature
+            old_eval_num = user_info.evaluation_num
+
+            body = request.body.decode()
+            eval = json.loads(body)['eval']
+
+            if eval == "최고":
+                new_temp = ((old_eval_num*old_temp)+100)/(old_eval_num+1)
+            elif eval == "좋음":
+                new_temp = ((old_eval_num*old_temp)+68)/(old_eval_num+1)
+            elif eval == "보통":
+                new_temp = ((old_eval_num*old_temp)+36.5)/(old_eval_num+1)
+            elif eval == "별로":
+                new_temp = ((old_eval_num*old_temp)+0)/(old_eval_num+1)
+            else:
+                new_temp = ((old_eval_num*old_temp)-36)/(old_eval_num+1)
+
+            user_info.temperature = new_temp
+            user_info.evaluation_num = old_eval_num + 1
+            req_userinfo.unevaluated_users = list(filter(lambda x: x!=user.id, req_userinfo.unevaluated_users))
+            req_userinfo.save()
+            user_info.save()
+            return JsonResponse({"id":user.id, "new_temp":user_info.temperature, "new_eval_num":user_info.evaluation_num})
     else:
         return HttpResponseNotAllowed(['POST', 'GET'])
 

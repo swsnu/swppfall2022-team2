@@ -1,11 +1,11 @@
 .loginusertext {
   position: fixed;
-  right: 50px;
+  right: 115px;
   top: 15px;
 }
 .nav-link-logout {
   position: fixed;
-  right: 200px;
+  right: 50px;
   top: 15px;
   color: darkgray;
 }

@@ -16,6 +16,7 @@ class UserInfo(models.Model):
     gender=models.CharField(default='',max_length=1)
     name = models.CharField(default='',max_length=30) # 이름
     intro=models.CharField(default='',max_length=100)
+    age=models.IntegerField(default = 20)
     birth=models.CharField(default = '000101', max_length=6) #YYMMDD
     time_table=models.JSONField(default=timeTable_default)
     nickname = models.CharField(default='',max_length=30) # 별명

@@ -20,6 +20,7 @@ def mypage_submit(request):# mypage/submit/
         user_info.name=data['name']
         user_info.intro=data['intro']
         user_info.birth=data['birth']
+        user_info.age=(123 - int(user_info.birth)//10000)%100
         user_info.nickname=data['nickname']
         #user_info.time_table
         user_info.save()

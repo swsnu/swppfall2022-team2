@@ -11,7 +11,7 @@ export interface MenuType {
   menuextra: string;
 }
 
-export interface LoginFormType {
+export interface SignUpFormType {
   username: string;
   password: string;
   nickname: string;
@@ -20,6 +20,11 @@ export interface LoginFormType {
   gender: string;
   birth: string;
   email: string;
+}
+
+export interface LoginFormType {
+  username: string;
+  password: string;
 }
 
 export interface UserType {
@@ -65,7 +70,7 @@ const initialState: UserInfoType = {
 
 export const setSignUp = createAsyncThunk(
   'user/setSignUp',
-  async (loginForm: LoginFormType, { dispatch }) => {
+  async (loginForm: SignUpFormType, { dispatch }) => {
     const response = await axios.post('/chat/user/signup/', loginForm);
     return response;
   },

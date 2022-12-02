@@ -91,10 +91,10 @@ const ChatList: React.FunctionComponent = () => {
                         <Button className="btn-primary" onClick={(e)=>{e.stopPropagation(); e.preventDefault(); handleShow(userid);}}>
                           {(userState.userlist.find(element => element.id===userid))?.nickname ?? ''} 
                         </Button>
-                            <Modal show={show}>
+                            <Modal show={show} onClick={(e:any)=>{e.stopPropagation(); e.preventDeafult();}}>
                             <Modal.Header>
-                              <button type="button" className="btn-close" aria-lable="Close" onClick={(e)=>{handleClose();  e.stopPropagation(); e.preventDefault();}}></button>
                               <Modal.Title>매너 평가를 해주세요</Modal.Title>
+                              <button type="button" className="btn-close" aria-lable="Close" onClick={(e)=>{handleClose();  e.stopPropagation(); e.preventDefault();}}></button>
                             </Modal.Header>
                             <Modal.Body>Woohoo, you're reading this text in a modal!</Modal.Body>
                             <Modal.Footer>

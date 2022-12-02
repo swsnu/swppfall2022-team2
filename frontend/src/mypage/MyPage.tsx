@@ -106,7 +106,7 @@ const MyPage: React.FunctionComponent = () => {
     [status],
   );
 
-  // block or unblock someone
+  // block someone
   const blockSubmit = useCallback(
     async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>, nickname: string) => {
       let i = 0;

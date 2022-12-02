@@ -31,10 +31,9 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
             if data_type == "message" :
                 chatroom = Chatroom.objects.get(id = text_data_json['room'])
-                sender = User.objects.get(id = authorId)
 
                 messages = Message.objects.create(
-                    author = sender,
+                    author = authorId,
                     content = message,
                     order = chatroom.chatnumbers + 1,
                     chatroom = chatroom

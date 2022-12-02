@@ -28,7 +28,7 @@ python manage.py crontab add
 python manage.py runserver
 ```
 
-##Docker
+## Docker
 ```
 (using channel)
 docker run -p 6379:6379 -d redis:5

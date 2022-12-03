@@ -4,6 +4,7 @@ from mypage.models import UserInfo
 from datetime import datetime
 import json
 from .models import MatchingQueue, GroupMatchingEntity, GroupMatchingQueue, MatchingEntity
+from rest_framework.authtoken.models import Token
 class MatchTestCase(TestCase):
     def setUp(self):
         user1 = User.objects.create_user(username="user1", password="pw1")
@@ -24,6 +25,9 @@ class MatchTestCase(TestCase):
         userinfo3.gender='M'
         userinfo3.age=22
         userinfo3.save()
+        Token.objects.create(user=user1)
+        Token.objects.create(user=user2)
+        Token.objects.create(user=user3)
 
     def test_start(self):
         client=Client()

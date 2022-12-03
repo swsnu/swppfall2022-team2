@@ -12,13 +12,37 @@ import {
 import { Provider } from 'react-redux';
 import { MemoryRouter, Route, Routes } from 'react-router';
 import axios from 'axios';
+import Login from '../login/Login';
+const mockDispatch = jest.fn().mockResolvedValue({
+  payload: 3,
+});
+jest.mock('react-redux', () => ({
+  ...jest.requireActual('react-redux'),
+  useDispatch: () => mockDispatch,
+}));
+const mockNavigate = jest.fn();
+jest.mock('react-router', () => ({
+  ...jest.requireActual('react-router'),
+  useNavigate: () => mockNavigate,
+}));
+const user: LoggedInUserType = {
+  user: { id: 77, nickname: 'testuser' },
+  chatrooms: [],
+};
 const initialState: UserInfoType = {
+  loggedinuser: user,
+  userlist: [],
+  menulist: [],
+  chosenchatroom: null,
+};
+const initialStateNull: UserInfoType = {
   loggedinuser: null,
   userlist: [],
   menulist: [],
   chosenchatroom: null,
 };
 const mockStore = getMockStore({ user: initialState });
+const mockStoreNullUser = getMockStore({ user: initialStateNull });
 
 // In this test, cannot reach the coverage 100 because
 // I defined my own funtion 'UseInterval'
@@ -33,6 +57,7 @@ describe('Matching', () => {
         <MemoryRouter>
           <Routes>
             <Route path='/' element={<Matching />} />
+            <Route path='/login' element={<Login />} />
           </Routes>
         </MemoryRouter>
       </Provider>
@@ -312,6 +337,69 @@ describe('Matching', () => {
     const endButton = matchingRender.container.querySelector('#endButton');
     fireEvent.click(endButton!);
     await waitFor(() => screen.getByText('아래의 매칭 버튼을 눌러 1대1 매칭을 시작하세요'));
+  });
+  it('navigate to login when loggedinuser is null', async () => {
+    matching = (
+      <Provider store={mockStoreNullUser}>
+        <MemoryRouter>
+          <Routes>
+            <Route path='/' element={<Matching />} />
+            <Route path='/login' element={<Login />} />
+          </Routes>
+        </MemoryRouter>
+      </Provider>
+    );
+    jest.spyOn(axios, 'get').mockResolvedValue({
+      data: {
+        time: '0',
+        space_user: '',
+        spaceOpponent: '',
+        mbti: 'ESTJ',
+        gender: 'M',
+        age: '22',
+        id: '1',
+        last_name: 'a',
+        first_name: 'b',
+      },
+    });
+    render(matching);
+    await waitFor(() => expect(mockNavigate).toHaveBeenCalled());
+  });
+  it('auto login when loggedinuser is null and localstorage not null', async () => {
+    matching = (
+      <Provider store={mockStoreNullUser}>
+        <MemoryRouter>
+          <Routes>
+            <Route path='/' element={<Matching />} />
+            <Route path='/login' element={<Login />} />
+          </Routes>
+        </MemoryRouter>
+      </Provider>
+    );
+    jest.spyOn(axios, 'get').mockResolvedValue({
+      data: {
+        time: '0',
+        space_user: '',
+        spaceOpponent: '',
+        mbti: 'ESTJ',
+        gender: 'M',
+        age: '22',
+        id: '1',
+        last_name: 'a',
+        first_name: 'b',
+      },
+    });
+    const localStorageMock = (function () {
+      return {
+        getItem(key: string) {
+          return '3';
+        },
+      };
+    })();
+
+    Object.defineProperty(window, 'localStorage', { value: localStorageMock });
+    render(matching);
+    await waitFor(() => expect(mockDispatch).toHaveBeenCalled());
   });
   xit('useInterval', () => {
     const matchingRender = render(matching);

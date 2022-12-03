@@ -5,7 +5,7 @@ import MatchingCondition from './MatchingCondition';
 import MatchingStatus from './MatchingStatus';
 import './Matching.css';
 import { Button } from 'react-bootstrap';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import NavBar from '../NavBar';
 import Tab from 'react-bootstrap/Tab';
@@ -163,14 +163,14 @@ const Matching: React.FunctionComponent = () => {
     // every 5 second, check whether matched
     checkMatching();
   }, 5000);
-
+  const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
   if (userState.loggedinuser === null) {
     if (window.localStorage.getItem('Token') !== null) {
       dispatch(setSignIn(Number(window.localStorage.getItem('id'))));
       console.log(window.localStorage.getItem('id'));
     } else {
-      return <Navigate to='/login' />;
+      navigate(`/login`);
     }
   }
 

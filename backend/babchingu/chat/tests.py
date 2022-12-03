@@ -1,8 +1,9 @@
 from django.test import TestCase, Client
 from .models import Chatroom, Message
 from django.contrib.auth.models import User
+from mypage.models import UserInfo
 import json
-
+from rest_framework.authtoken.models import Token
 
 class ChatTestCase(TestCase):
     def setUp(self):
@@ -10,7 +11,24 @@ class ChatTestCase(TestCase):
         user1 = User.objects.create_user(username="user1", password="user1")
         user2 = User.objects.create_user(username="user2", password="user2")
         user3 = User.objects.create_user(username="user3", password="user3")
-        
+        userinfo1=UserInfo(user=user1)
+        userinfo1.mbti='ESTJ'
+        userinfo1.gender='M'
+        userinfo1.age=22
+        userinfo1.save()
+        userinfo2=UserInfo(user=user2)
+        userinfo2.mbti='ESTJ'
+        userinfo2.gender='M'
+        userinfo2.age=23
+        userinfo2.save()
+        userinfo3=UserInfo(user=user3)
+        userinfo3.mbti='ESTJ'
+        userinfo3.gender='M'
+        userinfo3.age=22
+        userinfo3.save()
+        Token.objects.create(user=user1)
+        Token.objects.create(user=user2)
+        Token.objects.create(user=user3)
 
     def test_csrf(self):
         # By default, csrf checks are disabled in test client

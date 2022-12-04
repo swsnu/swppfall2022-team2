@@ -4,7 +4,7 @@ from django.views.decorators.csrf import csrf_exempt
 from .models import MatchingEntity, MatchingQueue, GroupMatchingQueue,GroupMatchingEntity
 from datetime import datetime
 
-@csrf_exempt
+
 def start(request):# /matching/start/
     if(request.method=='POST'):
         if not MatchingQueue.objects.all().exists():#check queue is initialized
@@ -31,7 +31,7 @@ def start(request):# /matching/start/
     else:
         return HttpResponseNotAllowed(['POST'])
 
-@csrf_exempt
+
 def check_matched(request, id):# /matching/check/<int:id>/
     if request.method=='GET': 
         if not MatchingQueue.objects.all().exists():
@@ -53,7 +53,7 @@ def check_matched(request, id):# /matching/check/<int:id>/
     else:
         return HttpResponseNotAllowed(['GET'])
 
-@csrf_exempt
+
 def get_matching(request): # /matching/get/
     #when re-logined get previous info
     if request.method=='GET':
@@ -76,7 +76,7 @@ def get_matching(request): # /matching/get/
     else:
         return HttpResponseNotAllowed(['GET'])
 
-@csrf_exempt
+
 def stop_matching(request): # /matching/stop/
     if request.method=='DELETE':
         try:
@@ -93,7 +93,7 @@ def stop_matching(request): # /matching/stop/
     else:
         return HttpResponseNotAllowed(['DELETE'])
 
-@csrf_exempt
+
 def end_matching(request): # /matching/end/
     if request.method=='POST':
         try:
@@ -114,7 +114,7 @@ def end_matching(request): # /matching/end/
 # below is group matching
 # 
 
-@csrf_exempt
+
 def group_start(request):# /matching/group/start/
     if(request.method=='POST'):
         if not GroupMatchingQueue.objects.all().exists():#check queue is initialized
@@ -135,7 +135,7 @@ def group_start(request):# /matching/group/start/
         return HttpResponseNotAllowed(['POST'])
 
         
-@csrf_exempt
+
 def group_check_matched(request, id):# /matching/group/check/<int:id>/
     if request.method=='GET': 
         if not GroupMatchingQueue.objects.all().exists():
@@ -157,7 +157,7 @@ def group_check_matched(request, id):# /matching/group/check/<int:id>/
         return HttpResponseNotAllowed(['GET'])
 
         
-@csrf_exempt
+
 def group_get_matching(request): # /matching/group/get/
     #when re-logined get previous info
     if request.method=='GET':
@@ -181,7 +181,7 @@ def group_get_matching(request): # /matching/group/get/
     else:
         return HttpResponseNotAllowed(['GET'])
 
-@csrf_exempt
+
 def group_stop_matching(request): # /matching/group/stop/
     if request.method=='DELETE':
         try:
@@ -199,7 +199,7 @@ def group_stop_matching(request): # /matching/group/stop/
     else:
         return HttpResponseNotAllowed(['DELETE'])
 
-@csrf_exempt
+
 def group_end_matching(request): # /matching/group/end/
     if request.method=='POST':
         try:

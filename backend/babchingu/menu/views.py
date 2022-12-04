@@ -7,7 +7,6 @@ from json.decoder import JSONDecodeError
 
 # Create your views here.
 
-@csrf_exempt
 def menu(request):
     if request.method == 'GET':
         #crontab_every_hour()

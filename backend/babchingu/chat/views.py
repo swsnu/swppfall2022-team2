@@ -9,12 +9,11 @@ from json.decoder import JSONDecodeError
 from rest_framework.authtoken.models import Token
 # Create your views here.
 
-@csrf_exempt
+
 def index(request):
     return HttpResponse('Chat service!')
 
 #POST
-@csrf_exempt
 def signup(request):
     if request.method == 'POST':
         req_data = json.loads(request.body.decode())
@@ -36,7 +35,6 @@ def signup(request):
         return HttpResponseNotAllowed(['POST'])
 
 #POST
-@csrf_exempt
 def signin(request):
     if request.method == 'POST':
         req_data = json.loads(request.body.decode())
@@ -54,7 +52,6 @@ def signin(request):
         return HttpResponseNotAllowed(['POST'])
 
 #GET
-@csrf_exempt
 def currentuser(request):
     if request.method == 'GET':
         return JsonResponse({"id":request.user.id,"nickname":request.user.userinfo.nickname})
@@ -62,7 +59,6 @@ def currentuser(request):
         return HttpResponseNotAllowed(['POST'])
 
 #GET
-@csrf_exempt
 def signout(request):
     if request.method == 'GET':
         if request.user.is_authenticated:
@@ -75,7 +71,6 @@ def signout(request):
 
 
 #GET : user list
-@csrf_exempt
 def user_list(request):
     if request.method == 'GET':
         if request.user.is_authenticated:
@@ -92,7 +87,6 @@ def user_list(request):
 
 
 #GET : 
-@csrf_exempt
 def user_info(request, user_id):
     if request.method == 'GET':
         #return the user's chatrooms id & opponent & last chat in that chatroom
@@ -122,7 +116,6 @@ def user_info(request, user_id):
 
 
 #POST
-@csrf_exempt
 def post_chatroom(request):
     if request.method == 'POST':
         if request.user.is_authenticated:
@@ -176,7 +169,6 @@ def post_chatroom(request):
 
 
 #GET, DELETE, POST
-@csrf_exempt
 def chatroom_info(request, chatroom_id):
     if request.method == 'GET':
         # get chats using the chatnumbers
@@ -271,7 +263,6 @@ def chatroom_info(request, chatroom_id):
 
 
 #DELETE
-@csrf_exempt
 def chat_info(request, chatroom_id, chat_id):
     if request.method == 'DELETE':
         if request.user.is_authenticated:

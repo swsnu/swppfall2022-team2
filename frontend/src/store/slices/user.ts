@@ -2,7 +2,6 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '..';
 import axios from 'axios';
 import { TemperatureFormType } from '../../chatting/ChatList';
-
 export interface MenuType {
   mealtype: string;
   menuplace: string;
@@ -78,7 +77,17 @@ export const setSignUp = createAsyncThunk(
 
 export const setSignIn = createAsyncThunk('user/setSignIn', async (id: number, { dispatch }) => {
   //const loginResponse = await axios.post('/chat/user/signin/', loginForm);
-  const userlistResponse = await axios.get('/chat/user/');
+  // const userlistResponse = await axios.get('/chat/user/');
+  axios
+    .get('/chat/user/')
+    .then((response) => dispatch(userActions.updateUserList(response.data)))
+    .catch((err) => {
+      window.localStorage.removeItem('Token');
+      window.localStorage.removeItem('id');
+      window.localStorage.removeItem('nickname');
+      dispatch(userActions.updateLoggedInUser(null));
+      dispatch(userActions.updateUserList([]));
+    });
   const userid: number = id;
   const currentResponse = await axios.get('chat/user/current/');
   const chatroomlistResponse = await axios.get(`/chat/user/${userid}/`);
@@ -88,7 +97,6 @@ export const setSignIn = createAsyncThunk('user/setSignIn', async (id: number, {
   };
   const menulistResponse = await axios.get('/menu/');
   dispatch(userActions.updateLoggedInUser(serverdata));
-  dispatch(userActions.updateUserList(userlistResponse.data));
   dispatch(userActions.updateMenuList(menulistResponse.data));
 });
 

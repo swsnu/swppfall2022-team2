@@ -21,7 +21,7 @@ const Main: React.FunctionComponent = () => {
         navigate('/login');
       }
     }
-  }, [userState]);
+  }, [userState.loggedinuser]);
 
   return (
     <div>

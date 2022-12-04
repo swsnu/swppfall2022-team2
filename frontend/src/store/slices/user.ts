@@ -2,7 +2,6 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '..';
 import axios from 'axios';
 import { TemperatureFormType } from '../../chatting/ChatList';
-
 export interface MenuType {
   mealtype: string;
   menuplace: string;

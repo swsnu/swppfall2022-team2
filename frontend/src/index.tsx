@@ -3,10 +3,19 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import { Provider } from "react-redux";
-import { store } from "./store";
+import { Provider } from 'react-redux';
+import { store } from './store';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import axios from 'axios';
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
+
+axios
+  .get(`/chat/token/`)
+  .then(() => {
+    axios.defaults.xsrfCookieName = 'csrftoken';
+    axios.defaults.xsrfHeaderName = 'X-CSRFToken';
+  })
+  .catch(() => {});
 root.render(
   <React.StrictMode>
     <Provider store={store}>

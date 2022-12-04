@@ -9,7 +9,6 @@ def index(request):
     return HttpResponse('Default Page')
 
 @login_required
-@csrf_exempt
 def mypage_submit(request):# mypage/submit/
     if(request.method=='POST'):
         data=json.loads(request.body.decode())
@@ -29,7 +28,6 @@ def mypage_submit(request):# mypage/submit/
         return HttpResponseNotAllowed(['POST'])
 
 #POST, GET
-@csrf_exempt
 def touch_temp(request, user_id): 
     if request.method == 'GET':
         try:
@@ -83,7 +81,6 @@ def touch_temp(request, user_id):
         return HttpResponseNotAllowed(['POST', 'GET'])
 
 @login_required
-@csrf_exempt
 def mypage_get(request):# mypage/get/
     if(request.method=='GET'):
         user=request.user
@@ -98,7 +95,6 @@ def mypage_get(request):# mypage/get/
         return HttpResponseNotAllowed(['GET'])
 
 @login_required
-@csrf_exempt
 def mypage_block(request):# mypage/block/
     if(request.method=='POST'):
         data=json.loads(request.body.decode())
@@ -113,7 +109,6 @@ def mypage_block(request):# mypage/block/
     else:
         return HttpResponseNotAllowed(['POST'])
 @login_required
-@csrf_exempt
 def mypage_unblock(request):# mypage/unblock/
     if(request.method=='POST'):
         data=json.loads(request.body.decode())

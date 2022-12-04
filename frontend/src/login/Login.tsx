@@ -1,7 +1,7 @@
 import { selectUser, setSignIn, UserInfoType, UserType } from '../store/slices/user';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, Navigate } from 'react-router-dom';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { AppDispatch } from '../store';
 import './Login.css';
 import { Button, Form, Card, Image } from 'react-bootstrap';
@@ -16,13 +16,20 @@ export default function Login() {
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
-  if (userState.loggedinuser === null) {
-    if (window.localStorage.getItem('Token') !== null) {
-      dispatch(setSignIn(Number(window.localStorage.getItem('id'))));
-      console.log(window.localStorage.getItem('id'));
-      return <Navigate to='/main' />;
+  // if (userState.loggedinuser === null) {
+  //   if (window.localStorage.getItem('Token') !== null) {
+  //     dispatch(setSignIn(Number(window.localStorage.getItem('id'))));
+  //     return <Navigate to='/main' />;
+  //   }
+  // }
+  useEffect(() => {
+    if (userState.loggedinuser === null) {
+      if (window.localStorage.getItem('Token') !== null) {
+        dispatch(setSignIn(Number(window.localStorage.getItem('id'))));
+        // navigate('/main');
+      }
     }
-  }
+  }, [userState.loggedinuser]);
 
   const handleLogin = () => {
     axios
@@ -34,6 +41,7 @@ export default function Login() {
           window.localStorage.setItem('id', response.data.id);
           window.localStorage.setItem('nickname', response.data.nickname);
           dispatch(setSignIn(response.data.id));
+          navigate(`/main`);
         } else {
           console.log('login failure');
         }

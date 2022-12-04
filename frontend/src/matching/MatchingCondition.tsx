@@ -3,6 +3,8 @@ import { Button, Form } from 'react-bootstrap';
 import './MatchingCondition.css';
 import { conditionType } from './Matching';
 import Multiselect from 'multiselect-react-dropdown';
+import { selectUser, MenuType } from '../store/slices/user';
+import { useSelector } from 'react-redux';
 interface propsType {
   matchingCondition: conditionType;
   handleMatchingCondition: (a: conditionType) => void;
@@ -77,13 +79,18 @@ const MatchingCondition: React.FC<propsType> = (props: propsType) => {
       },
     });
   };
+  const userState = useSelector(selectUser);
+  const menulist: MenuType[] = userState.menulist;
+  const set = new Set(menulist.map((menu) => menu.menuplace));
+  const spaces = [...set];
   return (
     <div>
       <div className='conditions'>
         <p className='conditionP'>시간</p>
         <label className='selectLabel'>
           <Form.Select id='timeSelect' className='select' onChange={(e) => handleTime(e)}>
-            <option value='0'>직접선택</option>
+            <option value='0'>선택</option>
+            <option value='1130'>11:30</option>
             <option value='1200'>12:00</option>
             <option value='1230'>12:30</option>
             <option value='1300'>13:00</option>
@@ -92,19 +99,19 @@ const MatchingCondition: React.FC<propsType> = (props: propsType) => {
             <option value='1900'>19:00</option>
           </Form.Select>
         </label>
-        <Button variant='outline-secondary'>시간표에서 선택하기</Button>
       </div>
       <div className='conditions'>
         <p className='conditionP'>장소</p>
         <label className='selectLabel'>
           <Form.Select id='spaceSelect' className='select' onChange={(e) => handleSpace(e)}>
-            <option value=''>직접선택</option>
-            <option value='dormitory'>기숙사</option>
-            <option value='301'>301동</option>
-            <option value='student'>학생회관</option>
+            <option value=''>선택</option>
+            {spaces.map((m) => (
+              <option key={m} value={m}>
+                {m}
+              </option>
+            ))}
           </Form.Select>
         </label>
-        <Button variant='outline-secondary'>시간표에서 선택하기</Button>
       </div>
       <div className='conditionsMBTI'>
         <p className='conditionP'>선호하는 MBTI</p>
@@ -132,8 +139,10 @@ const MatchingCondition: React.FC<propsType> = (props: propsType) => {
           displayValue='name'
         />
       </div>
-      <p className='conditionP'>*조건을 선택하지 않으면 해당 조건은 고려하지 않습니다</p>
-      <p className='conditionP'>*매칭이 잡히지 않으면 조건에 맞지 않는 상대와 매칭될 수 있습니다</p>
+      <div className='conditionP'>*조건을 선택하지 않으면 해당 조건은 고려하지 않습니다</div>
+      <div className='conditionP'>
+        *매칭이 잡히지 않으면 조건에 맞지 않는 상대와 매칭될 수 있습니다
+      </div>
     </div>
   );
 };

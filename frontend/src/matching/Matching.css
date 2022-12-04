@@ -3,7 +3,7 @@
   top: calc(5% + 40px);
   left: 20px;
   width: calc(42%);
-  height: calc(60%);
+  height: calc(65%);
   border: 3px solid;
   text-align: center;
   margin: 30px;
@@ -25,10 +25,10 @@
 .button {
   position: fixed;
   left: 20px;
-  top: calc(67% + 30px);
+  top: calc(72% + 30px);
   border: 1px solid;
   width: calc(42%);
-  height: calc(20%);
+  height: calc(15%);
   margin: 30px;
 }
 .buttonTextM {

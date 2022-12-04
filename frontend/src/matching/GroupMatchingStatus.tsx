@@ -9,6 +9,7 @@ import './MatchingStatus.css';
 interface matchedOpponentType {
   id: number;
   name: string;
+  temperature: string;
 }
 interface conditionType {
   time: string;
@@ -31,6 +32,9 @@ const GroupMatchingStatus: React.FC<propsType> = (props) => {
   useEffect(() => {
     let time;
     switch (String(matchedCondition.time)) {
+      case '1130':
+        time = '11:30';
+        break;
       case '1200':
         time = '12:00';
         break;
@@ -103,13 +107,15 @@ const GroupMatchingStatus: React.FC<propsType> = (props) => {
       <div>
         <p></p>
         <h3>매칭이 완료되었습니다</h3>
-        <h3>시간: {shownTime}</h3>
-        <h3>메뉴: {matchedCondition.menu}</h3>
-        <h3>{matchedCondition.num}명과 매칭되었습니다</h3>
+        <div className='matchingStatusFont'>시간: {shownTime}</div>
+        <div className='matchingStatusFont'>메뉴: {matchedCondition.menu}</div>
+        <div className='matchingStatusFont'>{matchedCondition.num}명이 함께 매칭되었습니다</div>
         {matchedOpponents?.map((opponent) => (
-          <h3 key={opponent.id}>{opponent.name}</h3>
+          <div className='matchingStatusFont' key={opponent.id}>
+            {opponent.name} : {opponent.temperature}&#176;C
+          </div>
         ))}
-        <Button className='chatButton' variant='secondary' size='lg' onClick={makeChat}>
+        <Button className='chatButtonGroup' variant='secondary' size='lg' onClick={makeChat}>
           그룹채팅시작
         </Button>
       </div>
@@ -118,8 +124,8 @@ const GroupMatchingStatus: React.FC<propsType> = (props) => {
     <div>
       {numMatching !== null ? (
         <div>
-          <h3>매칭 큐에 등록되었습니다</h3>
-          <h3>{numMatching}명의 사람들이 현재 매칭 중입니다</h3>
+          <div>매칭 큐에 등록되었습니다</div>
+          <div>{numMatching}명의 사람들이 현재 매칭 중입니다</div>
           {/* https://codepen.io/domsammut/pen/kQjQvq */}
           <div className='loading-container'>
             <div className='loading'></div>
@@ -127,7 +133,7 @@ const GroupMatchingStatus: React.FC<propsType> = (props) => {
           </div>
         </div>
       ) : (
-        <h3>아래의 매칭 버튼을 눌러 그룹 매칭을 시작하세요</h3>
+        <div>아래의 매칭 버튼을 눌러 그룹 매칭을 시작하세요</div>
       )}
     </div>
   );

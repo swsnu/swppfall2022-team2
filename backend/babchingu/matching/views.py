@@ -47,7 +47,8 @@ def check_matched(request, id):# /matching/check/<int:id>/
         opponent=entity.matched_opponent
         response_dic={'time':opponent.time,'space_user':entity.space,'space_opponent':opponent.space,
          'mbti':opponent.user_mbti, 'gender':opponent.user_gender, 'age':opponent.user_age,
-          'id':opponent.user.id,'name':opponent.user.userinfo.nickname}
+          'id':opponent.user.id,'name':opponent.user.userinfo.nickname,'temperature':int(opponent.user.userinfo.temperature)
+          ,'intro':opponent.user.userinfo.intro}
         return JsonResponse(response_dic)
     else:
         return HttpResponseNotAllowed(['GET'])
@@ -69,7 +70,8 @@ def get_matching(request): # /matching/get/
             return JsonResponse(response_dic, status=201)
         response_dic={'time':opponent.time,'space_user':entity.space,'space_opponent':opponent.space,
          'mbti':opponent.user_mbti, 'gender':opponent.user_gender, 'age':opponent.user_age, 
-         'id':opponent.user.id, 'name':opponent.user.userinfo.nickname}
+         'id':opponent.user.id, 'name':opponent.user.userinfo.nickname,'temperature':int(opponent.user.userinfo.temperature)
+         ,'intro':opponent.user.userinfo.intro}
         return JsonResponse(response_dic)
     else:
         return HttpResponseNotAllowed(['GET'])
@@ -148,7 +150,8 @@ def group_check_matched(request, id):# /matching/group/check/<int:id>/
         opponents=entity.matched_opponents
         response_dic={'time':entity.time,'menu':entity.menu,
         'opponents':[{'id':GroupMatchingEntity.objects.get(id=opponent).user.id,
-        'name':GroupMatchingEntity.objects.get(id=opponent).user.userinfo.nickname}for opponent in opponents]}
+        'name':GroupMatchingEntity.objects.get(id=opponent).user.userinfo.nickname, 
+        'temperature':int(GroupMatchingEntity.objects.get(id=opponent).user.userinfo.temperature)}for opponent in opponents]}
         return JsonResponse(response_dic)
     else:
         return HttpResponseNotAllowed(['GET'])
@@ -172,7 +175,8 @@ def group_get_matching(request): # /matching/group/get/
         opponents=entity.matched_opponents
         response_dic={'time':entity.time,'menu':entity.menu,
         'opponents':[{'id':GroupMatchingEntity.objects.get(id=opponent).user.id,
-        'name':GroupMatchingEntity.objects.get(id=opponent).user.userinfo.nickname}for opponent in opponents]}
+        'name':GroupMatchingEntity.objects.get(id=opponent).user.userinfo.nickname,
+        'temperature':int(GroupMatchingEntity.objects.get(id=opponent).user.userinfo.temperature)}for opponent in opponents]}
         return JsonResponse(response_dic)
     else:
         return HttpResponseNotAllowed(['GET'])

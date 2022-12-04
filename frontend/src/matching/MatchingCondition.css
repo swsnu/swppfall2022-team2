@@ -3,7 +3,7 @@
   margin-top: 10px;
   left: calc(5%);
   width: calc(90%);
-  height: 100px;
+  height: 11vh;
   border: 2px solid;
   border-radius: 10px;
 }
@@ -12,7 +12,7 @@
   margin-top: 10px;
   left: calc(5%);
   width: calc(90%);
-  height: 180px;
+  height: 20vh;
   border: 2px solid;
   border-radius: 10px;
 }
@@ -21,11 +21,10 @@
   margin-top: 10px;
   left: calc(5%);
   width: calc(90%);
-  height: 140px;
+  height: 15vh;
   border: 2px solid;
   border-radius: 10px;
 }
 .conditionP {
-  font-size: 20px;
-  font-weight: bold;
+  font-size: 2vh;
 }

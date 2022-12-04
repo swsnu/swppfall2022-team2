@@ -7,6 +7,7 @@ import { useInterval } from './Matching';
 interface matchedOpponentType {
   id: number;
   name: string;
+  temperature: string;
 }
 interface conditionType {
   time: string;
@@ -161,17 +162,17 @@ const GroupMatching: React.FC = () => {
           onClick={stopMatching}
           disabled={matched}
         >
-          <span className='buttonTextM'>Stop Matching</span>
+          <span className='buttonTextM'>매칭 멈추기</span>
         </Button>
       ) : (
         <Button
           id='startButton'
-          variant='secondary'
+          variant='warning'
           className='button'
           onClick={startMatching}
           disabled={matched}
         >
-          <span className='buttonTextM'>Start Matching</span>
+          <span className='buttonTextM'>매칭 시작</span>
         </Button>
       )}
     </div>

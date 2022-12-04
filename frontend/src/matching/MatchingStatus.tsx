@@ -16,11 +16,11 @@ interface matchedOpponentType {
   age: string;
   id: number;
   name: string;
+  temperature: string;
+  intro: string;
 }
 interface shownType {
   time: string;
-  spaceUser: string;
-  spaceOpponent: string;
 }
 interface propsType {
   matched: boolean;
@@ -36,10 +36,11 @@ const MatchingStatus: React.FC<propsType> = (props) => {
   useEffect(() => {
     if (matched && matchedOpponent !== null) {
       const ti = matchedOpponent.time;
-      const su = matchedOpponent.spaceUser;
-      const so = matchedOpponent.spaceOpponent;
-      let time, spaceUser, spaceOpponent;
+      let time;
       switch (ti) {
+        case '1130':
+          time = '11:30';
+          break;
         case '1200':
           time = '12:00';
           break;
@@ -62,35 +63,7 @@ const MatchingStatus: React.FC<propsType> = (props) => {
           time = '미정';
           break;
       }
-      switch (su) {
-        case 'dormitory':
-          spaceUser = '기숙사';
-          break;
-        case 'student':
-          spaceUser = '학생회관';
-          break;
-        case '301':
-          spaceUser = '301동';
-          break;
-        default:
-          spaceUser = '미정';
-          break;
-      }
-      switch (so) {
-        case 'dormitory':
-          spaceOpponent = '기숙사';
-          break;
-        case 'student':
-          spaceOpponent = '학생회관';
-          break;
-        case '301':
-          spaceOpponent = '301동';
-          break;
-        default:
-          spaceOpponent = '미정';
-          break;
-      }
-      handleShownStatus({ time, spaceUser, spaceOpponent }); // object-shorthand
+      handleShownStatus({ time }); // object-shorthand
     }
   }, [matched]);
   const makeChat: () => void = () => {
@@ -131,16 +104,26 @@ const MatchingStatus: React.FC<propsType> = (props) => {
         <p></p>
         <h3>매칭이 완료되었습니다</h3>
         <img src={profileImg} width='80' />
-        <h3>{matchedOpponent?.name}</h3>
-        <h3>시간:{shownStatus !== null ? shownStatus.time : '미정'}</h3>
-        <h3>내가 원하는 장소:{shownStatus !== null ? shownStatus.spaceUser : '미정'}</h3>
         <h3>
-          상대가 원하는 장소:
-          {shownStatus !== null ? shownStatus.spaceOpponent : '미정'}
+          {matchedOpponent?.name} : {matchedOpponent?.temperature}&#176;C
         </h3>
-        <h3>나이: {matchedOpponent?.age}</h3>
-        <h3>성별: {matchedOpponent?.gender}</h3>
-        <h3>MBTI: {matchedOpponent?.mbti}</h3>
+        <div className='matchingStatusFont'>
+          시간:{shownStatus !== null ? shownStatus.time : '미정'}
+        </div>
+        <div className='matchingStatusFont'>
+          내가 원하는 장소:{matchedOpponent?.spaceUser ? matchedOpponent?.spaceUser : '미정'}
+        </div>
+        <div className='matchingStatusFont'>
+          상대가 원하는 장소:
+          {matchedOpponent?.spaceOpponent ? matchedOpponent?.spaceOpponent : '미정'}
+        </div>
+        <div className='matchingStatusFont'>나이: {matchedOpponent?.age}</div>
+        <div className='matchingStatusFont'>성별: {matchedOpponent?.gender}</div>
+        <div className='matchingStatusFont'>MBTI: {matchedOpponent?.mbti}</div>
+        <div className='matchingStatusFont'>
+          한 줄 소개:
+          {matchedOpponent?.intro ?? null}
+        </div>
         <Button className='chatButton' variant='secondary' size='lg' onClick={makeChat}>
           채팅시작
         </Button>
@@ -150,8 +133,8 @@ const MatchingStatus: React.FC<propsType> = (props) => {
     <div>
       {numMatching !== null ? (
         <div>
-          <h3>매칭 큐에 등록되었습니다</h3>
-          <h3>{numMatching}명의 사람들이 현재 매칭 중입니다</h3>
+          <div>매칭 큐에 등록되었습니다</div>
+          <div>{numMatching}명의 사람들이 현재 매칭 중입니다</div>
           {/* https://codepen.io/domsammut/pen/kQjQvq */}
           <div className='loading-container'>
             <div className='loading'></div>
@@ -159,7 +142,7 @@ const MatchingStatus: React.FC<propsType> = (props) => {
           </div>
         </div>
       ) : (
-        <h3>아래의 매칭 버튼을 눌러 1대1 매칭을 시작하세요</h3>
+        <div>아래의 매칭 버튼을 눌러 1대1 매칭을 시작하세요</div>
       )}
     </div>
   );

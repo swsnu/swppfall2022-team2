@@ -108,11 +108,10 @@ def user_info(request, user_id):
                 chatroom=Chatroom.objects.get(id=chatroom_entry["id"])
                 user_query = chatroom.chatusers.exclude(id=request.user.id).all()
                 messages = chatroom.message_in_this_chat_room.values()
-                print(messages)
                 if len(messages) ==0:
                     last_message = {}
                 else:
-                    last_message = messages.latest('order')
+                    last_message = messages.latest('date')
                 nickname_string = ', '.join([user.userinfo.nickname for user in user_query])
                 chatroom_list.append({"id": chatroom.id, "roomtype":chatroom.roomtype, "user_id": [user.id for user in user_query], "name":nickname_string, "last_chat": last_message})
             return JsonResponse(chatroom_list, safe=False)

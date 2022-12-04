@@ -55,19 +55,19 @@ const NavBar: React.FunctionComponent = () => {
         <div className='collapse navbar-collapse' id='navbarNavAltMarkup'>
           <div className='navbar-nav'>
             <a className='nav-link active' aria-current='page' onClick={handleMain}>
-              Home
+              홈
             </a>
             <a className='nav-link' onClick={handleRedirect}>
-              Matching
+              친구 찾기
             </a>
             <a className='nav-link' onClick={handleMyPage}>
-              MyPage
+              마이페이지
             </a>
             <span className='loginusertext'>
-              Logged in as {userState.loggedinuser?.user.nickname}
+              {userState.loggedinuser?.user.nickname}으로 접속 중
             </span>
             <a className='nav-link-logout' onClick={handleLogout}>
-              Logout
+              로그아웃
             </a>
           </div>
         </div>

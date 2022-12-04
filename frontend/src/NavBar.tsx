@@ -23,7 +23,9 @@ const NavBar: React.FunctionComponent = () => {
     try {
       dispatch(setSignOut(userState.loggedinuser?.user ?? { id: 0, nickname: 'noone' }));
       navigate('/login');
-    } catch (err) {}
+    } catch (err) {
+      navigate('/login');
+    }
   };
 
   return (

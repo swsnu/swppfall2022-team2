@@ -29,6 +29,8 @@ interface matchedOpponentType {
   age: string;
   id: number;
   name: string;
+  temperature: string;
+  intro: string;
 }
 export function useInterval(callback: () => void, delay: number): void {
   // https://overreacted.io/making-setinterval-declarative-with-react-hooks/
@@ -87,6 +89,8 @@ const Matching: React.FunctionComponent = () => {
             age: response.data.age,
             id: response.data.id,
             name: String(response.data.name),
+            temperature: String(response.data.temperature),
+            intro: response.data.intro,
           });
         }
       })
@@ -145,6 +149,8 @@ const Matching: React.FunctionComponent = () => {
             age: response.data.age,
             id: response.data.id,
             name: String(response.data.name),
+            temperature: String(response.data.temperature),
+            intro: response.data.intro,
           });
         } else if (response.status === 201) {
           handleMatchingId(response.data.id);
@@ -210,17 +216,17 @@ const Matching: React.FunctionComponent = () => {
               onClick={stopMatching}
               disabled={matched}
             >
-              <span className='buttonTextM'>Stop Matching</span>
+              <span className='buttonTextM'>매칭 멈추기</span>
             </Button>
           ) : (
             <Button
               id='startButton'
-              variant='secondary'
+              variant='warning'
               className='button'
               onClick={startMatching}
               disabled={matched}
             >
-              <span className='buttonTextM'>Start Matching</span>
+              <span className='buttonTextM'>매칭 시작</span>
             </Button>
           )}
         </Tab>

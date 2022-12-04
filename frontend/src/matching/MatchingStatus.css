@@ -271,3 +271,10 @@
   width: 150px;
   font-size: 25px;
 }
+.chatButtonGroup {
+  width: 190px;
+  font-size: 25px;
+}
+.matchingStatusFont {
+  font-size: 2.7vh;
+}

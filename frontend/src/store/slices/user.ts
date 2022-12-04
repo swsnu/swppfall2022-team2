@@ -95,12 +95,12 @@ export const setSignIn = createAsyncThunk('user/setSignIn', async (id: number, {
 export const setSignOut = createAsyncThunk(
   'user/setSignOut',
   async (userForm: UserType, { dispatch }) => {
-    const response = await axios.get('/chat/user/signout/');
     window.localStorage.removeItem('Token');
     window.localStorage.removeItem('id');
     window.localStorage.removeItem('nickname');
     dispatch(userActions.updateLoggedInUser(null));
     dispatch(userActions.updateUserList([]));
+    const response = await axios.get('/chat/user/signout/');
     return response;
   },
 );

@@ -1,13 +1,9 @@
-import React, { useState, useContext, useEffect } from 'react';
+import { useState, useContext } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { WebSocketContext } from './components/websocket/WebSocketProvider';
 import { RootState } from '../store';
 import { useParams } from 'react-router-dom';
-
-interface Props{
-  username : any;
-}
 
 function Chatting(){
   const user = useSelector( ({user} : RootState  )=>(
@@ -18,13 +14,14 @@ function Chatting(){
   const [message, setMessage] = useState('');
   const [author, setAuthor] = useState('');
   const {id} = useParams();
+  var userId = String(user.user?.nickname)
 
   
   const ws = useContext(WebSocketContext);
 
   const handleChangeText = (e: any) => {
     setMessage(e.target.value);
-    setAuthor((user.user?.nickname)!);
+    setAuthor(userId);
   };
 
   const handleClickSubmit = () => {
@@ -74,9 +71,8 @@ const InputWrapper = styled.div`
 const Input = styled.input`
   width: calc(100% - 45px);
   height: 40px;
-  border: 0;
   border-radius: 5px;
-  background-color: #00000010;
+  background-color: #ffffff;
   padding: 0 10px;
   font-size: 16px;
 `;

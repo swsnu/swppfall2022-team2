@@ -11,7 +11,6 @@ import ChatRoom from './chatting/ChatRoom';
 
 function App(): any {
 
-
   return (
     <BrowserRouter>
       <Routes>

@@ -23,7 +23,7 @@ const Menu = () => {
   };
 
     return (
-      <div className="container">
+      <div className="card menu-list overflow-auto">
         <div className="bloc-tabs">
           <button
             className={toggleState === 1 ? "tabs active-tabs" : "tabs"}
@@ -45,12 +45,12 @@ const Menu = () => {
           </button>
         </div>
   
-        <div className="content-tabs scroll">
-          <div className={toggleState === 1 ? "content  active-content scroll" : "content"}>
+        <div className="content-tabs overflow-auto">
+          <div className={toggleState === 1 ? "content  active-content overflow-auto" : "content"}>
             {
             restaurantlist.map((restaurant)=>(
               breakfastlist.filter((meal)=>meal.menuplace===restaurant).length===0 ? <div></div> : 
-              <Card border='primary'>
+              <Card className="card-menu">
                 <Card.Header>{restaurant}</Card.Header>
                 <Card.Body>
                   <Card.Text>{breakfastlist.filter((meal)=>meal.menuplace===restaurant).map((meal)=>
@@ -65,11 +65,11 @@ const Menu = () => {
           }
           </div>
   
-          <div className={toggleState === 2 ? "content  active-content scroll" : "content"}>
+          <div className={toggleState === 2 ? "content  active-content overflow-auto" : "content"}>
           {
             restaurantlist.map((restaurant)=>(
               lunchlist.filter((meal)=>meal.menuplace===restaurant).length===0 ? <div></div> : 
-              <Card border='primary'>
+              <Card className="card-menu">
                 <Card.Header>{restaurant}</Card.Header>
                 <Card.Body>
                   <Card.Text>{lunchlist.filter((meal)=>meal.menuplace===restaurant).map((meal)=>
@@ -84,11 +84,11 @@ const Menu = () => {
          }
           </div>
   
-          <div className={toggleState === 3 ? "content  active-content scroll" : "content"}>
+          <div className={toggleState === 3 ? "content  active-content overflow-auto" : "content"}>
           {
             restaurantlist.map((restaurant)=>(
               dinnerlist.filter((meal)=>meal.menuplace===restaurant).length===0 ? <div></div> : 
-              <Card border='primary'>
+              <Card className="card-menu">
                 <Card.Header>{restaurant}</Card.Header>
                 <Card.Body>
                   <Card.Text>{dinnerlist.filter((meal)=>meal.menuplace===restaurant).map((meal)=>

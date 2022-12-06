@@ -8,6 +8,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './Main.css';
 import NavBar from './NavBar';
 import { AppDispatch } from './store';
+import { isImportTypeAssertionContainer } from 'typescript';
+
 const Main: React.FunctionComponent = () => {
   const userState = useSelector(selectUser);
   const dispatch = useDispatch<AppDispatch>();
@@ -24,15 +26,17 @@ const Main: React.FunctionComponent = () => {
   }, [userState.loggedinuser]);
 
   return (
-    <div>
-      <NavBar />
-      <div className='chat-list'>
-        <ChatList />
+      <div>
+        <div>
+          <NavBar />
+        </div>
+        <div className='chat-list'>
+          <ChatList />
+        </div>
+        <div className='menu-list'>
+          <Menu />
+        </div>
       </div>
-      <div className='menu-list'>
-        <Menu />
-      </div>
-    </div>
   );
 };
 

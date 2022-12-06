@@ -111,8 +111,10 @@ const ChatRoom = () => {
               {chatroom?.user_id.map((users) => {
                 return (
                   <>
-                    <Usernames name={user.userlist[users].nickname!}></Usernames>
-                    <Usernames name={"<"+status.intro+">"}></Usernames>
+                    <Usernames
+                      name={user.userlist.find((u) => u.id === users)?.nickname!}
+                    ></Usernames>
+                    <Usernames name={'<' + status.intro + '>'}></Usernames>
                   </>
                 );
               })}

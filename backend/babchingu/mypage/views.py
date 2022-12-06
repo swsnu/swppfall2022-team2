@@ -90,6 +90,8 @@ def mypage_get(request):# mypage/get/
             'nickname':user_info.nickname, \
             'blocked_users':[User.objects.get(id=blocked_user).userinfo.nickname for blocked_user in user_info.blocked_users], \
             'matched_users':[User.objects.get(id=matched_users).userinfo.nickname for matched_users in user_info.matched_users],}
+        if user_info.nickname in response_dict['matched_users'].keys():
+            del response_dict['matched_users'][user_info.nickname]
         return JsonResponse(response_dict)
     else:
         return HttpResponseNotAllowed(['GET'])

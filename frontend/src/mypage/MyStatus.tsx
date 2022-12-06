@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import {Form, Row, Col, FormControlProps, FormControl} from 'react-bootstrap';
 import {statusType} from './MyPage'
 import uuid from "react-uuid"
+import axios from 'axios';
 import { Button} from 'react-bootstrap';
 
 interface propsType {
@@ -11,6 +12,7 @@ interface propsType {
   }
 const MyStatus: React.FC<propsType> = (props:propsType) => {
     const {status, handleStatus, statusSubmit} = props;
+    const [nickdup, setNickdup] = useState(false);
     
     const [somethingModified, setSomethingModified] = useState<boolean>(false);
 
@@ -30,7 +32,7 @@ const MyStatus: React.FC<propsType> = (props:propsType) => {
     const handleName = (e: React.BaseSyntheticEvent) : void => {
         handleStatus({ ...status, name: e.target.value });
         setSomethingModified(true);
-        const nameReg = /^[가-힣]{2,30}$/ //외국 이름? /^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/; 
+        const nameReg = /^[가-힣a-zA-Z\. ]{2,30}$/
         if(e.target.value.length < 2){
             setNameErrorMessage('이름이 너무 짧습니다.');
             setNameIsValid(false);
@@ -116,8 +118,22 @@ const MyStatus: React.FC<propsType> = (props:propsType) => {
             setNicknameIsValid(false);
         }
         else{
-            setNicknameErrorMessage('');
-            setNicknameIsValid(true);
+            axios
+                .post(`mypage/nick/`,{nickname:status.nickname})
+                .then((response) => {
+                    setNickdup(response.data.dup);
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+            if(nickdup){
+                setNicknameErrorMessage('다른 사용자가 사용 중인 별명입니다.')
+                setNicknameIsValid(false);
+            }
+            else{
+                setNicknameErrorMessage('');
+                setNicknameIsValid(true);
+            }
         }
     };
 

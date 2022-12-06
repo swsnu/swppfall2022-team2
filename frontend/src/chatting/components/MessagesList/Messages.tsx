@@ -1,62 +1,84 @@
-import { FC, useEffect } from 'react';
 import styled from 'styled-components';
 import { chatActions, messageType } from '../../../store/slices/chat';
-import React, { useContext, useState } from 'react';
+import { useContext } from 'react';
 import { WebSocketContext } from '../websocket/WebSocketProvider';
-import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '../../../store';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '../../../store';
 
-
-interface Props{
-  message : messageType
+interface Props {
+  message: messageType;
 }
 
-export const MyMessage = (message :Props) => {
-  const ws = useContext(WebSocketContext);
-  const dispatch = useDispatch<AppDispatch>();
-  
-  ws.current.onmessage = (test : MessageEvent) => {
-    const Data = JSON.parse(test.data);
-    dispatch(chatActions.setMessage({author : Data.author , content : Data.content}));
-    console.log("my")
-  };
-  return (
-    <>
-      <MyWrapper>
-          <>
-            <TopWrapper>
-              <Username>{message.message.author}</Username>
-              </TopWrapper>
-              <Message_Box>{message.message.content}</Message_Box>
-              </>
-      </MyWrapper>
-    </>
-  );
-};
+interface testProps {
+  name: string;
+}
 
-export const OtherMessage = (message : Props) => {
+export const MyMessage = (message: Props) => {
   const ws = useContext(WebSocketContext);
   const dispatch = useDispatch<AppDispatch>();
 
   ws.current.onmessage = (test: MessageEvent) => {
     const Data = JSON.parse(test.data);
-    dispatch(chatActions.setMessage({author : Data.author , content : Data.content}));
-    console.log("other")
+    dispatch(chatActions.setMessage({ author: Data.author, content: Data.content }));
+    console.log(Data.author);
+  };
+  return (
+    <>
+      <MyWrapper>
+        <>
+          <TopWrapper>
+            <Username>{message.message.author}</Username>
+          </TopWrapper>
+          <Message_Box>{message.message.content}</Message_Box>
+        </>
+      </MyWrapper>
+    </>
+  );
+};
+
+export const OtherMessage = (message: Props) => {
+  const ws = useContext(WebSocketContext);
+  const dispatch = useDispatch<AppDispatch>();
+
+  ws.current.onmessage = (test: MessageEvent) => {
+    const Data = JSON.parse(test.data);
+    dispatch(chatActions.setMessage({ author: Data.author, content: Data.content }));
+    console.log(Data.author);
   };
 
   return (
     <>
       <OtherWrapper>
-            <>
-            <TopWrapper>
-              <Username>{message.message.author}</Username>
-              </TopWrapper>
-              <Message_Box>{message.message.content}</Message_Box>
-            </>
+        <>
+          <TopWrapper>
+            <Username>{message.message.author}</Username>
+          </TopWrapper>
+          <Message_Box>{message.message.content}</Message_Box>
+        </>
       </OtherWrapper>
     </>
   );
-      };
+};
+
+export const Usernames = (name: testProps) => {
+  return (
+    <TopWrapper>
+      <Username>{name.name}</Username>
+    </TopWrapper>
+  );
+};
+export const Intro = (name: testProps) => {
+  return (
+      <Introduce>{name.name}</Introduce>
+  );
+};
+
+const Introduce = styled.div`
+  font-size: 20px;
+  font-family: NanumSquareR;
+  margin-right: 10px;
+  padding: 5px;
+`;
 
 const Username = styled.div`
   font-size: 20px;
@@ -66,17 +88,18 @@ const Username = styled.div`
 
 const TopWrapper = styled.div`
   display: flex;
-  align-items: flex-end;
+  position : relative;
+  align-items: center;
+  justify-content: center;
   margin-bottom: 8px;
 `;
 
 const Message_Box = styled.div`
   width: 100%;
   max-width: 400px;
-  background-color: '#feffb1';
+  background-color: #ffffff;
   padding: 10px;
   border-radius: 5px;
-  box-shadow: 1px 1px 1px 1px #797979;
   line-height: 25px;
   word-break: break-all;
 
@@ -84,7 +107,6 @@ const Message_Box = styled.div`
     max-width: 280px;
   }
 `;
-
 
 const MyWrapper = styled.div`
   width: 100%;
@@ -103,4 +125,3 @@ const OtherWrapper = styled.div`
   padding: 10px 15px;
   margin: 8px 0;
 `;
-

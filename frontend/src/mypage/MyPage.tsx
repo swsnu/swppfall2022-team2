@@ -37,6 +37,7 @@ const MyPage: React.FunctionComponent = () => {
     temperature: 0.0,
   });
 
+
   // fetch status from userinfo model
   useEffect(() => {
     axios
@@ -183,7 +184,7 @@ const MyPage: React.FunctionComponent = () => {
           <h5 className='card-title'>프로필 설정</h5>
         </div>
         <div className='pad'>
-          <MyStatus status={status} handleStatus={handleStatus} statusSubmit={statusSubmit} />
+          <MyStatus status={status} handleStatus={handleStatus} statusSubmit={statusSubmit}/>
         </div>
       </div>
       <div className='block card overflow-auto'>

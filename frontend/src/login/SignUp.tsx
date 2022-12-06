@@ -121,7 +121,7 @@ export default function SignUp(){
 
     const handleName = (e: React.BaseSyntheticEvent) : void => {
         handleSignUpStatus({ ...signUpStatus, name: e.target.value });
-        const nameReg = /^[가-힣]{2,30}$/
+        const nameReg = /^[가-힣a-zA-Z\. ]{2,30}$/
         if(e.target.value.length < 2){
             setNameErrorMessage('이름이 너무 짧습니다.');
             setNameIsValid(false);

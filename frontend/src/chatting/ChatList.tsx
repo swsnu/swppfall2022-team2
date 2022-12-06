@@ -8,6 +8,7 @@ import moment from 'moment';
 import  Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import axios from 'axios';
+import "./ChatList.css";
 
 export interface TemperatureFormType {
   user: number;
@@ -100,10 +101,10 @@ const ChatList: React.FunctionComponent = () => {
 
     return(
         <div className="card chat-list overflow-auto">
-          <h5 className="card-title">Chating Rooms</h5>
+          <h5 className="card-title">채팅방</h5>
             <div className="list-group">
               {userState.loggedinuser?.chatrooms!.map((chatroom)=>(
-                <a className="list-group-item list-group-item-action" key={chatroom.id} onClick={(e)=> {e.stopPropagation(); e.preventDefault();clickChatListTitleHandler(chatroom);}}>
+                <a className="list-group-item list-group-item-action list-group-item-color" key={chatroom.id} onClick={(e)=> {e.stopPropagation(); e.preventDefault();clickChatListTitleHandler(chatroom);}}>
                   <div className="d-flex w-100 justify-content-between">
                     <h5 className="mb-1">{chatroom.name}</h5>
                     <small>{moment(chatroom.last_chat?.date).fromNow()}</small>
@@ -112,7 +113,7 @@ const ChatList: React.FunctionComponent = () => {
                   <p className="mb-1">{chatroom.last_chat?.content}</p>
                   {chatroom.user_id.map((userid) =>(
                         <a>
-                        <Button className="btn-primary" onClick={(e)=>{e.stopPropagation(); e.preventDefault(); handleShow(userid);}}>
+                        <Button className="btn-primary" style={{ backgroundColor: '#ffcf96', borderColor:'#ffcf96' }} onClick={(e)=>{e.stopPropagation(); e.preventDefault(); handleShow(userid);}}>
                           {(userState.userlist.find(element => element.id===userid))?.nickname ?? ''} 
                         </Button>
                             <Modal show={show} onClick={(e:any)=>{e.stopPropagation(); e.preventDeafult();}}>
@@ -122,19 +123,19 @@ const ChatList: React.FunctionComponent = () => {
                             </Modal.Header>
                             <Modal.Body>Woohoo, you're reading this text in a modal!</Modal.Body>
                             <Modal.Footer>
-                              <Button variant="success" onClick={(e)=>{handleBest(); e.stopPropagation(); e.preventDefault();}}>
+                              <Button variant="success" style={{ backgroundColor: '#FFB55D', borderColor:'#FFB55D' }} onClick={(e)=>{handleBest(); e.stopPropagation(); e.preventDefault();}}>
                                 최고
                               </Button>
-                              <Button variant="primary" onClick={(e)=>{handleGood(); e.stopPropagation(); e.preventDefault();}}>
+                              <Button variant="primary" style={{ backgroundColor: '#ffcf96', borderColor:'#ffcf96' }} onClick={(e)=>{handleGood(); e.stopPropagation(); e.preventDefault();}}>
                                 좋음
                               </Button>
-                              <Button variant="secondary" onClick={(e)=>{handleMed(); e.stopPropagation(); e.preventDefault();}}>
+                              <Button variant="secondary" style={{ backgroundColor: '#FEE2A2', borderColor:'#FEE2A2' }} onClick={(e)=>{handleMed(); e.stopPropagation(); e.preventDefault();}}>
                                 보통
                               </Button>
-                              <Button variant="warning" onClick={(e)=>{handleBad(); e.stopPropagation(); e.preventDefault();}}>
+                              <Button variant="warning" style={{ backgroundColor: '#B8A985', borderColor:'#B8A985' }} onClick={(e)=>{handleBad(); e.stopPropagation(); e.preventDefault();}}>
                                 별로
                               </Button>
-                              <Button variant="danger" onClick={(e)=>{handleWorst(); e.stopPropagation(); e.preventDefault();}}>
+                              <Button variant="danger" style={{ backgroundColor: '#666666', borderColor:'#666666' }} onClick={(e)=>{handleWorst(); e.stopPropagation(); e.preventDefault();}}>
                                 최악
                               </Button>
                                 </Modal.Footer>

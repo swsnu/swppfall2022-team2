@@ -15,7 +15,7 @@
   padding: 15px;
   text-align: center;
   width: 50%;
-  background: rgba(128, 128, 128, 0.075);
+  background: #f1d8ba;
   cursor: pointer;
   border-bottom: 1px solid rgba(0, 0, 0, 0.274);
   box-sizing: content-box;
@@ -27,7 +27,7 @@
 }
 
 .active-tabs  {
-  background: white;
+  background: #fff9f1;
   border-bottom: 1px solid transparent;
 }
 
@@ -53,7 +53,7 @@ button {
   flex-grow : 1;
 }
 .content {
-  background: white;
+  background: #fff9f1;
   padding: 20px;
   width: 100%;
   height: 100%;
@@ -80,4 +80,12 @@ button {
 .scroll {
   max-height: 500px;
   overflow-y: auto;
+}
+
+.card-menu {
+  background: #fff9f1;
+}
+
+.card-header.card-menu {
+  background: rgb(183 21 21 / 3%);
 }

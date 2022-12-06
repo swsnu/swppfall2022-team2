@@ -17,7 +17,7 @@ function App(): any {
         <Route path='/signup' element={<SignUp/>} />
         <Route path='/login' element={<Login/>} />
         <Route path="/chatroom/:id" element={<ChatRoom/>}/>
-        <Route path='/main' element={<Main />} />
+        <Route path='/main' element={<Main/>} />
         <Route path='/matching' element={<Matching />} />
         <Route path='/mypage' element={<MyPage />} />
         {/* need to add components at here */}

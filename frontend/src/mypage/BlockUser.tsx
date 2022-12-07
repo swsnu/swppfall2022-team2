@@ -15,8 +15,8 @@ const BlockUser: React.FC<propsType> = (props:propsType) => {
     <div>
         <div className='halfdiv'>
             {status.matched_users.map((matched_user)=>(
-                <div className='card pad'>
-                    <span>
+                <div className='card pad userlist'>
+                    <span className = 'usertext'>
                         {matched_user}
                         <Button className='blockbutton' variant='danger' onClick={(e)=>{blockSubmit(e, matched_user)}}>차단</Button>
                     </span>
@@ -25,8 +25,8 @@ const BlockUser: React.FC<propsType> = (props:propsType) => {
         </div>
         <div className='halfdiv'>
             {status.blocked_users.map((blocked_user)=>(
-                <div className='card pad'>
-                    <span>
+                <div className='card pad userlist'>
+                    <span className = 'usertext'>
                         {blocked_user}
                         <Button className='blockbutton' variant='success' onClick={(e)=>{unblockSubmit(e, blocked_user)}}>차단 해제</Button>
                     </span>

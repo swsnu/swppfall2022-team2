@@ -26,7 +26,7 @@ const GroupMatchingCondition: React.FunctionComponent<propsType> = (props) => {
   const userState = useSelector(selectUser);
   const menulist: MenuType[] = userState.menulist;
   const set = new Set(menulist.map((menu) => menu.menuplace));
-  const spaces = [...set];
+  const spaces = Array.from(set);
   const [space, handleSpace] = useState<string>(''); // user selected condition
   const menus: string[] = menulist
     .filter(

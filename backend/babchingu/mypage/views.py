@@ -90,6 +90,8 @@ def mypage_get(request):# mypage/get/
             'nickname':user_info.nickname, \
             'blocked_users':[User.objects.get(id=blocked_user).userinfo.nickname for blocked_user in user_info.blocked_users], \
             'matched_users':[User.objects.get(id=matched_users).userinfo.nickname for matched_users in user_info.matched_users],}
+        if user_info.nickname in response_dict['matched_users'].keys():
+            del response_dict['matched_users'][user_info.nickname]
         return JsonResponse(response_dict)
     else:
         return HttpResponseNotAllowed(['GET'])
@@ -108,6 +110,7 @@ def mypage_block(request):# mypage/block/
         return HttpResponse(status=200)
     else:
         return HttpResponseNotAllowed(['POST'])
+
 @login_required
 def mypage_unblock(request):# mypage/unblock/
     if(request.method=='POST'):
@@ -120,5 +123,27 @@ def mypage_unblock(request):# mypage/unblock/
         user_info.blocked_users.remove(temp_user)
         user_info.save()
         return HttpResponse(status=200)
+    else:
+        return HttpResponseNotAllowed(['POST'])
+
+def nickname_duplication_check(request):# mypage/nick/
+    if(request.method=='POST'):
+        try:
+            user=request.user
+            user_info=user.userinfo
+            nick = user_info.nickname
+        except:
+            nick = ''
+        data=json.loads(request.body.decode())
+        response_dict = {'dup':nick!=data['nickname'] and UserInfo.objects.filter(nickname=data['nickname']).exists()}
+        return JsonResponse(response_dict)
+    else:
+        return HttpResponseNotAllowed(['POST'])
+
+def id_duplication_check(request):# mypage/id/
+    if(request.method=='POST'):
+        data=json.loads(request.body.decode())
+        response_dict = {'dup':User.objects.filter(username=data['username']).exists()}
+        return JsonResponse(response_dict)
     else:
         return HttpResponseNotAllowed(['POST'])

@@ -56,6 +56,10 @@
 }
 
 .halfdiv{
-    width: calc(50% - 2px);
+    width: calc(50%);
+    height: calc(100%);
     display: inline-block;
+}
+.userlist{
+    vertical-align: top;
 }

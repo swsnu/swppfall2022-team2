@@ -83,12 +83,20 @@ const MatchingStatus: React.FC<propsType> = (props) => {
                 chatroom.user_id.length === 1 && chatroom.user_id.includes(matchedOpponent.id),
             )?.id;
             if (chatRoomId !== undefined) {
+              const chatroom: ChatRoomType = userState.loggedinuser.chatrooms.find(
+                (chatroom) => chatroom.id === chatRoomId,
+              )!;
+              dispatch(userActions.selectChatRoom(chatroom!));
               navigate(`/chatroom/${chatRoomId}`);
             } else {
               void dispatch(
                 createChatRoom([userState.loggedinuser.user.id, matchedOpponent.id]),
               ).then((response) => {
                 // there is a problem in testing below navigate
+                const chatroom: ChatRoomType = userState.loggedinuser!.chatrooms.find(
+                  (chatroom) => chatroom.id === response.payload,
+                )!;
+                dispatch(userActions.selectChatRoom(chatroom!));
                 // eslint-disable-next-line
                 navigate(`/chatroom/${response.payload}`);
               });

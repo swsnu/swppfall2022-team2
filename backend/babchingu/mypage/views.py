@@ -126,13 +126,24 @@ def mypage_unblock(request):# mypage/unblock/
     else:
         return HttpResponseNotAllowed(['POST'])
 
-@login_required
 def nickname_duplication_check(request):# mypage/nick/
     if(request.method=='POST'):
-        user=request.user
-        user_info=user.userinfo
+        try:
+            user=request.user
+            user_info=user.userinfo
+            nick = user_info.nickname
+        except:
+            nick = ''
         data=json.loads(request.body.decode())
-        response_dict = {'dup':user_info.nickname!=data['nickname'] and UserInfo.objects.exists(nickname=data['nickname'])}
+        response_dict = {'dup':nick!=data['nickname'] and UserInfo.objects.filter(nickname=data['nickname']).exists()}
+        return JsonResponse(response_dict)
+    else:
+        return HttpResponseNotAllowed(['POST'])
+
+def id_duplication_check(request):# mypage/id/
+    if(request.method=='POST'):
+        data=json.loads(request.body.decode())
+        response_dict = {'dup':User.objects.filter(username=data['username']).exists()}
         return JsonResponse(response_dict)
     else:
         return HttpResponseNotAllowed(['POST'])

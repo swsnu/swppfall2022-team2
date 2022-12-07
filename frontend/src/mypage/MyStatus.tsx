@@ -119,21 +119,20 @@ const MyStatus: React.FC<propsType> = (props:propsType) => {
         }
         else{
             axios
-                .post(`mypage/nick/`,{nickname:status.nickname})
+                .post(`mypage/nick/`,{nickname:e.target.value})
                 .then((response) => {
-                    setNickdup(response.data.dup);
+                    if(response.data.dup){
+                        setNicknameErrorMessage('다른 사용자가 사용 중인 별명입니다.')
+                        setNicknameIsValid(false);
+                    }
+                    else{
+                        setNicknameErrorMessage('');
+                        setNicknameIsValid(true);
+                    }
                 })
                 .catch((err) => {
-                    console.log(err);
-                });
-            if(nickdup){
-                setNicknameErrorMessage('다른 사용자가 사용 중인 별명입니다.')
-                setNicknameIsValid(false);
-            }
-            else{
-                setNicknameErrorMessage('');
-                setNicknameIsValid(true);
-            }
+                    console.log(err.response.data);
+                });   
         }
     };
 

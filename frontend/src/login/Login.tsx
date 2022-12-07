@@ -6,7 +6,7 @@ import { AppDispatch } from '../store';
 import './Login.css';
 import { Button, Form, Card, Image } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import logoImg from '../images/logo.jpg';
+import logoImg from '../images/babchingu_signupin_logo.png';
 import axios from 'axios';
 
 export default function Login() {
@@ -70,8 +70,7 @@ export default function Login() {
       <Card>
         <Card.Header>
           <h3>
-            <Image className='me-2' src={logoImg} alt='' width='60' height='48' />
-            밥친구
+            <Image className='image-logo-center' src={logoImg} alt='' width='130' height='100' />
           </h3>
         </Card.Header>
         <Card.Body>

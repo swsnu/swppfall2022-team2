@@ -114,7 +114,6 @@ const ChatRoom = () => {
                     <Usernames
                       name={user.userlist.find((u) => u.id === users)?.nickname!}
                     ></Usernames>
-                    <Usernames name={'<' + status.intro + '>'}></Usernames>
                   </>
                 );
               })}

@@ -26,7 +26,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
             data_type = text_data_json['type']
             message = text_data_json['content']
             authorId = text_data_json['author']
-
+            print(authorId)
             
 
             if data_type == "message" :

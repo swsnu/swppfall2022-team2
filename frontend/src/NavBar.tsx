@@ -63,7 +63,7 @@ const NavBar: React.FunctionComponent = () => {
               마이페이지
             </a>
             <span className='loginusertext'>
-              {userState.loggedinuser?.user.nickname}으로 접속 중
+              {userState.loggedinuser?.user.nickname}(으)로 접속 중
             </span>
             <a className='nav-link-logout' onClick={handleLogout}>
               로그아웃

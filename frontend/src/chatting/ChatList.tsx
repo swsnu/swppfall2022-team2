@@ -114,7 +114,7 @@ const ChatList: React.FunctionComponent = () => {
                   {chatroom.user_id.map((userid) =>(
                         <a>
                         <Button className="btn-primary" style={{ backgroundColor: '#ffcf96', borderColor:'#ffcf96' }} onClick={(e)=>{e.stopPropagation(); e.preventDefault(); handleShow(userid);}}>
-                          {(userState.userlist.find(element => element.id===userid))?.nickname ?? ''} 
+                          {(userState.userlist.find(element => element.id===userid))?.nickname ?? ''}님 평가하기
                         </Button>
                             <Modal show={show} onClick={(e:any)=>{e.stopPropagation(); e.preventDeafult();}}>
                             <Modal.Header>

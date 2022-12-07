@@ -6,7 +6,7 @@ import { AppDispatch } from '../store';
 import { Button, Form, Card, Image, Row, Col } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './SignUp.css';
-import logoImg from '../images/logo.jpg';
+import logoImg from '../images/babchingu_signupin_logo.png';
 
 export interface signUpStatusType{
     name: string;
@@ -246,13 +246,12 @@ export default function SignUp(){
                 <Card.Header>
                 <h3>
                     <Image
-                        className="me-2"
+                        className="image-logo-center"
                         src={logoImg}
                         alt=''
-                        width='60'
-                        height='48'
+                        width='72'
+                        height='58'
                     />
-                    밥친구
                 </h3>
                 </Card.Header>
                 <Card.Body>

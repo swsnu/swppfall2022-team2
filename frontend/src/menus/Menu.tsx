@@ -55,8 +55,7 @@ const Menu = () => {
                 <Card.Body>
                   <Card.Text>{breakfastlist.filter((meal)=>meal.menuplace===restaurant).map((meal)=>
                       <div>
-                        <a>{meal.menuname}  {meal.menuprice}</a>
-                        <a>{meal.menuextra}</a>
+                        <a>{meal.menuname}<br/>{meal.menuextra==="" ? <div></div> : <div>{meal.menuextra} <br/></div> }{meal.menuprice}<br/><br/></a>
                       </div>
                         )}</Card.Text>
                 </Card.Body>
@@ -74,8 +73,7 @@ const Menu = () => {
                 <Card.Body>
                   <Card.Text>{lunchlist.filter((meal)=>meal.menuplace===restaurant).map((meal)=>
                       <div>
-                        <a>{meal.menuname}  {meal.menuprice}</a>
-                        <a>{meal.menuextra}</a>
+                        <a>{meal.menuname}<br/>{meal.menuextra==="" ? <div></div> : <div>{meal.menuextra} <br/></div> }{meal.menuprice}<br/><br/></a>
                       </div>
                         )}</Card.Text>
                 </Card.Body>
@@ -93,8 +91,7 @@ const Menu = () => {
                 <Card.Body>
                   <Card.Text>{dinnerlist.filter((meal)=>meal.menuplace===restaurant).map((meal)=>
                       <div>
-                        <a>{meal.menuname}  {meal.menuprice}</a>
-                        <a>{meal.menuextra}</a>
+                        <a>{meal.menuname}<br/>{meal.menuextra==="" ? <div></div> : <div>{meal.menuextra} <br/></div> }{meal.menuprice}<br/><br/></a>
                       </div>
                         )}</Card.Text>
                 </Card.Body>

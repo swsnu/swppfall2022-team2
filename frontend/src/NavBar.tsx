@@ -33,13 +33,12 @@ const NavBar: React.FunctionComponent = () => {
       <div className='container-fluid'>
         <a className='navbar-brand' href='#'>
           <img
-            src={require('./images/logo.jpg')}
+            src={require('./images/babchingu_navbar_logo.png')}
             alt=''
-            width='30'
-            height='24'
+            width='48'
+            height='38'
             className='d-inline-block align-text-top'
           />
-          밥친구
         </a>
         <button
           className='navbar-toggler'

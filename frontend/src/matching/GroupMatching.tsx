@@ -130,7 +130,7 @@ const GroupMatching: React.FC = () => {
   }, 5000);
   return (
     <div>
-      <div className='status'>
+      <div className='status' style={{ backgroundColor: 'white' }}>
         <GroupMatchingStatus
           matched={matched}
           matchedOpponents={matchedOpponents}
@@ -138,7 +138,7 @@ const GroupMatching: React.FC = () => {
           matchedCondition={matchedCondition}
         />
       </div>
-      <div className='condition'>
+      <div className='condition' style={{ backgroundColor: 'white' }}>
         <GroupMatchingCondition
           matchingCondition={matchingCondition}
           handleMatchingCondition={handleMatchingCondition}
@@ -171,6 +171,7 @@ const GroupMatching: React.FC = () => {
           className='button'
           onClick={startMatching}
           disabled={matched}
+          style={{ backgroundColor: '#ffcf96' }}
         >
           <span className='buttonTextM'>매칭 시작</span>
         </Button>

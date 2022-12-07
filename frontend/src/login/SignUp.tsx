@@ -7,6 +7,7 @@ import { Button, Form, Card, Image, Row, Col } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './SignUp.css';
 import logoImg from '../images/babchingu_signupin_logo.png';
+import axios from 'axios';
 
 export interface signUpStatusType{
     name: string;
@@ -76,8 +77,21 @@ export default function SignUp(){
             setUsernameIsValid(false);
         }
         else{
-            setUsernameErrorMessage('');
-            setUsernameIsValid(true);
+            axios
+                .post(`mypage/id/`,{username:e.target.value})
+                .then((response) => {
+                    if(response.data.dup){
+                        setUsernameErrorMessage('다른 사용자가 사용 중인 아이디입니다.');
+                        setUsernameIsValid(false);
+                    }
+                    else{
+                        setUsernameErrorMessage('');
+                        setUsernameIsValid(true);
+                    }
+                })
+                .catch((err) => {
+                    console.log(err.response.data);
+                });   
         }
     };
 
@@ -132,7 +146,7 @@ export default function SignUp(){
             setNameIsValid(false);
         */
         else if (!nameReg.test(e.target.value)) {
-            setNameErrorMessage('허용되지 않는 문자가 포함되어 있습니다.')
+            setNameErrorMessage('허용되지 않는 문자가 포함되어 있습니다.');
             setNameIsValid(false);
         }
         else{
@@ -160,12 +174,25 @@ export default function SignUp(){
             setNicknameIsValid(false);
         */
         else if (!nicknameReg.test(e.target.value)) {
-            setNicknameErrorMessage('허용되지 않는 문자가 포함되어 있습니다.')
+            setNicknameErrorMessage('허용되지 않는 문자가 포함되어 있습니다.');
             setNicknameIsValid(false);
         }
         else{
-            setNicknameErrorMessage('');
-            setNicknameIsValid(true);
+            axios
+                .post(`mypage/nick/`,{nickname:e.target.value})
+                .then((response) => {
+                    if(response.data.dup){
+                        setNicknameErrorMessage('다른 사용자가 사용 중인 별명입니다.');
+                        setNicknameIsValid(false);
+                    }
+                    else{
+                        setNicknameErrorMessage('');
+                        setNicknameIsValid(true);
+                    }
+                })
+                .catch((err) => {
+                    console.log(err.response.data);
+                });   
         }
     };
     const handleBirth = (e: React.BaseSyntheticEvent) : void => {
@@ -176,16 +203,16 @@ export default function SignUp(){
             setBirthIsValid(false);
         }
         else if (!birthReg.test(e.target.value)) {
-            setBirthErrorMessage('올바른 형식으로 입력해주세요.')
+            setBirthErrorMessage('올바른 형식으로 입력해주세요.');
             setBirthIsValid(false);
         }
         else if(+e.target.value%100 === 31 && 
             ((~~(+e.target.value/100))%100 === 4 || (~~(+e.target.value/100))%100 === 6 || (~~(+e.target.value/100))%100 === 9 || (~~(+e.target.value/100))%100 === 11)) {
-            setBirthErrorMessage('올바른 형식으로 입력해주세요.')
+            setBirthErrorMessage('올바른 형식으로 입력해주세요.');
             setBirthIsValid(false);
         }
         else if((~~(+e.target.value/100))%100 === 2 && (~~(+e.target.value/10))%10 === 3) {
-            setBirthErrorMessage('올바른 형식으로 입력해주세요.')
+            setBirthErrorMessage('올바른 형식으로 입력해주세요.');
             setBirthIsValid(false);
         }
         else{

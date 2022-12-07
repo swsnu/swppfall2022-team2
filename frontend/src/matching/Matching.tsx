@@ -181,18 +181,18 @@ const Matching: React.FunctionComponent = () => {
   }
 
   return (
-    <div>
+    <div className='matching_wrapper'>
       <NavBar />
       <Tabs defaultActiveKey='one' id='tabs' className='mb-3' justify>
         <Tab eventKey='one' title='1대1매칭' className='one'>
-          <div className='status'>
+          <div className='status' style={{ backgroundColor: 'white' }}>
             <MatchingStatus
               matched={matched}
               matchedOpponent={matchedOpponent}
               numMatching={numMatching}
             />
           </div>
-          <div className='condition'>
+          <div className='condition' style={{ backgroundColor: 'white' }}>
             <MatchingCondition
               matchingCondition={matchingCondition}
               handleMatchingCondition={handleMatchingCondition}
@@ -225,6 +225,7 @@ const Matching: React.FunctionComponent = () => {
               className='button'
               onClick={startMatching}
               disabled={matched}
+              style={{ backgroundColor: '#ffcf96' }}
             >
               <span className='buttonTextM'>매칭 시작</span>
             </Button>

@@ -13,20 +13,20 @@ const BlockUser: React.FC<propsType> = (props:propsType) => {
 
     return (
     <div>
-        <div className='halfdiv'>
+        <div className='halfdiv userlist'>
             {status.matched_users.map((matched_user)=>(
-                <div className='card pad'>
-                    <span>
+                <div className='card pad userlist'>
+                    <span className = 'usertext'>
                         {matched_user}
                         <Button className='blockbutton' variant='danger' onClick={(e)=>{blockSubmit(e, matched_user)}}>차단</Button>
                     </span>
                 </div>
             ))}
         </div>
-        <div className='halfdiv'>
+        <div className='halfdiv userlist'>
             {status.blocked_users.map((blocked_user)=>(
-                <div className='card pad'>
-                    <span>
+                <div className='card pad userlist'>
+                    <span className = 'usertext'>
                         {blocked_user}
                         <Button className='blockbutton' variant='success' onClick={(e)=>{unblockSubmit(e, blocked_user)}}>차단 해제</Button>
                     </span>

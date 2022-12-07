@@ -4,7 +4,7 @@
   left: calc(5%);
   width: calc(90%);
   height: 11vh;
-  border: 2px solid;
+  border: 1px solid;
   border-radius: 10px;
 }
 .conditionsMBTI {
@@ -13,7 +13,7 @@
   left: calc(5%);
   width: calc(90%);
   height: 20vh;
-  border: 2px solid;
+  border: 1px solid;
   border-radius: 10px;
 }
 .conditionsAge {
@@ -22,7 +22,7 @@
   left: calc(5%);
   width: calc(90%);
   height: 15vh;
-  border: 2px solid;
+  border: 1px solid;
   border-radius: 10px;
 }
 .conditionP {

@@ -4,7 +4,7 @@
   left: 20px;
   width: calc(42%);
   height: calc(65%);
-  border: 3px solid;
+  border: 1px solid;
   text-align: center;
   margin: 30px;
   border-radius: 10px;
@@ -16,7 +16,7 @@
   left: calc(52%);
   width: calc(42%);
   height: calc(83%);
-  border: 3px solid;
+  border: 1px solid;
   text-align: center;
   margin: 30px;
   border-radius: 10px;

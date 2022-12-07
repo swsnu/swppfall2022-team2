@@ -165,6 +165,7 @@ const MyStatus: React.FC<propsType> = (props:propsType) => {
                     <Form.Select name="gender" key={uuid()} defaultValue={status.gender} onChange={(e) => handleGender(e)}>
                         <option value = 'M'>남자</option>
                         <option value = 'F'>여자</option>
+                        <option value = 'M' disabled>호모로맨스 에이섹슈얼 안드로진</option>
                     </Form.Select>
                 </Form.Group>
             </Row>

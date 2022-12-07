@@ -57,6 +57,13 @@ export default function SignUp(){
     const [emailErrorMessage, setEmailErrorMessage] = useState<string>('');
     const [emailIsValid, setEmailIsValid] = useState<boolean>(false);
 
+    const [genderErrorMessage, setGenderErrorMessage] = useState<string>('성별을 선택해주세요.');
+    const [genderIsSelected, setGenderIsSelected] = useState<boolean>(false);
+
+    const [mbtiErrorMessage, setMbtiErrorMessage] = useState<string>('MBTI를 선택해주세요.');
+    const [mbtiIsSelected, setMbtiIsSelected] = useState<boolean>(false);
+
+    const [domainErrorMessage, setDomainErrorMessage] = useState<string>('도메인을 선택해주세요.');
     const [domainIsSelected, setDomainIsSelected] = useState<boolean>(false);
 
     const handleUsername = (e: React.BaseSyntheticEvent) : void => {
@@ -135,7 +142,7 @@ export default function SignUp(){
 
     const handleName = (e: React.BaseSyntheticEvent) : void => {
         handleSignUpStatus({ ...signUpStatus, name: e.target.value });
-        const nameReg = /^[가-힣]{2,30}$/
+        const nameReg = /^[가-힣a-zA-Z\. ]{2,30}$/
         if(e.target.value.length < 2){
             setNameErrorMessage('이름이 너무 짧습니다.');
             setNameIsValid(false);
@@ -156,9 +163,13 @@ export default function SignUp(){
     };
     const handleMBTI: (e: React.ChangeEvent<HTMLSelectElement>) => void = (e) => {
         handleSignUpStatus({ ...signUpStatus, mbti: e.target.value });
+        setMbtiErrorMessage('');
+        setMbtiIsSelected(true);
     };
     const handleGender: (e: React.ChangeEvent<HTMLSelectElement>) => void = (e) => {
         handleSignUpStatus({ ...signUpStatus, gender: e.target.value });
+        setGenderErrorMessage('');
+        setGenderIsSelected(true);
     };
     const handleNickname = (e: React.BaseSyntheticEvent) : void => {
         handleSignUpStatus({ ...signUpStatus, nickname: e.target.value });
@@ -238,6 +249,7 @@ export default function SignUp(){
     };
     const handleDomain: (e: React.ChangeEvent<HTMLSelectElement>) => void = (e) => {
         handleSignUpStatus({ ...signUpStatus, domain: e.target.value });
+        setDomainErrorMessage('');
         setDomainIsSelected(true);
     };
     const navigate = useNavigate();
@@ -315,6 +327,7 @@ export default function SignUp(){
                                 <option value = 'M'>남자</option>
                                 <option value = 'F'>여자</option>
                             </Form.Select>
+                            {<span className='errormessage'> {genderErrorMessage}</span>}
                         </Form.Group>
                         <Form.Group className="mb-3">
                             <Form.Label>생년월일</Form.Label>
@@ -342,6 +355,7 @@ export default function SignUp(){
                                 <option value = 'ISFJ'>ISFJ</option>
                                 <option value = 'ISFP'>ISFP</option>
                             </Form.Select>
+                            {<span className='errormessage'> {mbtiErrorMessage}</span>}
                         </Form.Group>
                         <Row className='mb-3'>
                             <Form.Label>학교 이메일</Form.Label>
@@ -352,17 +366,32 @@ export default function SignUp(){
                             <Form.Group as={Col}>
                                 <Form.Select name='domain' defaultValue={''} onChange={handleDomain}>
                                 <option value = '' disabled>선택 안함</option>
+                                <option value = '@korea.ac.kr' disabled>@korea.ac.kr (고려대학교)</option>
                                 <option value = '@snu.ac.kr'>@snu.ac.kr (서울대학교)</option>
+                                <option value = '@yonsei.ac.kr' disabled>@yonsei.ac.kr (연세대학교)</option>
+                                <option value = '@kaist.ac.kr' disabled>@kaist.ac.kr (KAIST)</option>
                                 </Form.Select>
+                                {<span className='errormessage'> {domainErrorMessage}</span>}
                             </Form.Group>
                         </Row>
-                        <Button className="mb-3" variant='primary' onClick={handleSignUp}
+                        <Row className='mb-3'>
+                            <Form.Label>인증 코드</Form.Label>
+                            <Form.Group as={Col}>
+                                <Form.Control type="text" placeholder="미구현 기능입니다. 무시해주세요." maxLength={6}/>
+                            </Form.Group>
+                            <Form.Group as={Col}>
+                                <Button className="mb-3" variant='secondary' onClick={(e)=>{}}>
+                                    인증 메일 보내기
+                                </Button>
+                            </Form.Group>
+                        </Row>
+                        <Button className="mb-3" variant='secondary' onClick={handleSignUp} style={{verticalAlign:'bottom'}}
                         disabled={!(usernameIsValid && passwordIsValid && passwordConfirmIsValid && nicknameIsValid 
-                        && nameIsValid && birthIsValid && emailIsValid && domainIsSelected)}>
+                        && nameIsValid && birthIsValid && emailIsValid && domainIsSelected && mbtiIsSelected && genderIsSelected)}>
                             가입하기
                         </Button>
-                        <Form.Group className="mb-3">
-                            <a onClick={handleRedirect} className="link-primary">이미 계정이 있습니다.</a>
+                        <Form.Group className="mb-3" style={{verticalAlign:'bottom'}}>
+                            <a onClick={handleRedirect} className="link-secondary">이미 계정이 있습니다.</a>
                         </Form.Group>
                     </Form>
                 </Card.Body>

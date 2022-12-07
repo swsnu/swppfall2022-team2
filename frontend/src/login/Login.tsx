@@ -32,23 +32,26 @@ export default function Login() {
   }, [userState.loggedinuser]);
 
   const handleLogin = () => {
-    axios
-      .post('/chat/user/signin/', { username: username, password: password })
-      .then((response) => {
-        if (response.status === 200) {
-          //   const user: UserType = response.data;
-          window.localStorage.setItem('Token', response.data.Token);
-          window.localStorage.setItem('id', response.data.id);
-          window.localStorage.setItem('nickname', response.data.nickname);
-          dispatch(setSignIn(response.data.id));
-          navigate(`/main`);
-        } else {
-          console.log('login failure');
-        }
-      })
-      .catch(function (error) {
-        window.alert('비밀번호나 아이디가 잘못되었습니다.');
-      });
+    if(username === '' || password === '')
+      window.alert('아이디와 비밀번호를 제대로 입력해주세요.');
+    else{
+      axios
+        .post('/chat/user/signin/', { username: username, password: password })
+        .then((response) => {
+          if (response.status === 200) {
+            //   const user: UserType = response.data;
+            window.localStorage.setItem('Token', response.data.Token);
+            window.localStorage.setItem('id', response.data.id);
+            window.localStorage.setItem('nickname', response.data.nickname);
+            dispatch(setSignIn(response.data.id));
+            navigate(`/main`);
+          } else {
+            console.log('login failure');
+          }
+        })
+        .catch(function (error) {
+          window.alert('아이디 혹은 비밀번호가 잘못되었습니다.');
+        });}
   };
 
   const handleKeyDown = (event: any) => {
@@ -76,30 +79,30 @@ export default function Login() {
         <Card.Body>
           <Form className='rounded p-4 p-sm-3'>
             <Form.Group className='mb-3'>
-              <Form.Label>Enter Username</Form.Label>
+              <Form.Label>아이디</Form.Label>
               <Form.Control
                 type='username'
-                placeholder='username'
+                placeholder=''
                 onChange={(event) => setUsername(event.target.value)}
               />
             </Form.Group>
             <Form.Group className='mb-3'>
-              <Form.Label>Enter Password</Form.Label>
+              <Form.Label>비밀번호</Form.Label>
               <Form.Control
                 type='password'
-                placeholder='password'
+                placeholder=''
                 onKeyDown={(event) => {
                   handleKeyDown(event);
                 }}
                 onChange={(event) => setPassword(event.target.value)}
               />
             </Form.Group>
-            <Button className='mb-3' variant='primary' onClick={handleLogin}>
-              Login!
+            <Button className='mb-3' variant='secondary' onClick={handleLogin}>
+              로그인
             </Button>
             <Form.Group className='mb-3'>
-              <a onClick={handleRedirect} className='link-primary'>
-                Want to create an account?
+              <a onClick={handleRedirect} className='link-secondary'>
+                계정을 만들고 싶습니다.
               </a>
             </Form.Group>
           </Form>

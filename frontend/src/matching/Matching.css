@@ -35,3 +35,23 @@
   font-size: 40px;
 }
 
+.nav-tabs .nav-link {
+  background-color: #ffcf96 !important;
+  color: black !important;
+  border-top: none !important;
+  border-left: none !important;
+  border-right: none !important;
+}
+
+.nav-tabs .nav-link.active {
+  border-bottom: solid 4px gray !important;
+  border-top: solid 4px gray !important;
+  border-left: solid 4px gray !important;
+  border-right: solid 4px gray !important;
+}
+.matching_wrapper {
+  position: fixed;
+  width: calc(100%);
+  height: calc(100%);
+  background-color: #ffe4c4;
+}

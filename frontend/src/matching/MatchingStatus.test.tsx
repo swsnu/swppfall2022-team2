@@ -13,8 +13,34 @@ import { Provider, useDispatch } from 'react-redux';
 import { MemoryRouter, Route, Routes } from 'react-router';
 import axios from 'axios';
 const initialState: UserInfoType = {
-  loggedinuser: { user: { id: 3, nickname: 'test' }, chatrooms: [] },
-  menulist: [],
+  loggedinuser: {
+    user: { id: 3, nickname: 'test' },
+    chatrooms: [
+      {
+        id: 77,
+        roomtype: '개인',
+        user_id: [7],
+        name: '',
+        last_chat: { id: 0, order: 1, chatroom_id: 2, author: 7, content: 'asd', date: '220202' },
+      },
+    ],
+  },
+  menulist: [
+    {
+      mealtype: 'lunch',
+      menuplace: '학생회관',
+      menuname: 'menu1',
+      menuprice: '4000',
+      menuextra: '',
+    },
+    {
+      mealtype: 'lunch',
+      menuplace: '기숙사',
+      menuname: 'menu1',
+      menuprice: '4000',
+      menuextra: '',
+    },
+  ],
   userlist: [],
   chosenchatroom: null,
 };
@@ -28,6 +54,8 @@ interface matchedOpponentType {
   age: string;
   id: number;
   name: string;
+  temperature: string;
+  intro: string;
 }
 interface propsType {
   matched: boolean;
@@ -53,6 +81,8 @@ const opponent: matchedOpponentType = {
   age: '22',
   id: 1,
   name: 'opponame',
+  temperature: '35',
+  intro: 'hi',
 };
 const props3: propsType = {
   matched: true,
@@ -111,7 +141,7 @@ describe('MatchingCondition', () => {
   });
   it('when matched, time', () => {
     render(status);
-    const time = ['1200', '1230', '1300', '1800', '1830', '1900'];
+    const time = ['1130', '1200', '1230', '1300', '1800', '1830', '1900'];
     let opponentTime: matchedOpponentType = {
       time: '0',
       spaceUser: '',
@@ -121,6 +151,9 @@ describe('MatchingCondition', () => {
       age: '22',
       id: 1,
       name: 'opponame',
+
+      temperature: '35',
+      intro: 'hi',
     };
     let propsTime: propsType = {
       matched: true,
@@ -143,7 +176,7 @@ describe('MatchingCondition', () => {
   });
   it('when matched, space', () => {
     render(status);
-    const space = ['dormitory', 'student', '301'];
+    const space = ['학생회관', '기숙사'];
     let opponentSpace: matchedOpponentType = {
       time: '0',
       spaceUser: '',
@@ -153,6 +186,9 @@ describe('MatchingCondition', () => {
       age: '22',
       id: 1,
       name: 'opponame',
+
+      temperature: '35',
+      intro: 'hi',
     };
     let propsSpace: propsType = {
       matched: true,

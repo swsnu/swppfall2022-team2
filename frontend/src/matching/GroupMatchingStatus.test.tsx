@@ -13,8 +13,27 @@ import { Provider, useDispatch } from 'react-redux';
 import { MemoryRouter, Route, Routes } from 'react-router';
 import axios from 'axios';
 const initialState: UserInfoType = {
-  loggedinuser: { user: { id: 3, nickname: 'test' }, chatrooms: [] },
-  menulist: [],
+  loggedinuser: {
+    user: { id: 3, nickname: 'test' },
+    chatrooms: [
+      {
+        id: 77,
+        roomtype: '개인',
+        user_id: [7],
+        name: '',
+        last_chat: { id: 0, order: 1, chatroom_id: 2, author: 7, content: 'asd', date: '220202' },
+      },
+    ],
+  },
+  menulist: [
+    {
+      mealtype: 'lunch',
+      menuplace: '학생회관',
+      menuname: 'menu1',
+      menuprice: '4000',
+      menuextra: '',
+    },
+  ],
   userlist: [],
   chosenchatroom: null,
 };
@@ -22,6 +41,7 @@ const mockStore = getMockStore({ user: initialState });
 interface matchedOpponentType {
   id: number;
   name: string;
+  temperature: string;
 }
 interface conditionType {
   time: string;
@@ -37,14 +57,17 @@ interface propsType {
 const opponent1: matchedOpponentType = {
   id: 1,
   name: 'name1',
+  temperature: '35',
 };
 const opponent2: matchedOpponentType = {
   id: 2,
   name: 'name2',
+  temperature: '35',
 };
 const opponent3: matchedOpponentType = {
   id: 3,
   name: 'name3',
+  temperature: '35',
 };
 const props: propsType = {
   matched: true,
@@ -80,7 +103,7 @@ describe('MatchingCondition', () => {
   });
   it('time', async () => {
     render(status);
-    const time = ['1200', '1230', '1300', '1800', '1830', '1900'];
+    const time = ['1130', '1200', '1230', '1300', '1800', '1830', '1900'];
 
     let propsTime: propsType = {
       matched: false,

@@ -2,10 +2,36 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import MatchingCondition from './MatchingCondition';
 import React from 'react';
 import { conditionType } from './Matching';
+
+import { getMockStore } from '../test-utils/mocks';
+import {
+  UserType,
+  ChatType,
+  ChatRoomType,
+  LoggedInUserType,
+  UserInfoType,
+} from '../store/slices/user';
+import { Provider } from 'react-redux';
+import { MemoryRouter, Route, Routes } from 'react-router';
 interface propsType {
   matchingCondition: conditionType;
   handleMatchingCondition: (a: conditionType) => void;
 }
+const initialState: UserInfoType = {
+  loggedinuser: null,
+  userlist: [],
+  menulist: [
+    {
+      mealtype: 'lunch',
+      menuplace: '학생회관',
+      menuname: 'menu1',
+      menuprice: '4000',
+      menuextra: '',
+    },
+  ],
+  chosenchatroom: null,
+};
+const mockStore = getMockStore({ user: initialState });
 const handleMatchingConditionMock = jest.fn();
 const props: propsType = {
   matchingCondition: { time: '0', space: '', mbti: [], gender: '', age: { from: '50', to: '0' } },
@@ -19,7 +45,15 @@ describe('MatchingCondition', () => {
   let condition: JSX.Element;
   beforeEach(() => {
     jest.clearAllMocks();
-    condition = <MatchingCondition {...props} />;
+    condition = (
+      <Provider store={mockStore}>
+        <MemoryRouter>
+          <Routes>
+            <Route path='/' element={<MatchingCondition {...props} />} />
+          </Routes>
+        </MemoryRouter>
+      </Provider>
+    );
   });
   it('timecondition', () => {
     const conditionRender = render(condition);
@@ -57,7 +91,15 @@ describe('MatchingCondition', () => {
     expect(handleMatchingConditionMock).toHaveBeenCalled();
   });
   it('handleAge', () => {
-    condition = <MatchingCondition {...props2} />;
+    condition = (
+      <Provider store={mockStore}>
+        <MemoryRouter>
+          <Routes>
+            <Route path='/' element={<MatchingCondition {...props2} />} />
+          </Routes>
+        </MemoryRouter>
+      </Provider>
+    );
     render(condition);
     const ageSelect2 = screen.getByText('21');
     const ageSelect3 = screen.getByText('22');

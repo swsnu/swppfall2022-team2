@@ -82,7 +82,7 @@ const MatchingCondition: React.FC<propsType> = (props: propsType) => {
   const userState = useSelector(selectUser);
   const menulist: MenuType[] = userState.menulist;
   const set = new Set(menulist.map((menu) => menu.menuplace));
-  const spaces = [...set];
+  const spaces = Array.from(set);
   return (
     <div>
       <div className='conditions'>

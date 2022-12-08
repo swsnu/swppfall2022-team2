@@ -92,7 +92,7 @@ const MatchingStatus: React.FC<propsType> = (props) => {
               void dispatch(
                 createChatRoom([userState.loggedinuser.user.id, matchedOpponent.id]),
               ).then((response) => {
-                // there is a problem in testing below navigate
+                // there is a problem in testing below
                 const chatroom: ChatRoomType = userState.loggedinuser!.chatrooms.find(
                   (chatroom) => chatroom.id === response.payload,
                 )!;

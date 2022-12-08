@@ -17,7 +17,15 @@ import { nextTick } from 'process';
 const initialState: UserInfoType = {
   loggedinuser: null,
   userlist: [],
-  menulist: [],
+  menulist: [
+    {
+      mealtype: 'lunch',
+      menuplace: '학생회관',
+      menuname: 'menu1',
+      menuprice: '4000',
+      menuextra: '',
+    },
+  ],
   chosenchatroom: null,
 };
 const mockStore = getMockStore({ user: initialState });
@@ -101,8 +109,10 @@ describe('GroupMatching', () => {
     fireEvent.click(startButton!);
     const timeSelect = matchingRender.container.querySelector('#timeSelect');
     fireEvent.change(timeSelect!, { target: { value: '1200' } });
+    const spaceSelect = matchingRender.container.querySelector('#spaceSelect');
+    fireEvent.change(spaceSelect!, { target: { value: '학생회관' } });
     const menuSelect = matchingRender.container.querySelector('#menuSelect');
-    fireEvent.change(menuSelect!, { target: { value: '메뉴1' } });
+    fireEvent.change(menuSelect!, { target: { value: 'menu1' } });
     const numSelect = matchingRender.container.querySelector('#numSelect');
     fireEvent.change(numSelect!, { target: { value: '34' } });
     fireEvent.click(startButton!);
@@ -145,8 +155,10 @@ describe('GroupMatching', () => {
     fireEvent.click(startButton!);
     const timeSelect = matchingRender.container.querySelector('#timeSelect');
     fireEvent.change(timeSelect!, { target: { value: '1200' } });
+    const spaceSelect = matchingRender.container.querySelector('#spaceSelect');
+    fireEvent.change(spaceSelect!, { target: { value: '학생회관' } });
     const menuSelect = matchingRender.container.querySelector('#menuSelect');
-    fireEvent.change(menuSelect!, { target: { value: '메뉴1' } });
+    fireEvent.change(menuSelect!, { target: { value: 'menu1' } });
     const numSelect = matchingRender.container.querySelector('#numSelect');
     fireEvent.change(numSelect!, { target: { value: '34' } });
     fireEvent.click(startButton!);
@@ -183,5 +195,39 @@ describe('GroupMatching', () => {
     });
     render(groupMatching);
     await waitFor(() => screen.getByText('매칭이 완료되었습니다'));
+  });
+  it('group matching condition test when time is dinner(1800)', async () => {
+    jest.spyOn(axios, 'get').mockImplementation((url) => {
+      if (url === `matching/group/check/3/`) {
+        return Promise.resolve({
+          status: 201,
+          data: {
+            time: '1200',
+            menu: 'menu1',
+            opponents: [],
+          },
+        });
+      } else return Promise.reject();
+    });
+    jest.spyOn(axios, 'post').mockResolvedValue({
+      data: {
+        id: 3,
+        num_matching: 4,
+      },
+    });
+    jest.spyOn(window, 'alert').mockImplementation(() => {});
+    const matchingRender = render(groupMatching);
+    const startButton = matchingRender.container.querySelector('#startButton');
+    fireEvent.click(startButton!);
+    const timeSelect = matchingRender.container.querySelector('#timeSelect');
+    fireEvent.change(timeSelect!, { target: { value: '1800' } });
+    const spaceSelect = matchingRender.container.querySelector('#spaceSelect');
+    fireEvent.change(spaceSelect!, { target: { value: '학생회관' } });
+    const menuSelect = matchingRender.container.querySelector('#menuSelect');
+    fireEvent.change(menuSelect!, { target: { value: 'menu1' } });
+    const numSelect = matchingRender.container.querySelector('#numSelect');
+    fireEvent.change(numSelect!, { target: { value: '34' } });
+    fireEvent.click(startButton!);
+    await waitFor(() => expect(window.alert).toHaveBeenCalled());
   });
 });

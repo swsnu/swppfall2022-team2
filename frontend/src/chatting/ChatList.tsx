@@ -104,22 +104,22 @@ const ChatList: React.FunctionComponent = () => {
           <h5 className="card-title">채팅방</h5>
             <div className="list-group">
               {userState.loggedinuser?.chatrooms!.map((chatroom)=>(
-                <a className="list-group-item list-group-item-action list-group-item-color" key={chatroom.id} onClick={(e)=> {e.stopPropagation(); e.preventDefault();clickChatListTitleHandler(chatroom);}}>
+                <a key={chatroom.id} className="list-group-item list-group-item-action list-group-item-color" onClick={(e)=> {e.stopPropagation(); e.preventDefault();clickChatListTitleHandler(chatroom);}}>
                   <div className="d-flex w-100 justify-content-between">
                     <h5 className="mb-1">{chatroom.name}</h5>
                     <small>{moment(chatroom.last_chat?.date).fromNow()}</small>
-                    <button type="button" className="btn-close" aria-lable="Close" onClick={(e)=>{e.stopPropagation(); e.preventDefault();closeChatroom(chatroom);}}></button>
+                    <button type="button" className="btn-close" onClick={(e)=>{e.stopPropagation(); e.preventDefault();closeChatroom(chatroom);}}></button>
                   </div>
                   <p className="mb-1">{chatroom.last_chat?.content}</p>
                   {chatroom.user_id.map((userid) =>(
-                        <a>
+                        <div key={userid}>
                         <Button className="btn-primary" style={{ backgroundColor: '#ffcf96', borderColor:'#ffcf96' }} onClick={(e)=>{e.stopPropagation(); e.preventDefault(); handleShow(userid);}}>
                           {(userState.userlist.find(element => element.id===userid))?.nickname ?? ''}님 평가하기
                         </Button>
                             <Modal show={show} onClick={(e:any)=>{e.stopPropagation(); e.preventDeafult();}}>
                             <Modal.Header>
                               <Modal.Title>매너 평가를 해주세요</Modal.Title>
-                              <button type="button" className="btn-close" aria-lable="Close" onClick={(e)=>{handleClose();  e.stopPropagation(); e.preventDefault();}}></button>
+                              <button type="button" className="btn-close" onClick={(e)=>{handleClose();  e.stopPropagation(); e.preventDefault();}}></button>
                             </Modal.Header>
                             <Modal.Body>Woohoo, you're reading this text in a modal!</Modal.Body>
                             <Modal.Footer>
@@ -140,7 +140,7 @@ const ChatList: React.FunctionComponent = () => {
                               </Button>
                                 </Modal.Footer>
                               </Modal>
-                      </a>
+                      </div>
                       ))}
                 </a>
               ))}

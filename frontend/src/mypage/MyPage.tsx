@@ -76,7 +76,6 @@ const MyPage: React.FunctionComponent = () => {
   const statusSubmit = useCallback(
     async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
-      try {
         await axios
           .post(`mypage/submit/`, {
             name: status.name,
@@ -88,20 +87,14 @@ const MyPage: React.FunctionComponent = () => {
           })
           .then((res) => {
             if (res.status === 200) {
-              alert('변경 사항이 저장되었습니다.');
+              window.alert('변경 사항이 저장되었습니다.');
               location.reload();
             } else {
-              alert('예기치 않은 오류가 발생했습니다.');
+              window.alert('예기치 않은 오류가 발생했습니다.');
             }
           })
           .catch((err) => {
-            alert('예기치 않은 오류가 발생했습니다.');
-            console.log(err.response.data);
           });
-      } catch (err) {
-        alert('예기치 않은 오류가 발생했습니다.');
-        console.log(err);
-      }
       console.log('Submitted User Status:', status);
     },
     [status],
@@ -117,7 +110,6 @@ const MyPage: React.FunctionComponent = () => {
       status.matched_users.pop();
       status.blocked_users.push(nickname);
       handleStatus({ ...status });
-      try {
         await axios
           .post(`mypage/block/`, {
             nickname: nickname,
@@ -125,17 +117,11 @@ const MyPage: React.FunctionComponent = () => {
           .then((res) => {
             if (res.status === 200) {
             } else {
-              alert('예기치 않은 오류가 발생했습니다.');
+              window.alert('예기치 않은 오류가 발생했습니다.');
             }
           })
           .catch((err) => {
-            alert('예기치 않은 오류가 발생했습니다.');
-            console.log(err.response.data);
           });
-      } catch (err) {
-        alert('예기치 않은 오류가 발생했습니다.');
-        console.log(err);
-      }
     },
     [status],
   );
@@ -150,7 +136,6 @@ const MyPage: React.FunctionComponent = () => {
       status.blocked_users.pop();
       status.matched_users.push(nickname);
       handleStatus({ ...status });
-      try {
         await axios
           .post(`mypage/unblock/`, {
             nickname: nickname,
@@ -158,17 +143,11 @@ const MyPage: React.FunctionComponent = () => {
           .then((res) => {
             if (res.status === 200) {
             } else {
-              alert('예기치 않은 오류가 발생했습니다.');
+              window.alert('예기치 않은 오류가 발생했습니다.');
             }
           })
           .catch((err) => {
-            alert('예기치 않은 오류가 발생했습니다.');
-            console.log(err.response.data);
           });
-      } catch (err) {
-        alert('예기치 않은 오류가 발생했습니다.');
-        console.log(err);
-      }
     },
     [status],
   );

@@ -1,5 +1,3 @@
-import Tab from 'react-bootstrap/Tab';
-import Tabs from 'react-bootstrap/Tabs';
 import Card from 'react-bootstrap/Card';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useSelector } from "react-redux";
@@ -49,35 +47,39 @@ const Menu = () => {
           <div className={toggleState === 1 ? "content  active-content overflow-auto" : "content"}>
             {
             restaurantlist.map((restaurant)=>(
-              breakfastlist.filter((meal)=>meal.menuplace===restaurant).length===0 ? <div></div> : 
+              <div key={restaurant.charCodeAt(0)}>
+              {breakfastlist.filter((meal)=>meal.menuplace===restaurant).length===0 ? <div></div> : 
               <Card className="card-menu">
                 <Card.Header>{restaurant}</Card.Header>
                 <Card.Body>
                   <Card.Text>{breakfastlist.filter((meal)=>meal.menuplace===restaurant).map((meal)=>
-                      <div>
+                      <div key={meal.menuname.charCodeAt(0)}>
                         <a>{meal.menuname}<br/>{meal.menuextra==="" ? <div></div> : <div>{meal.menuextra} <br/></div> }{meal.menuprice}<br/><br/></a>
                       </div>
                         )}</Card.Text>
                 </Card.Body>
-              </Card>
-            ))
+              </Card>}
+              </div>
+              ))
           }
           </div>
   
           <div className={toggleState === 2 ? "content  active-content overflow-auto" : "content"}>
           {
             restaurantlist.map((restaurant)=>(
-              lunchlist.filter((meal)=>meal.menuplace===restaurant).length===0 ? <div></div> : 
+              <div key={restaurant.charCodeAt(0)}>
+              {lunchlist.filter((meal)=>meal.menuplace===restaurant).length===0 ? <div></div> : 
               <Card className="card-menu">
                 <Card.Header>{restaurant}</Card.Header>
                 <Card.Body>
                   <Card.Text>{lunchlist.filter((meal)=>meal.menuplace===restaurant).map((meal)=>
-                      <div>
+                      <div key={meal.menuname.charCodeAt(0)}>
                         <a>{meal.menuname}<br/>{meal.menuextra==="" ? <div></div> : <div>{meal.menuextra} <br/></div> }{meal.menuprice}<br/><br/></a>
                       </div>
                         )}</Card.Text>
                 </Card.Body>
-              </Card>
+              </Card>}
+              </div>
             ))
          }
           </div>
@@ -85,17 +87,19 @@ const Menu = () => {
           <div className={toggleState === 3 ? "content  active-content overflow-auto" : "content"}>
           {
             restaurantlist.map((restaurant)=>(
-              dinnerlist.filter((meal)=>meal.menuplace===restaurant).length===0 ? <div></div> : 
+              <div key={restaurant.charCodeAt(0)}>
+              {dinnerlist.filter((meal)=>meal.menuplace===restaurant).length===0 ? <div></div> : 
               <Card className="card-menu">
                 <Card.Header>{restaurant}</Card.Header>
                 <Card.Body>
                   <Card.Text>{dinnerlist.filter((meal)=>meal.menuplace===restaurant).map((meal)=>
-                      <div>
+                      <div key={meal.menuname.charCodeAt(0)}>
                         <a>{meal.menuname}<br/>{meal.menuextra==="" ? <div></div> : <div>{meal.menuextra} <br/></div> }{meal.menuprice}<br/><br/></a>
                       </div>
                         )}</Card.Text>
                 </Card.Body>
-              </Card>
+              </Card>}
+              </div>
             ))
           }
           </div>

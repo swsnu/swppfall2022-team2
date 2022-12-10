@@ -1,5 +1,5 @@
 import Menu from "./Menu";
-import {render, screen } from '@testing-library/react';
+import {fireEvent, render, screen } from '@testing-library/react';
 import { getMockStore } from '../test-utils/mocks';
 import React from 'react';
 import {
@@ -14,42 +14,45 @@ import { Provider } from 'react-redux';
 import { MemoryRouter, Route, Routes } from 'react-router';
 
 const initialState: UserInfoType = {
-    loggedinuser: {
-      user:{
-          id: 1,
-          username: "user1",
-          temperature : 36.5
-      },
-      chatrooms:[
-          {
-              id: 1,
-              opponent_id: 2,
-              last_chat: {
-                  id: 1,
-                  order:1,
-                  chatroom_id:1,
-                  author:1,
-                  content:"hello",
-                  date: "20220831"
-              }
-          }
-      ]
-    },
-    userlist: [
+  loggedinuser: {
+    user: { id: 1, nickname: 'test1' },
+    chatrooms: [
       {
-          id:1,
-          username: "user1",
-          temperature : 36.5
+        id: 1,
+        roomtype: '개인',
+        user_id: [2],
+        name: '',
+        last_chat: { id: 0, order: 1, chatroom_id: 1, author: 2, content: 'asd', date: '220202' },
       },
-      {
-          id:2,
-          username: "user2",
-          temperature : 36.5
-      }
     ],
-    chosenchatroom: null,
-    menulist: [{mealtype:"lunch", menuplace:"학생식당", menuname:"제육덮밥", menuprice:"5000",menuextra:"" }]
-  };
+  },
+  menulist: [
+    {
+      mealtype: 'breakfast',
+      menuplace: '학생식당',
+      menuname: 'menu1',
+      menuprice: '4000',
+      menuextra: '1',
+    },
+    {
+      mealtype: 'lunch',
+      menuplace: '기숙사식당',
+      menuname: 'menu2',
+      menuprice: '5000',
+      menuextra: '2',
+    },
+    {
+      mealtype: 'dinner',
+      menuplace: '전망대(3식당)',
+      menuname: 'menu3',
+      menuprice: '6000',
+      menuextra: '3',
+    }
+  ],
+  userlist: [{ id: 1, nickname: 'test1' },{ id: 2, nickname: 'test2' }],
+  chosenchatroom: null,
+};
+
   
   const mockStore = getMockStore({ user: initialState });
   
@@ -70,9 +73,14 @@ const initialState: UserInfoType = {
       });
       it("should render the menus correctly", () => {
           render(menulist);
+          const breakfastButton = screen.getByText("아침")
+          fireEvent.click(breakfastButton!);
           screen.getByText("학생식당");
-          const breakfasttab = screen.getByText("아침")
-          const lunchtab = screen.getByText("점심")
-          const dinnertab = screen.getByText("저녁")
+          const lunchButton = screen.getByText("점심")
+          fireEvent.click(lunchButton!);
+          screen.getByText("기숙사식당");
+          const dinnerButton = screen.getByText("저녁")
+          fireEvent.click(dinnerButton!);
+          screen.getByText("전망대(3식당)");
       });       
   });

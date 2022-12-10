@@ -139,13 +139,6 @@ export const deleteChatRoom = createAsyncThunk(
   },
 );
 
-export const setTemperature = createAsyncThunk(
-  'user/setTemperature',
-  async (Form: TemperatureFormType, { dispatch }) => {
-    const response = await axios.post(`/mypage/temp/${Form.user}/`, { eval: Form.eval });
-    return response.data;
-  },
-);
 
 export const userSlice = createSlice({
   name: 'user',

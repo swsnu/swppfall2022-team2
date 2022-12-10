@@ -38,16 +38,12 @@ export default function Login() {
       axios
         .post('/chat/user/signin/', { username: username, password: password })
         .then((response) => {
-          if (response.status === 200) {
             //   const user: UserType = response.data;
             window.localStorage.setItem('Token', response.data.Token);
             window.localStorage.setItem('id', response.data.id);
             window.localStorage.setItem('nickname', response.data.nickname);
             dispatch(setSignIn(response.data.id));
             navigate(`/main`);
-          } else {
-            console.log('login failure');
-          }
         })
         .catch(function (error) {
           window.alert('아이디 혹은 비밀번호가 잘못되었습니다.');

@@ -56,25 +56,67 @@ describe('SignUp', () => {
         </Provider>
       );
     });
-    it("should render correctly", async() => {
-        render(signup);
-        screen.getByText("밥친구");
-        screen.getByText("아이디");
-        screen.getByText("비밀번호");
-        screen.getByText("비밀번호 재확인");
-        screen.getByText("이름");
-        screen.getByText("별명");
-        screen.getByText("성별");
-        screen.getByText("생년월일");
-        screen.getByText("MBTI");
-        screen.getByText("이메일");
-        const usernameInput = screen.getByPlaceholderText("영문, 숫자 (5~15자 이내)");
-        const passwordInput = screen.getByPlaceholderText("영문, 숫자, 특수문자 (8~15자 이내)");
+    it("should signup correctly", async() => {
+        const signupRender = render(signup);
+        const usernameInput = screen.getByPlaceholderText("영문, 숫자 (5~20자 이내)");
+        fireEvent.input(usernameInput,{target: {value: 'a'}});
+        fireEvent.input(usernameInput,{target: {value: 'a가나다라마바사'}});
+        jest.spyOn(axios, 'post').mockResolvedValue({
+          data:{dup:true},
+          status: 200, 
+        });
+        fireEvent.input(usernameInput ,{target: {value: 'testuse'}});
+        await waitFor(() => expect(axios.post).toHaveBeenCalled());
+        jest.spyOn(axios, 'post').mockResolvedValue({
+            data:{dup:false},
+            status: 200, 
+        });
+        fireEvent.input(usernameInput ,{target: {value: 'testuser'}});
+        await waitFor(() => expect(axios.post).toHaveBeenCalled());
+        const passwordInput = screen.getByPlaceholderText("영문, 숫자, 특수문자 (8~20자 이내)");
+        const passwordconfirmInput = screen.getByPlaceholderText("비밀번호를 재입력해주세요.");
+        fireEvent.input(passwordInput,{target: {value: 'a'}});
+        fireEvent.input(passwordconfirmInput,{target: {value: 'a'}});
+        fireEvent.input(passwordconfirmInput,{target: {value: 'asdf1234'}});
+        fireEvent.input(passwordInput,{target: {value: '가나다라마바사아'}});
+        fireEvent.input(passwordInput,{target: {value: 'asdf1234'}});
+        const nameInput = screen.getByPlaceholderText("본인의 실명입니다.");
+        fireEvent.input(nameInput,{target: {value: 'a'}});
+        fireEvent.input(nameInput,{target: {value: '^^^'}});
+        fireEvent.input(nameInput,{target: {value: '세종대왕'}});
+        const emailInput = screen.getByPlaceholderText("youremail");
+        fireEvent.input(emailInput,{target: {value: '세종대왕'}});
+        fireEvent.input(emailInput,{target: {value: ''}});
+        fireEvent.input(emailInput,{target: {value: 'testuser'}});
+        const birthChange = screen.getByPlaceholderText('YYMMDD 형태로 입력해주세요. 예) 970816');
+        fireEvent.input(birthChange ,{target: {value: '0000'}});
+        fireEvent.input(birthChange ,{target: {value: '0000xx'}});
+        fireEvent.input(birthChange ,{target: {value: '000431'}});
+        fireEvent.input(birthChange ,{target: {value: '000230'}});
+        fireEvent.input(birthChange ,{target: {value: '010229'}});
+        fireEvent.input(birthChange ,{target: {value: '020417'}});
+        const nicknameChange = screen.getByPlaceholderText('다른 이용자에게 보여질 이름입니다.');
+        fireEvent.input(nicknameChange ,{target: {value: '0'}});
+        fireEvent.input(nicknameChange ,{target: {value: 'a    a'}});
+        jest.spyOn(axios, 'post').mockResolvedValue({
+            data:{dup:true},
+            status: 200, 
+        });
+        fireEvent.input(nicknameChange ,{target: {value: 'testuse'}});
+        await waitFor(() => expect(axios.post).toHaveBeenCalled());
+        jest.spyOn(axios, 'post').mockResolvedValue({
+            data:{dup:false},
+            status: 200, 
+        });
+        fireEvent.input(nicknameChange ,{target: {value: 'testuser'}});
+        await waitFor(() => expect(axios.post).toHaveBeenCalled());
+        const genderChange = signupRender.container.querySelector('#genderChoose');
+        fireEvent.change(genderChange!, { target: { value: 'F' } });
+        const mbtiChange = signupRender.container.querySelector('#mbtiChoose');
+        fireEvent.change(mbtiChange!, { target: { value: 'ISTP' } });
+        const domainChange = signupRender.container.querySelector('#domainChoose');
+        fireEvent.change(domainChange!, { target: { value: '@snu.ac.kr' } });
         const signupButton = screen.getByText("가입하기");
-        fireEvent.change(usernameInput,{target: {value: "user1"}});
-        fireEvent.change(passwordInput,{target:{value: "user1password"}});
-        await screen.findByDisplayValue("user1"); //values displayed on the screen
-        await screen.findByDisplayValue("user1password"); //values displayed on the screen
         fireEvent.click(signupButton!);
         await waitFor(()=>expect(mockDispatch).toHaveBeenCalledTimes(1));
         expect(window.alert).toHaveBeenCalledWith('회원 가입이 정상적으로 완료되었습니다.')
@@ -86,14 +128,4 @@ describe('SignUp', () => {
         fireEvent.click(loginlink!);
         expect(mockNavigate).toHaveBeenCalledWith('/login');
     });
-    /*
-    it('gender', () => {
-      const handleMock = jest.fn();
-      const useStateMock: any = (useState:any) => [useState, handleMock];
-      jest.spyOn(React,'useState').mockImplementation(useStateMock);
-      const signupRender = render(signup);
-      const genderSelect = signupRender.container.querySelector('#gender');
-      fireEvent.change(genderSelect!, { target: { value: 'M' } });
-      expect(handleMock).toHaveBeenCalled();
-    });*/
 });

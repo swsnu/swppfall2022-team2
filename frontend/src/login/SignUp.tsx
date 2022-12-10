@@ -97,7 +97,6 @@ export default function SignUp(){
                     }
                 })
                 .catch((err) => {
-                    console.log(err.response.data);
                 });   
         }
     };
@@ -202,7 +201,6 @@ export default function SignUp(){
                     }
                 })
                 .catch((err) => {
-                    console.log(err.response.data);
                 });   
         }
     };
@@ -223,6 +221,10 @@ export default function SignUp(){
             setBirthIsValid(false);
         }
         else if((~~(+e.target.value/100))%100 === 2 && (~~(+e.target.value/10))%10 === 3) {
+            setBirthErrorMessage('올바른 형식으로 입력해주세요.');
+            setBirthIsValid(false);
+        }
+        else if((~~(+e.target.value/100))%100 === 2 && (~~(+e.target.value))%100 === 29 && (~~(+e.target.value/10000))%4 !== 0) {
             setBirthErrorMessage('올바른 형식으로 입력해주세요.');
             setBirthIsValid(false);
         }
@@ -258,12 +260,12 @@ export default function SignUp(){
         try{dispatch(setSignUp({username: username, password: password, name: signUpStatus.name,
             mbti: signUpStatus.mbti, gender: signUpStatus.gender, nickname: signUpStatus.nickname,
             birth: signUpStatus.birth, email: (signUpStatus.email+signUpStatus.domain)}));
-            alert('회원 가입이 정상적으로 완료되었습니다.');
+            window.alert('회원 가입이 정상적으로 완료되었습니다.');
             navigate('/login');
         
         }
         catch(err){
-            alert('예기치 않은 오류가 발생했습니다.');
+            window.alert('예기치 않은 오류가 발생했습니다.');
         }
     }
 
@@ -293,8 +295,8 @@ export default function SignUp(){
                     />
                 </h3>
                 </Card.Header>
-                <Card.Body>
-                    <Form className="rounded p-4 p-sm-3">
+                <Card.Body className='p-0'>
+                    <Form className="rounded p-4 p-sm-8">
                         <Form.Group className="mb-3">
                             <Form.Label>아이디</Form.Label>
                             <Form.Control type="username" placeholder="영문, 숫자 (5~20자 이내)" onChange={handleUsername} maxLength={20}/>
@@ -322,7 +324,7 @@ export default function SignUp(){
                         </Form.Group>
                         <Form.Group className="mb-3">
                             <Form.Label>성별</Form.Label>
-                            <Form.Select id="gender" defaultValue={''} onChange={handleGender}>
+                            <Form.Select name='gender' id="genderChoose" defaultValue={''} onChange={handleGender}>
                                 <option value = '' disabled>선택 안함</option>
                                 <option value = 'M'>남자</option>
                                 <option value = 'F'>여자</option>
@@ -336,7 +338,7 @@ export default function SignUp(){
                         </Form.Group>
                         <Form.Group className="mb-3">
                             <Form.Label>MBTI</Form.Label>
-                            <Form.Select name='mbti' defaultValue={''} onChange={handleMBTI}>
+                            <Form.Select name='mbti' id='mbtiChoose' defaultValue={''} onChange={handleMBTI}>
                                 <option value = '' disabled>선택 안함</option>
                                 <option value = 'ENTJ'>ENTJ</option>
                                 <option value = 'ENTP'>ENTP</option>
@@ -364,7 +366,7 @@ export default function SignUp(){
                                 {<span className='errormessage'> {emailErrorMessage}</span>}
                             </Form.Group>
                             <Form.Group as={Col}>
-                                <Form.Select name='domain' defaultValue={''} onChange={handleDomain}>
+                                <Form.Select name='domain' id='domainChoose' defaultValue={''} onChange={handleDomain}>
                                 <option value = '' disabled>선택 안함</option>
                                 <option value = '@korea.ac.kr' disabled>@korea.ac.kr (고려대학교)</option>
                                 <option value = '@snu.ac.kr'>@snu.ac.kr (서울대학교)</option>

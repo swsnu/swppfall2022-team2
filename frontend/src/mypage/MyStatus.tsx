@@ -12,7 +12,6 @@ interface propsType {
   }
 const MyStatus: React.FC<propsType> = (props:propsType) => {
     const {status, handleStatus, statusSubmit} = props;
-    const [nickdup, setNickdup] = useState(false);
     
     const [somethingModified, setSomethingModified] = useState<boolean>(false);
 
@@ -69,6 +68,10 @@ const MyStatus: React.FC<propsType> = (props:propsType) => {
             setBirthIsValid(false);
         }
         else if((~~(+e.target.value/100))%100 === 2 && (~~(+e.target.value/10))%10 === 3) {
+            setBirthErrorMessage('올바른 형식으로 입력해주세요.')
+            setBirthIsValid(false);
+        }
+        else if((~~(+e.target.value/100))%100 === 2 && (~~(+e.target.value))%100 === 29 && (~~(+e.target.value/10000))%4 !== 0) {
             setBirthErrorMessage('올바른 형식으로 입력해주세요.')
             setBirthIsValid(false);
         }
@@ -131,7 +134,6 @@ const MyStatus: React.FC<propsType> = (props:propsType) => {
                     }
                 })
                 .catch((err) => {
-                    console.log(err.response.data);
                 });   
         }
     };
@@ -162,10 +164,9 @@ const MyStatus: React.FC<propsType> = (props:propsType) => {
                 </Form.Group>
                 <Form.Group as={Col}>
                     <Form.Label>성별</Form.Label>
-                    <Form.Select name="gender" key={uuid()} defaultValue={status.gender} onChange={(e) => handleGender(e)}>
+                    <Form.Select name="gender" id='genderChange' key={uuid()} defaultValue={status.gender} onChange={(e) => handleGender(e)}>
                         <option value = 'M'>남자</option>
                         <option value = 'F'>여자</option>
-                        <option value = 'M' disabled>호모로맨스 에이섹슈얼 안드로진</option>
                     </Form.Select>
                 </Form.Group>
             </Row>
@@ -180,7 +181,7 @@ const MyStatus: React.FC<propsType> = (props:propsType) => {
 
             <Form.Group>
                 <Form.Label>MBTI</Form.Label>
-                <Form.Select name='mbti' key={uuid()} defaultValue={status.mbti} onChange={(e) => handleMBTI(e)}>
+                <Form.Select name='mbti' id='mbtiChange' key={uuid()} defaultValue={status.mbti} onChange={(e) => handleMBTI(e)}>
                     <option value = 'ENTJ'>ENTJ</option>
                     <option value = 'ENTP'>ENTP</option>
                     <option value = 'ENFJ'>ENFJ</option>

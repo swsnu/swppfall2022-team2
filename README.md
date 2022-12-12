@@ -32,3 +32,5 @@ python manage.py runserver
 ```
 (using channel)
 docker run -p 6379:6379 -d redis:5
+cd backend/babchingu
+daphne -b 0.0.0.0 -p 8001 babchingu.asgi:application

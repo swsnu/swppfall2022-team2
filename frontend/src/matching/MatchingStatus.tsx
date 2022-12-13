@@ -78,25 +78,37 @@ const MatchingStatus: React.FC<propsType> = (props) => {
                 chatrooms: response.data,
               }),
             );
-            const chatRoomId: number | undefined = response.data.find(
+            const chatRoomId: number = response.data.find(
               (chatroom: ChatRoomType) =>
                 chatroom.user_id.length === 1 && chatroom.user_id.includes(matchedOpponent.id),
             )?.id;
             if (chatRoomId !== undefined) {
               const chatroom: ChatRoomType = userState.loggedinuser.chatrooms.find(
                 (chatroom) => chatroom.id === chatRoomId,
-              )!;
-              dispatch(userActions.selectChatRoom(chatroom!));
+              ) ?? {
+                id: 0,
+                roomtype: 'error',
+                name: 's',
+                user_id: [3],
+                last_chat: { id: 0, order: 0, chatroom_id: 0, author: 0, content: '', date: '' },
+              };
+              dispatch(userActions.selectChatRoom(chatroom));
               navigate(`/chatroom/${chatRoomId}`);
             } else {
               void dispatch(
                 createChatRoom([userState.loggedinuser.user.id, matchedOpponent.id]),
               ).then((response) => {
                 // there is a problem in testing below
-                const chatroom: ChatRoomType = userState.loggedinuser!.chatrooms.find(
+                const chatroom: ChatRoomType = userState.loggedinuser?.chatrooms.find(
                   (chatroom) => chatroom.id === response.payload,
-                )!;
-                dispatch(userActions.selectChatRoom(chatroom!));
+                ) ?? {
+                  id: 0,
+                  roomtype: 'error',
+                  name: 's',
+                  user_id: [3],
+                  last_chat: { id: 0, order: 0, chatroom_id: 0, author: 0, content: '', date: '' },
+                };
+                dispatch(userActions.selectChatRoom(chatroom));
                 // eslint-disable-next-line
                 navigate(`/chatroom/${response.payload}`);
               });
@@ -119,11 +131,20 @@ const MatchingStatus: React.FC<propsType> = (props) => {
           시간:{shownStatus !== null ? shownStatus.time : '미정'}
         </div>
         <div className='matchingStatusFont'>
-          내가 원하는 장소:{matchedOpponent?.spaceUser ? matchedOpponent?.spaceUser : '미정'}
+          내가 원하는 장소:
+          {matchedOpponent !== null
+            ? matchedOpponent.spaceUser === ''
+              ? '미정'
+              : matchedOpponent.spaceUser
+            : '미정'}
         </div>
         <div className='matchingStatusFont'>
           상대가 원하는 장소:
-          {matchedOpponent?.spaceOpponent ? matchedOpponent?.spaceOpponent : '미정'}
+          {matchedOpponent !== null
+            ? matchedOpponent.spaceOpponent === ''
+              ? '미정'
+              : matchedOpponent.spaceOpponent
+            : ''}
         </div>
         <div className='matchingStatusFont'>나이: {matchedOpponent?.age}</div>
         <div className='matchingStatusFont'>성별: {matchedOpponent?.gender}</div>

@@ -83,24 +83,36 @@ const GroupMatchingStatus: React.FC<propsType> = (props) => {
                 chatrooms: response.data,
               }),
             );
-            const chatRoomId = response.data.find((chatroom: ChatRoomType) =>
+            const chatRoomId: number = response.data.find((chatroom: ChatRoomType) =>
               checkSameChatRoom(chatroom.user_id, matchedOpponentsIds),
             )?.id;
             if (chatRoomId !== undefined) {
-              const chatroom: ChatRoomType = userState.loggedinuser.chatrooms.find(
+              const chatroom: ChatRoomType = userState.loggedinuser?.chatrooms.find(
                 (chatroom) => chatroom.id === chatRoomId,
-              )!;
-              dispatch(userActions.selectChatRoom(chatroom!));
+              ) ?? {
+                id: 0,
+                roomtype: 'error',
+                name: 's',
+                user_id: [3],
+                last_chat: { id: 0, order: 0, chatroom_id: 0, author: 0, content: '', date: '' },
+              };
+              dispatch(userActions.selectChatRoom(chatroom));
               navigate(`/chatroom/${chatRoomId}`);
             } else {
               void dispatch(
                 createChatRoom([userState.loggedinuser.user.id, ...matchedOpponentsIds]),
               ).then((response) => {
                 // there is a problem in testing below
-                const chatroom: ChatRoomType = userState.loggedinuser!.chatrooms.find(
+                const chatroom: ChatRoomType = userState.loggedinuser?.chatrooms.find(
                   (chatroom) => chatroom.id === response.payload,
-                )!;
-                dispatch(userActions.selectChatRoom(chatroom!));
+                ) ?? {
+                  id: 0,
+                  roomtype: 'error',
+                  name: 's',
+                  user_id: [3],
+                  last_chat: { id: 0, order: 0, chatroom_id: 0, author: 0, content: '', date: '' },
+                };
+                dispatch(userActions.selectChatRoom(chatroom));
                 // eslint-disable-next-line
                 navigate(`/chatroom/${response.payload}`);
               });

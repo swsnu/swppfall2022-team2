@@ -5,7 +5,7 @@ import MatchingCondition from './MatchingCondition';
 import MatchingStatus from './MatchingStatus';
 import './Matching.css';
 import { Button } from 'react-bootstrap';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import NavBar from '../NavBar';
 import Tab from 'react-bootstrap/Tab';
@@ -173,8 +173,8 @@ const Matching: React.FunctionComponent = () => {
   const dispatch = useDispatch<AppDispatch>();
   if (userState.loggedinuser === null) {
     if (window.localStorage.getItem('Token') !== null) {
-      dispatch(setSignIn(Number(window.localStorage.getItem('id'))));
-      console.log(window.localStorage.getItem('id'));
+      void dispatch(setSignIn(Number(window.localStorage.getItem('id'))));
+      // console.log(window.localStorage.getItem('id'));
     } else {
       navigate(`/login`);
     }

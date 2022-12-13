@@ -1,3 +1,4 @@
+''' module docstring error'''
 from django.contrib import admin
 from .models import MatchingEntity, MatchingQueue, GroupMatchingEntity, GroupMatchingQueue
 

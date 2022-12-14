@@ -25,6 +25,7 @@ export default function SignUp(){
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [passwordConfirm, setPasswordConfirm] = useState("");
+    const [emailConfirm, setEmailConfirm] = useState("");
     const [signUpStatus, handleSignUpStatus] = useState<signUpStatusType>({
         name: '',
         mbti: '',
@@ -54,7 +55,7 @@ export default function SignUp(){
     const [birthErrorMessage, setBirthErrorMessage] = useState<string>('');
     const [birthIsValid, setBirthIsValid] = useState<boolean>(false);
 
-    const [emailErrorMessage, setEmailErrorMessage] = useState<string>('');
+    const [emailErrorMessage, setEmailErrorMessage] = useState<string>('이메일을 입력해주세요.');
     const [emailIsValid, setEmailIsValid] = useState<boolean>(false);
 
     const [genderErrorMessage, setGenderErrorMessage] = useState<string>('성별을 선택해주세요.');
@@ -65,6 +66,13 @@ export default function SignUp(){
 
     const [domainErrorMessage, setDomainErrorMessage] = useState<string>('도메인을 선택해주세요.');
     const [domainIsSelected, setDomainIsSelected] = useState<boolean>(false);
+
+    const [emailConfirmErrorMessage, setEmailConfirmErrorMessage] = useState<string>('');
+    const [emailConfirmIsCorrect, setEmailConfirmIsCorrect] = useState<boolean>(false);
+
+    const [emailConfirmNumber, setEmailCofirmNumber] = useState<string>('000000');
+
+    const [emailIsSent, setEmailIsSent] = useState<boolean>(false);
 
     const handleUsername = (e: React.BaseSyntheticEvent) : void => {
         setUsername(e.target.value);
@@ -87,7 +95,7 @@ export default function SignUp(){
             axios
                 .post(`mypage/id/`,{username:e.target.value})
                 .then((response) => {
-                    if(response.data.dup){
+                    if(response.data.dup === true){
                         setUsernameErrorMessage('다른 사용자가 사용 중인 아이디입니다.');
                         setUsernameIsValid(false);
                     }
@@ -96,7 +104,7 @@ export default function SignUp(){
                         setUsernameIsValid(true);
                     }
                 })
-                .catch((err) => {
+                .catch(() => {
                 });   
         }
     };
@@ -141,7 +149,7 @@ export default function SignUp(){
 
     const handleName = (e: React.BaseSyntheticEvent) : void => {
         handleSignUpStatus({ ...signUpStatus, name: e.target.value });
-        const nameReg = /^[가-힣a-zA-Z\. ]{2,30}$/
+        const nameReg = /^[가-힣a-zA-Z\\. ]{2,30}$/
         if(e.target.value.length < 2){
             setNameErrorMessage('이름이 너무 짧습니다.');
             setNameIsValid(false);
@@ -191,7 +199,7 @@ export default function SignUp(){
             axios
                 .post(`mypage/nick/`,{nickname:e.target.value})
                 .then((response) => {
-                    if(response.data.dup){
+                    if(response.data.dup === true){
                         setNicknameErrorMessage('다른 사용자가 사용 중인 별명입니다.');
                         setNicknameIsValid(false);
                     }
@@ -200,7 +208,7 @@ export default function SignUp(){
                         setNicknameIsValid(true);
                     }
                 })
-                .catch((err) => {
+                .catch(() => {
                 });   
         }
     };
@@ -235,7 +243,7 @@ export default function SignUp(){
     };
     const handleEmail = (e: React.BaseSyntheticEvent) : void => {
         handleSignUpStatus({ ...signUpStatus, email: e.target.value });
-        const emailReg = /^[a-zA-Z0-9\.]{1,100}$/;
+        const emailReg = /^[a-zA-Z0-9\\.]{1,100}$/;
         if(e.target.value.length < 1){
             setEmailErrorMessage('이메일을 입력해주세요.');
             setEmailIsValid(false);
@@ -254,9 +262,43 @@ export default function SignUp(){
         setDomainErrorMessage('');
         setDomainIsSelected(true);
     };
+    const handleEmailConfirm = (e: React.BaseSyntheticEvent) : void => {
+        setEmailConfirm(e.target.value );
+        const emailConfirmReg = /^[0-9]{6}$/;
+        if(e.target.value.length < 6){
+            setEmailConfirmErrorMessage('인증 번호를 입력해주세요.');
+            setEmailConfirmIsCorrect(false);
+        }
+        else if (!emailConfirmReg.test(e.target.value)) {
+            setEmailConfirmErrorMessage('허용되지 않는 문자가 포함되어 있습니다.')
+            setEmailConfirmIsCorrect(false);
+        }
+        else{
+            setEmailConfirmErrorMessage('');
+            setEmailConfirmIsCorrect(true);
+        }
+    };
+
+    const sendEmail = () => {
+        const rand = Math.floor(1000000 + Math.random()*999999);
+        setEmailCofirmNumber(rand.toString().slice(1));
+        axios
+            .post(`chat/user/send_email/`,{email:(signUpStatus.email+signUpStatus.domain), rand:rand.toString().slice(1)})
+            .catch(() => {
+            });   
+
+        setEmailConfirmErrorMessage('인증번호를 입력해주세요.');
+        setEmailIsSent(true);
+    }
+
     const navigate = useNavigate();
 
     const handleSignUp = () => {
+        if(emailConfirmNumber !== emailConfirm){
+            window.alert('인증 번호가 올바르지 않습니다.');
+            return;
+        }
+
         try{dispatch(setSignUp({username: username, password: password, name: signUpStatus.name,
             mbti: signUpStatus.mbti, gender: signUpStatus.gender, nickname: signUpStatus.nickname,
             birth: signUpStatus.birth, email: (signUpStatus.email+signUpStatus.domain)}));
@@ -362,11 +404,13 @@ export default function SignUp(){
                         <Row className='mb-3'>
                             <Form.Label>학교 이메일</Form.Label>
                             <Form.Group as={Col}>
-                                <Form.Control type="text" placeholder="youremail" maxLength={100} onChange={handleEmail}/>
+                                <Form.Control type="text" placeholder="youremail" maxLength={100} onChange={handleEmail}
+                                disabled={(emailIsSent)}/>
                                 {<span className='errormessage'> {emailErrorMessage}</span>}
                             </Form.Group>
                             <Form.Group as={Col}>
-                                <Form.Select name='domain' id='domainChoose' defaultValue={''} onChange={handleDomain}>
+                                <Form.Select name='domain' id='domainChoose' defaultValue={''} onChange={handleDomain}
+                                disabled={(emailIsSent)}>
                                 <option value = '' disabled>선택 안함</option>
                                 <option value = '@korea.ac.kr' disabled>@korea.ac.kr (고려대학교)</option>
                                 <option value = '@snu.ac.kr'>@snu.ac.kr (서울대학교)</option>
@@ -379,16 +423,20 @@ export default function SignUp(){
                         <Row className='mb-3'>
                             <Form.Label>인증 코드</Form.Label>
                             <Form.Group as={Col}>
-                                <Form.Control type="text" placeholder="미구현 기능입니다. 무시해주세요." maxLength={6}/>
+                                <Form.Control type="text" placeholder="인증번호 6자리를 입력해주세요." 
+                                maxLength={6} onChange={handleEmailConfirm}
+                                disabled={!(emailIsValid && domainIsSelected && emailIsSent)}/>
+                                {<span className='errormessage'> {emailConfirmErrorMessage}</span>}
                             </Form.Group>
                             <Form.Group as={Col}>
-                                <Button className="mb-3" variant='secondary' onClick={(e)=>{}}>
+                                <Button className="mb-3" variant='secondary' onClick={sendEmail}
+                                disabled={!(emailIsValid && domainIsSelected && !emailIsSent)}>
                                     인증 메일 보내기
                                 </Button>
                             </Form.Group>
                         </Row>
                         <Button className="mb-3" variant='secondary' onClick={handleSignUp} style={{verticalAlign:'bottom'}}
-                        disabled={!(usernameIsValid && passwordIsValid && passwordConfirmIsValid && nicknameIsValid 
+                        disabled={!(usernameIsValid && passwordIsValid && passwordConfirmIsValid && nicknameIsValid && emailConfirmIsCorrect
                         && nameIsValid && birthIsValid && emailIsValid && domainIsSelected && mbtiIsSelected && genderIsSelected)}>
                             가입하기
                         </Button>

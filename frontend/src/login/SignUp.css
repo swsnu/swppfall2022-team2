@@ -1,7 +1,7 @@
 .sign-up {
     position: absolute;
     background-color: rgba(0,0,0,0.2);
-    height:calc(190%);
+    height:calc(1500px);
     width:calc(100%);
     mix-blend-mode: normal;
 }

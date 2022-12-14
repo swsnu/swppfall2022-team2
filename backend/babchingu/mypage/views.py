@@ -80,7 +80,7 @@ def touch_temp(request, user_id):
     else:
         return HttpResponseNotAllowed(['POST', 'GET'])
 
-@login_required
+# @login_required
 def mypage_get(request):# mypage/get/
     if(request.method=='GET'):
         user=request.user

@@ -121,7 +121,7 @@ const ChatList: React.FunctionComponent = () => {
                               <Modal.Title>매너 평가를 해주세요</Modal.Title>
                               <button type="button" className="btn-close" aria-lable="Close" onClick={(e)=>{handleClose();  e.stopPropagation(); e.preventDefault();}}></button>
                             </Modal.Header>
-                            <Modal.Body>Woohoo, you're reading this text in a modal!</Modal.Body>
+
                             <Modal.Footer>
                               <Button variant="success" style={{ backgroundColor: '#FFB55D', borderColor:'#FFB55D' }} onClick={(e)=>{handleBest(); e.stopPropagation(); e.preventDefault();}}>
                                 최고

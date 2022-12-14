@@ -10,7 +10,9 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 import os
+
 from pathlib import Path
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,19 +22,34 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-crn#z$yn*#enr=4_ir00(1jph5i+u$zym-^@)efgm4td$hkpct'
+#SECRET_KEY = 'django-insecure-crn#z$yn*#enr=4_ir00(1jph5i+u$zym-^@)efgm4td$hkpct'
+
+secret_key_default = 'default_secret_key_default_secret_key_default_secret_key_default_secret_key_default_secret_key_default_secret_key_default_secret_key_default_secret_key_'
+SECRET_KEY = os.environ.get('SECRET_KEY', secret_key_default)
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get('DEBUG', 'True') == 'True'
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+
+
+ALLOWED_HOSTS = ['3.38.56.76','ec2-3-38-56-76.ap-northeast-2.compute.amazonaws.com','127.0.0.1','0.0.0.0','localhost','babchingu.shop',]
+
+SECURE_HSTS_SECONDS = int(os.environ.get('SECURE_HSTS_SECONDS', 31536000))
+SECURE_SSL_REDIRECT = os.environ.get('SECURE_SSL_REDIRECT', 'False') == 'True'                          # default: False
+SESSION_COOKIE_SECURE = os.environ.get('SESSION_COOKIE_SECURE', 'False') == 'True'                      # default: False
+CSRF_COOKIE_SECURE = os.environ.get('CSRF_COOKIE_SECURE', 'False') == 'True'                            # default: False
+SECURE_HSTS_INCLUDE_SUBDOMAINS = os.environ.get('SECURE_HSTS_INCLUDE_SUBDOMAINS', 'False') == 'True'    # default: False
+SECURE_HSTS_PRELOAD = os.environ.get('SECURE_HSTS_PRELOAD', 'False') == 'True'                          # default: False
+
 
 
 # Application definition
-
 INSTALLED_APPS = [
-    'daphne',
     'django_crontab',
+    'rest_framework',
+    'rest_framework.authtoken',
+    'daphne',
     'matching.apps.MatchingConfig',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -43,8 +60,8 @@ INSTALLED_APPS = [
     'chat',
     'mypage',
     'menu',
-    'rest_framework',
-    'rest_framework.authtoken',
+    'channels',
+    
 ]
     
 MIDDLEWARE = [
@@ -126,6 +143,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
 STATIC_URL = 'static/'
+#STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
@@ -147,8 +165,14 @@ CHANNEL_LAYERS = {
 }
 
 CORS_ALLOW_CREDENTIALS = True
-CSRF_TRUSTED_ORIGINS = ["http://localhost:8000/", "http://localhost","http://127.0.0.1:8000"]
-CORS_ALLOWED_ORIGINS = ["http://localhost:3000", "http://127.0.0.1:3000", "http://localhost"]
+CSRF_TRUSTED_ORIGINS = ["http://localhost:3000/", "http://localhost","http://127.0.0.1:3000","http://ec2-3-38-56-76.ap-northeast-2.compute.amazonaws.com:3000","http://3.38.56.76:3000","https://babchingu.shop"]
+CORS_ALLOWED_ORIGINS = ["http://localhost:3000", "http://127.0.0.1:3000", "http://localhost","http://ec2-3-38-56-76.ap-northeast-2.compute.amazonaws.com:3000","http://3.38.56.76:3000","https://babchingu.shop" ]
 
+
+
+
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 os.environ["DJANGO_ALLOW_ASYNC_UNSAFE"] = 'true'

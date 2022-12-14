@@ -21,7 +21,7 @@ export interface statusType {
   blocked_users: string[];
 }
 
-const ChatRoom = () => {
+const ChatRoom : React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
   const chatRef: React.MutableRefObject<HTMLDivElement | null> = useRef(null);
@@ -55,7 +55,7 @@ const ChatRoom = () => {
     return () => {
       dispatch(getMessageList(id!));
     };
-  }, [MessageEvent]);
+  },[messageList]);
 
   useEffect(() => {
     axios
@@ -119,7 +119,6 @@ const ChatRoom = () => {
               })}
             </>
           </ChatroomListWrapper>
-
           <Chat_Box>
             <ChatWrapper ref={chatRef}>
               {messageList.map((message) => (
@@ -135,7 +134,7 @@ const ChatRoom = () => {
           </Chat_Box>
         </Wrapper>
         <Chatting></Chatting>
-      </WebSocketProvider>
+        </WebSocketProvider>
     </>
   );
 };

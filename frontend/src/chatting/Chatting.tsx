@@ -50,7 +50,7 @@ function Chatting(){
         }}
       ></Input>
       <button type='button' onClick={handleClickSubmit}>
-        Send!
+        전송
       </button>
       </InputWrapper>
     </div>

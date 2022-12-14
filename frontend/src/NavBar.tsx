@@ -40,7 +40,7 @@ const NavBar: React.FunctionComponent = () => {
             className='d-inline-block align-text-top'
           />
         </a>
-        <button
+        {/* <button
           className='navbar-toggler'
           type='button'
           data-bs-toggle='collapse'
@@ -49,8 +49,7 @@ const NavBar: React.FunctionComponent = () => {
           aria-expanded='false'
           aria-label='Toggle navigation'
         >
-          <span className='navbar-toggler-icon'></span>
-        </button>
+        </button> */}
         <div className='collapse navbar-collapse' id='navbarNavAltMarkup'>
           <div className='navbar-nav'>
             <a className='nav-link active' aria-current='page' onClick={handleMain}>

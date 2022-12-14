@@ -10,23 +10,21 @@ interface propsType {
 }
 
 const WebSocketProvider : React.FC<propsType> = (props : propsType) => {
-  const webSocketUrl = `ws://localhost:8000/ws/chatroom/` + props.roomName + `/` 
+  const webSocketUrl = `wss://babchingu.shop:8001`+`/ws/chatroom/`+props.roomName+'/'; 
   let ws = useRef<WebSocket | null>(null);
   const id = useParams();
 
 
-  if(String(id) !== String(props.roomName)){
-    console.log(String(id));
-    console.log(props.roomName);
-    ws.current?.onclose;
-  }
-
   if (!ws.current) { 
+    console.log(webSocketUrl);
     ws.current = new WebSocket(webSocketUrl);
+    console.log(ws.current);
 
     ws.current.onopen = () => {
       console.log("connected to " + ws.current?.url);
+      console.log("done");
     };
+
     ws.current.onclose = error => {
       console.log("disconnect from " + webSocketUrl);
       console.log(error);

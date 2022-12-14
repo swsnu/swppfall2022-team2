@@ -5,9 +5,6 @@ from django.contrib.auth.decorators import login_required
 from mypage.models import UserInfo
 from django.contrib.auth.models import User
 
-def index(request):
-    return HttpResponse('Default Page')
-
 @login_required
 def mypage_submit(request):# mypage/submit/
     if(request.method=='POST'):

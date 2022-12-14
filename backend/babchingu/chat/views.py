@@ -7,6 +7,7 @@ from django.views.decorators.csrf import ensure_csrf_cookie, csrf_exempt
 import json
 from json.decoder import JSONDecodeError
 from rest_framework.authtoken.models import Token
+from django.core.mail import EmailMessage
 # Create your views here.
 
 
@@ -31,6 +32,17 @@ def signup(request):
         userinfo.save()
         token=Token.objects.create(user=user)
         return HttpResponse(status=201)
+    else:
+        return HttpResponseNotAllowed(['POST'])
+
+def send_email(request):#chat/user/send_email
+    if request.method == 'POST':
+        data = json.loads(request.body.decode())
+        rand = data['rand']
+        email = data['email']
+        EmailMessage('밥친구 이메일 인증',f'안녕하세요. 밥친구입니다.\n귀하의 이메일 인증 번호는 {rand}입니다.\n이용해주셔서 감사합니다.\n\n\n밥친구 드림',to=[email]).send()
+
+        return HttpResponse(status=200)
     else:
         return HttpResponseNotAllowed(['POST'])
 

@@ -100,57 +100,7 @@ const MyPage: React.FunctionComponent = () => {
     [status],
   );
 
-  // block someone
-  const blockSubmit = useCallback(
-    async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>, nickname: string) => {
-      let i = 0;
-      for (; ; i++) if (status.matched_users[i] === nickname) break;
-      for (; i < status.matched_users.length - 1; i++)
-        status.matched_users[i] = status.matched_users[i + 1];
-      status.matched_users.pop();
-      status.blocked_users.push(nickname);
-      handleStatus({ ...status });
-        await axios
-          .post(`mypage/block/`, {
-            nickname: nickname,
-          })
-          .then((res) => {
-            if (res.status === 200) {
-            } else {
-              window.alert('예기치 않은 오류가 발생했습니다.');
-            }
-          })
-          .catch((err) => {
-          });
-    },
-    [status],
-  );
-
-  // unblock someone
-  const unblockSubmit = useCallback(
-    async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>, nickname: string) => {
-      let i = 0;
-      for (; ; i++) if (status.blocked_users[i] === nickname) break;
-      for (; i < status.blocked_users.length - 1; i++)
-        status.blocked_users[i] = status.blocked_users[i + 1];
-      status.blocked_users.pop();
-      status.matched_users.push(nickname);
-      handleStatus({ ...status });
-        await axios
-          .post(`mypage/unblock/`, {
-            nickname: nickname,
-          })
-          .then((res) => {
-            if (res.status === 200) {
-            } else {
-              window.alert('예기치 않은 오류가 발생했습니다.');
-            }
-          })
-          .catch((err) => {
-          });
-    },
-    [status],
-  );
+  
 
   return (
     <div>
@@ -171,7 +121,7 @@ const MyPage: React.FunctionComponent = () => {
           <h5 className='card-title'>차단 / 해제하기</h5>
         </div>
         <div>
-          <BlockUser status={status} blockSubmit={blockSubmit} unblockSubmit={unblockSubmit} />
+          <BlockUser status={status} handleStatus={handleStatus} />
         </div>
       </div>
     </div>

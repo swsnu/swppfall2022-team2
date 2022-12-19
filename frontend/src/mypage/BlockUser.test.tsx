@@ -1,12 +1,13 @@
 import { getMockStore } from '../test-utils/mocks';
 import { Provider } from 'react-redux';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { MemoryRouter, Route, Routes } from 'react-router';
 import {
     UserInfoType,
   } from '../store/slices/user';
 import BlockUser from './BlockUser';
 import { statusType } from './MyPage';
+import axios from 'axios';
 
 const initialState: UserInfoType = {
     loggedinuser: null,
@@ -16,12 +17,10 @@ const initialState: UserInfoType = {
   };
 interface propsType {
     status: statusType;
-    blockSubmit: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>, nickname:string) => any;
-    unblockSubmit: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>, nickname:string) => any;
+    handleStatus: (a: statusType) => void;
 }
 
-const blockSumbitMock = jest.fn();
-const unblockSumbitMock = jest.fn();
+const handleStatusMock = jest.fn();
 
 const props: propsType = {
     status: {name: '',
@@ -30,11 +29,10 @@ const props: propsType = {
     birth: '',
     gender: '',
     nickname: '',
-    matched_users: ['한국'],
-    blocked_users: ['가나'],
+    matched_users: ['한국','일본'],
+    blocked_users: ['가나','스페인'],
     temperature: 0.0,},
-    blockSubmit: blockSumbitMock,
-    unblockSubmit: unblockSumbitMock,
+    handleStatus: handleStatusMock,
   };
 
 const mockStore = getMockStore({ user: initialState });
@@ -53,21 +51,18 @@ describe('BlockUser', () => {
         </Provider>
       );
     });
-    it('should render correctly', async () => {
-        render(blockuser);
-        screen.getByText("한국");
-        screen.getByText("가나");
-    })
-    it('block correctly', async () => {
-        render(blockuser);
-        const blockClick = screen.getByText("차단");
+    it('block and unblock correctly', async () => {
+        jest.spyOn(axios, 'post').mockResolvedValue({
+          status: 200, 
+        });
+        const blockuserRender = render(blockuser);
+        const blockClick = blockuserRender.container.querySelector('#한국');
         fireEvent.click(blockClick!);
-        expect(blockSumbitMock).toHaveBeenCalled();
-    })
-    it('unblock correctly', async () => {
-        render(blockuser);
-        const unblockClick = screen.getByText("차단 해제");
+        await waitFor(() => expect(handleStatusMock).toHaveBeenCalled());
+        await waitFor(() => expect(axios.post).toHaveBeenCalled());
+        const unblockClick = blockuserRender.container.querySelector('#가나');
         fireEvent.click(unblockClick!);
-        expect(unblockSumbitMock).toHaveBeenCalled();
-    })
+        await waitFor(() => expect(handleStatusMock).toHaveBeenCalled());
+        await waitFor(() => expect(axios.post).toHaveBeenCalled());
+    });
 });

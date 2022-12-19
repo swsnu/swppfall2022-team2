@@ -122,31 +122,6 @@ describe('MyPage', () => {
         expect(window.alert).toHaveBeenCalledWith('변경 사항이 저장되었습니다.');
         expect(window.location.reload).toHaveBeenCalled();
     })
-    it('raise error while block correctly', async () => {
-        axios.get = jest.fn().mockResolvedValue({
-            data:{
-            name: '',
-            mbti: '',
-            intro: '',
-            birth: '',
-            gender: '',
-            nickname: '',
-            matched_users: ['한국',],
-            blocked_users: ['가나',],
-            temperature: 36.5,},
-            status:200,
-          });
-        
-        render(mypage);
-        await waitFor(() => expect(axios.get).toHaveBeenCalled());
-        const sumbitButtonClick = screen.getByText('차단');
-        jest.spyOn(axios, 'post').mockResolvedValue({
-            status: 400, 
-          });
-        fireEvent.click(sumbitButtonClick!);
-        await waitFor(() => expect(axios.post).toHaveBeenCalled());
-        expect(window.alert).toHaveBeenCalledWith('예기치 않은 오류가 발생했습니다.');
-    })
     it('navigate to login when loggedinuser is null', async () => {
         mypage = (
           <Provider store={mockStoreNullUser}>

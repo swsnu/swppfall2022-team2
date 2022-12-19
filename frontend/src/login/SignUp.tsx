@@ -307,7 +307,6 @@ export default function SignUp(){
         
         }
         catch(err){
-            window.alert('예기치 않은 오류가 발생했습니다.');
         }
     }
 
